@@ -51,3 +51,18 @@ built into the app.
 
 This can then be rendered as a QR Code which can then be scanned and added to the users
 list of OTP credentials.
+
+#### Working example
+
+Scan the following barcode with your phone user Google Authenticator
+
+![QR Code for OTP](http://chart.apis.google.com/chart?cht=qr&chs=350x350&chl=otpauth%3A%2F%2Ftotp%2Falice%40google.com%3Fsecret%3DJBSWY3DPEHPK3PXP)
+
+Now run the following inside of IRB and compare the output
+
+    require 'rubygems'
+    require 'rotp'
+    totp = ROTP::TOTP.new("JBSWY3DPEHPK3PXP")
+    p totp.now
+
+You should be seeing the OTP
