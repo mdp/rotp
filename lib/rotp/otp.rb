@@ -2,18 +2,28 @@ module ROTP
   class OTP
     attr_reader :secret, :digits, :digest
 
-    # Params: secret in base32
+    # @param [String] secret in the form of base32
+    # @option options digits [Integer] (6)
+    #     Number of integers in the OTP
+    #     Google Authenticate only supports 6 currently
+    # @option options digest [String] (sha1)
+    #     Digest used in the HMAC
+    #     Google Authenticate only supports 'sha1' currently
+    # @returns [OTP] OTP instantiation
     def initialize(s, options = {})
       @digits = options[:digits] || 6
       @digest = options[:digest] || "sha1"
       @secret = s
     end
 
-    def generate_otp(count)
+    # @param [Integer] input the number used seed the HMAC
+    # Usually either the counter, or the computed integer
+    # based on the Unix timestamp
+    def generate_otp(input)
       hmac = OpenSSL::HMAC.digest(
         OpenSSL::Digest::Digest.new(digest),
         byte_secret,
-        int_to_bytestring(count)
+        int_to_bytestring(input)
       )
 
       offset = hmac[19] & 0xf
@@ -24,10 +34,16 @@ module ROTP
       code % 10 ** digits
     end
 
+    private
+
     def byte_secret
       Base32.decode(@secret)
     end
 
+    # Turns an integer to the OATH specified
+    # bytestring, which is fed to the HMAC
+    # along with the secret
+    #
     def int_to_bytestring(int, padding = 8)
       result = []
       until int == 0

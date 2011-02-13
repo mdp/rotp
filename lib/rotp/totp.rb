@@ -3,11 +3,16 @@ module ROTP
 
     attr_reader :interval
 
+    # @option options [Integer] interval (30) the time interval in seconds for OTP
+    #     This defaults to 30 which is standard.
     def initialize(s, options = {})
       @interval = options[:interval] || 30
       super
     end
 
+    # Accepts either a Unix timestamp integer or a Time object.
+    # Time objects will be adjusted to UTC automatically
+    # @param [Time/Integer] time the time to generate an OTP for
     def at(time)
       unless time.class == Time
         time = Time.at(time.to_i)
@@ -15,6 +20,8 @@ module ROTP
       generate_otp(timecode(time))
     end
 
+    # Generate the current time OTP
+    # @return [Integer] the OTP as an integer
     def now
       generate_otp(timecode(Time.now))
     end
