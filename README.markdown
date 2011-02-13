@@ -56,13 +56,13 @@ list of OTP credentials.
 
 Scan the following barcode with your phone user Google Authenticator
 
-![QR Code for OTP](http://chart.apis.google.com/chart?cht=qr&chs=350x350&chl=otpauth%3A%2F%2Ftotp%2Falice%40google.com%3Fsecret%3DJBSWY3DPEHPK3PXP)
+![QR Code for OTP](http://chart.apis.google.com/chart?cht=qr&chs=250x250&chl=otpauth%3A%2F%2Ftotp%2Falice%40google.com%3Fsecret%3DJBSWY3DPEHPK3PXP)
 
-Now run the following inside of IRB and compare the output
+Now run the following and compare the output
 
     require 'rubygems'
     require 'rotp'
     totp = ROTP::TOTP.new("JBSWY3DPEHPK3PXP")
-    p totp.now
+    p "Current OTP: #{totp.now}"
 
-You should be seeing the OTP
+You should be seeing a matching OTP
