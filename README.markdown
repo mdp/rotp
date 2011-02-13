@@ -2,7 +2,14 @@
 
 A ruby library for generating one time passwords according to [ RFC 4226 ](http://tools.ietf.org/html/rfc4226) and the [ HOTP RFC ](http://tools.ietf.org/html/draft-mraihi-totp-timebased-00)
 
-This is compatible with Google Authenticator apps available for Android and iPhone
+This is compatible with Google Authenticator apps available for Android and iPhone, and now in use on GMail
+
+## Quick overview of using One Time Passwords on your phone
+
+* OTP's involve a shared secret, stored both on the phone and the server
+* Time based OTP's don't require any synchronization between the server and client other than time, and can therefore be used without internet connectivity
+* Counter based OTP's(HOTP) require the server and phone to both keep track of how many times it's used, but protect against immediate reuse of the OTP(versus a 30 second window)
+* OTP's should always be used as a second factor of authentication(if your phone is lost, you account is still secured with a password)
 
 ## Dependencies
 
@@ -40,7 +47,7 @@ This is compatible with Google Authenticator apps available for Android and iPho
 
     ROTP.random_base32 # returns a 16 character base32 secret. Compatible with Google Authenticator
 
-### Google Authenticator Interop
+### Google Authenticator Compatible
 
 The library works with the Google Authenticator iPhone and Android app, and also
 includes the ability to generate provisioning URI's for use with the QR Code scanner
@@ -54,7 +61,7 @@ list of OTP credentials.
 
 #### Working example
 
-Scan the following barcode with your phone user Google Authenticator
+Scan the following barcode with your phone, using Google Authenticator
 
 ![QR Code for OTP](http://chart.apis.google.com/chart?cht=qr&chs=250x250&chl=otpauth%3A%2F%2Ftotp%2Falice%40google.com%3Fsecret%3DJBSWY3DPEHPK3PXP)
 
@@ -65,4 +72,3 @@ Now run the following and compare the output
     totp = ROTP::TOTP.new("JBSWY3DPEHPK3PXP")
     p "Current OTP: #{totp.now}"
 
-You should be seeing a matching OTP
