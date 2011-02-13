@@ -13,16 +13,16 @@
 
 ### Time based OTP's
 
-    totp = ROTP::TOTP.new("base32secretkey")
+    totp = ROTP::TOTP.new("base32secret1234")
     totp.now # => 492039
     totp.at(Time.now.to_i + 30) # => 102922
 
 ### Counter based OTP's
 
-    hotp = ROTP::HOTP.new("base32secretkey")
-    hotp.at(0) # => 492039
-    hotp.at(1) # => 234092
-    hotp.at(2) # => 209834
+    hotp = ROTP::HOTP.new("base32secretkey1234")
+    hotp.at(0) # => 368431
+    hotp.at(1) # => 818794
+    hotp.at(1401) # => 320657
 
 
 ### Generating a Base32 Secret key
