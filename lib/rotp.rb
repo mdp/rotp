@@ -10,7 +10,8 @@ module ROTP
   def self.random_base32(length=16)
     b32 = ''
     OpenSSL::Random.random_bytes(length).each_byte do |b|
-      BASE32[b % 32, 1]
+      b32 << BASE32[b % 32, 1]
     end
+    b32
   end
 end

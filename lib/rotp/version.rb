@@ -1,3 +1,3 @@
-module Rotp
-  VERSION = "1.0.0"
+module ROTP
+  VERSION = "1.1.0"
 end

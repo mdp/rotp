@@ -4,7 +4,7 @@ require "rotp/version"
 
 Gem::Specification.new do |s|
   s.name        = "rotp"
-  s.version     = Rotp::VERSION
+  s.version     = ROTP::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Mark Percival"]
   s.email       = ["mark@markpercival.us"]
