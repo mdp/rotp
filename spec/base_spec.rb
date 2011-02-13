@@ -1,5 +1,15 @@
 require 'spec_helper'
 
+describe "generating a random base32 secret" do
+  it "should be 16 characters by default" do
+    ROTP.random_base32.length.should == 16
+    ROTP.random_base32.should match /[a-z2-7].+/
+  end
+  it "should be allow a specific length" do
+    ROTP.random_base32(32).length.should == 32
+  end
+end
+
 describe "HOTP example values from the rfc" do
   it "should match the RFC" do
     # 12345678901234567890 in Bas32
@@ -16,6 +26,10 @@ describe "HOTP example values from the rfc" do
     hotp.at(8).should ==(399871)
     hotp.at(9).should ==(520489)
   end
+  it "should output its provisioning URI" do
+    hotp = ROTP::HOTP.new("wrn3pqx5uqxqvnqr")
+    hotp.provisioning_uri('mark@percival').should == "otpauth://hotp/mark@percival?secret=wrn3pqx5uqxqvnqr&counter=0"
+  end
 end
 
 describe "TOTP example values from the rfc" do
@@ -31,5 +45,10 @@ describe "TOTP example values from the rfc" do
     Timecop.freeze(Time.at(1297553958)) do
       totp.now.should ==(102705)
     end
+  end
+
+  it "should output its provisioning URI" do
+    totp = ROTP::TOTP.new("wrn3pqx5uqxqvnqr")
+    totp.provisioning_uri('mark@percival').should == "otpauth://totp/mark@percival?secret=wrn3pqx5uqxqvnqr"
   end
 end

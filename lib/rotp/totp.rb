@@ -19,6 +19,15 @@ module ROTP
       generate_otp(timehash(Time.now))
     end
 
+    # Returns the provisioning URI for the OTP
+    # This can then be encoded in a QR Code and used
+    # to provision the Google Authenticator app
+    # @param [String] name of the account
+    # @return [String] provisioning uri
+    def provisioning_uri(name)
+      "otpauth://totp/#{URI.encode(name)}?secret=#{secret}"
+    end
+
     private
 
     def timehash(time)

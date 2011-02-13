@@ -6,13 +6,13 @@ module ROTP
     def initialize(s, options = {})
       @digits = options[:digits] || 6
       @digest = options[:digest] || "sha1"
-      @secret = options[:raw_secret] ? s : Base32.decode(s)
+      @secret = s
     end
 
     def generate_otp(count)
       hmac = OpenSSL::HMAC.digest(
         OpenSSL::Digest::Digest.new(digest),
-        secret,
+        byte_secret,
         int_to_bytestring(count)
       )
 
@@ -22,6 +22,10 @@ module ROTP
         (hmac[offset + 2] & 0xff) << 8 |
         (hmac[offset + 3] & 0xff)
       code % 10 ** digits
+    end
+
+    def byte_secret
+      Base32.decode(@secret)
     end
 
     def int_to_bytestring(int, padding = 8)
