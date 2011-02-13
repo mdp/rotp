@@ -35,7 +35,8 @@ The library works with the Google Authenticator iPhone and Android app, and also
 includes the ability to generate provisioning URI's for use with the QR Code scanner
 built into the app.
 
-    hotp.provisioning_uri # => 'otpauth://totp/alice@google.com?secret=JBSWY3DPEHPK3PXP'
+    totp.provisioning_uri # => 'otpauth://totp/alice@google.com?secret=JBSWY3DPEHPK3PXP'
+    hotp.provisioning_uri # => 'otpauth://hotp/alice@google.com?secret=JBSWY3DPEHPK3PXP&counter=0'
 
 This can then be rendered as a QR Code which can then be scanned and added to the users
 list of OTP credentials.
