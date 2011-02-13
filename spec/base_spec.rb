@@ -26,6 +26,11 @@ describe "HOTP example values from the rfc" do
     hotp.at(8).should ==(399871)
     hotp.at(9).should ==(520489)
   end
+  it "should verify an OTP and now allow reuse" do
+    hotp = ROTP::HOTP.new("GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ")
+    hotp.verify(520489, 9).should be_true
+    hotp.verify(520489, 10).should be_false
+  end
   it "should output its provisioning URI" do
     hotp = ROTP::HOTP.new("wrn3pqx5uqxqvnqr")
     hotp.provisioning_uri('mark@percival').should == "otpauth://hotp/mark@percival?secret=wrn3pqx5uqxqvnqr&counter=0"
@@ -46,6 +51,16 @@ describe "TOTP example values from the rfc" do
       totp.now.should ==(102705)
     end
   end
+  it "should validate a time based OTP" do
+    totp = ROTP::TOTP.new("wrn3pqx5uqxqvnqr")
+    Timecop.freeze(Time.at(1297553958)) do
+      totp.verify(102705).should be_true
+    end
+    Timecop.freeze(Time.at(1297553958 + 30)) do
+      totp.verify(102705).should be_false
+    end
+  end
+
 
   it "should output its provisioning URI" do
     totp = ROTP::TOTP.new("wrn3pqx5uqxqvnqr")

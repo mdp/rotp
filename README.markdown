@@ -1,5 +1,9 @@
 # ROTP - The Ruby One Time Password Library
 
+A ruby library for generating one time passwords according to [ RFC 4226 ](http://tools.ietf.org/html/rfc4226) and the [ HOTP RFC ](http://tools.ietf.org/html/draft-mraihi-totp-timebased-00)
+
+This is compatible with Google Authenticator apps available for Android and iPhone
+
 ## Dependencies
 
 * OpenSSL
@@ -15,7 +19,11 @@
 
     totp = ROTP::TOTP.new("base32secret3232")
     totp.now # => 492039
-    totp.at(Time.now.to_i + 30) # => 102922
+
+    # OTP verified for current time
+    totp.verify(492039) # => true
+    sleep 30
+    totp.verify(492039) # => false
 
 ### Counter based OTP's
 
@@ -24,6 +32,9 @@
     hotp.at(1) # => 55283
     hotp.at(1401) # => 316439
 
+    # OTP verified with a counter
+    totp.verify(316439, 1401) # => true
+    totp.verify(316439, 1402) # => false
 
 ### Generating a Base32 Secret key
 

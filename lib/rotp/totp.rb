@@ -26,6 +26,12 @@ module ROTP
       generate_otp(timecode(Time.now))
     end
 
+    # Verifies the OTP passed in against the current time OTP
+    # @param [String/Integer] otp the OTP to check against
+    def verify(otp, time = Time.now)
+      otp == self.at(time)
+    end
+
     # Returns the provisioning URI for the OTP
     # This can then be encoded in a QR Code and used
     # to provision the Google Authenticator app
