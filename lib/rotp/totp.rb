@@ -12,11 +12,11 @@ module ROTP
       unless time.class == Time
         time = Time.at(time.to_i)
       end
-      generate_otp(timehash(time))
+      generate_otp(timecode(time))
     end
 
     def now
-      generate_otp(timehash(Time.now))
+      generate_otp(timecode(Time.now))
     end
 
     # Returns the provisioning URI for the OTP
@@ -30,10 +30,9 @@ module ROTP
 
     private
 
-    def timehash(time)
+    def timecode(time)
       i = time.utc.to_i * 1000
-      i = i / (interval * 1000)
-      i
+      i / (interval * 1000)
     end
 
   end
