@@ -2,11 +2,11 @@ require 'spec_helper'
 
 describe "generating a random base32 secret" do
   it "should be 16 characters by default" do
-    ROTP.random_base32.length.should == 16
-    ROTP.random_base32.should match /[a-z2-7].+/
+    ROTP::Base32.random_base32.length.should == 16
+    ROTP::Base32.random_base32.should match /[a-z2-7].+/
   end
   it "should be allow a specific length" do
-    ROTP.random_base32(32).length.should == 32
+    ROTP::Base32.random_base32(32).length.should == 32
   end
 end
 
