@@ -14,7 +14,6 @@ This is compatible with Google Authenticator apps available for Android and iPho
 ## Dependencies
 
 * OpenSSL
-* Base32
 
 ## Installation
 
@@ -71,6 +70,13 @@ Now run the following and compare the output
     require 'rotp'
     totp = ROTP::TOTP.new("JBSWY3DPEHPK3PXP")
     p "Current OTP: #{totp.now}"
+
+### Changelog
+
+####1.3.0
+
+- Added support for Ruby 1.9.x
+- Removed dependency on Base32
 
 ### See also:
 
