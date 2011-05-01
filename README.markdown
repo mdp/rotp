@@ -72,3 +72,6 @@ Now run the following and compare the output
     totp = ROTP::TOTP.new("JBSWY3DPEHPK3PXP")
     p "Current OTP: #{totp.now}"
 
+### See also:
+
+PHP port of ROTP by [Le Lag](https://github.com/lelag) - [OTPHP](https://github.com/lelag/otphp)
