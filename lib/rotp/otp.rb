@@ -50,7 +50,7 @@ module ROTP
         result << (int & 0xFF).chr
         int >>=  8
       end
-      result.reverse.join.rjust(8, 0.chr)
+      result.reverse.join.rjust(padding, 0.chr)
     end
 
   end
