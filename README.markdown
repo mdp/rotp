@@ -71,6 +71,10 @@ Now run the following and compare the output
     totp = ROTP::TOTP.new("JBSWY3DPEHPK3PXP")
     p "Current OTP: #{totp.now}"
 
+### Looking for the Python version?
+
+Check out Nathan Reynolds' PYOTP at [https://github.com/nathforge/pyotp](https://github.com/nathforge/pyotp)
+
 ### Changelog
 
 ####1.3.0
