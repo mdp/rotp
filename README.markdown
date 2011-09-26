@@ -71,9 +71,6 @@ Now run the following and compare the output
     totp = ROTP::TOTP.new("JBSWY3DPEHPK3PXP")
     p "Current OTP: #{totp.now}"
 
-### Looking for the Python version?
-
-Check out Nathan Reynolds' PYOTP at [https://github.com/nathforge/pyotp](https://github.com/nathforge/pyotp)
 
 ### Changelog
 
@@ -84,4 +81,5 @@ Check out Nathan Reynolds' PYOTP at [https://github.com/nathforge/pyotp](https:/
 
 ### See also:
 
-PHP port of ROTP by [Le Lag](https://github.com/lelag) - [OTPHP](https://github.com/lelag/otphp)
+Python port by  [Nathan Reynolds](https://github.com/nathforge) - [PYOTP- https://github.com/nathforge/pyotp](https://github.com/nathforge/pyotp)
+PHP port by [Le Lag](https://github.com/lelag) - [OTPHP - https://github.com/lelag/otphp](https://github.com/lelag/otphp)
