@@ -81,6 +81,5 @@ Now run the following and compare the output
 
 ### See also:
 
-Python port by  [Nathan Reynolds](https://github.com/nathforge) - [PYOTP- https://github.com/nathforge/pyotp](https://github.com/nathforge/pyotp)
-
-PHP port by [Le Lag](https://github.com/lelag) - [OTPHP - https://github.com/lelag/otphp](https://github.com/lelag/otphp)
+Python port PYOTP by [Nathan Reynolds](https://github.com/nathforge) - [https://github.com/nathforge/pyotp](https://github.com/nathforge/pyotp)  
+PHP port OTPHP by [Le Lag](https://github.com/lelag) - [https://github.com/lelag/otphp](https://github.com/lelag/otphp)
