@@ -71,13 +71,16 @@ Now run the following and compare the output
     totp = ROTP::TOTP.new("JBSWY3DPEHPK3PXP")
     p "Current OTP: #{totp.now}"
 
-
 ### Changelog
 
 ####1.3.0
 
 - Added support for Ruby 1.9.x
 - Removed dependency on Base32
+
+### License
+
+MIT Licensed
 
 ### See also:
 
