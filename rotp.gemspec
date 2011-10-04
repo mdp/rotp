@@ -6,6 +6,7 @@ Gem::Specification.new do |s|
   s.name        = "rotp"
   s.version     = ROTP::VERSION
   s.platform    = Gem::Platform::RUBY
+  s.license     = "MIT"
   s.authors     = ["Mark Percival"]
   s.email       = ["mark@markpercival.us"]
   s.homepage    = "http://github.com/mdp/rotp"
