@@ -2,6 +2,7 @@ require 'rubygems'
 require 'bundler/setup'
 require 'timecop'
 require 'rspec'
+require 'rspec/autorun'
 
 require 'rotp'
 
