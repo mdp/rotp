@@ -11,7 +11,7 @@ module ROTP
     # @param [String/Integer] otp the OTP to check against
     # @param [Integer] counter the counter of the OTP
     def verify(otp, counter)
-      otp == self.at(counter)
+      super(otp, self.at(counter))
     end
 
     # Returns the provisioning URI for the OTP

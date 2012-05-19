@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.email       = ["mark@markpercival.us"]
   s.homepage    = "http://github.com/mdp/rotp"
   s.summary     = %q{A Ruby library for generating and verifying one time passwords}
-  s.description = %q{Works for both HOTP and TOTP, and include QR Code provisioning}
+  s.description = %q{Works for both HOTP and TOTP, and includes QR Code provisioning}
 
   s.rubyforge_project = "rotp"
 
