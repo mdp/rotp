@@ -36,6 +36,10 @@ module ROTP
 
     private
 
+    def verify(input, generated)
+      input.to_i == generated
+    end
+
     def byte_secret
       Base32.decode(@secret)
     end

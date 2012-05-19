@@ -29,7 +29,7 @@ module ROTP
     # Verifies the OTP passed in against the current time OTP
     # @param [String/Integer] otp the OTP to check against
     def verify(otp, time = Time.now)
-      otp == self.at(time)
+      super(otp, self.at(time))
     end
 
     # Returns the provisioning URI for the OTP
