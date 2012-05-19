@@ -54,8 +54,7 @@ module ROTP
     private
 
     def timecode(time)
-      i = time.utc.to_i * 1000
-      i / (interval * 1000)
+      time.utc.to_i / interval
     end
 
   end
