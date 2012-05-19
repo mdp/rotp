@@ -14,4 +14,22 @@ describe ROTP::TOTP do
   it "should verify a string" do
     subject.verify("160864", @now).should be_true
   end
+
+  context "with drift" do
+    it "should verify a number" do
+      subject.verify_with_drift(160864, 0, @now).should be_true
+    end
+    it "should verify a string" do
+      subject.verify_with_drift("160864", 0, @now).should be_true
+    end
+    it "should verify a slightly old number" do
+      subject.verify_with_drift(subject.at(@now - 30), 60, @now).should be_true
+    end
+    it "should verify a slightly new number" do
+      subject.verify_with_drift(subject.at(@now - 60), 60, @now).should be_true
+    end
+    it "should reject a number that is outside the allowed drift" do
+      subject.verify_with_drift(subject.at(@now - 60), 30, @now).should be_false
+    end
+  end
 end
