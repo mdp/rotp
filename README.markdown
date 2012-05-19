@@ -71,6 +71,15 @@ Now run the following and compare the output
     totp = ROTP::TOTP.new("JBSWY3DPEHPK3PXP")
     p "Current OTP: #{totp.now}"
 
+### Contributors
+
+    git shortlog -s -n
+
+        31  Mark Percival
+         3  David Vrensk
+         1  Micah Gates
+         1  Nathan Reynolds
+
 ### Changelog
 
 ####1.3.0
