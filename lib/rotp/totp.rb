@@ -32,6 +32,16 @@ module ROTP
       super(otp, self.at(time))
     end
 
+    # Verifies the OTP passed in against the current time OTP
+    # and adjacent intervals up to +drift+.
+    # @param [String/Integer] otp the OTP to check against
+    # @param [Integer] drift the number of seconds that the client
+    #     and server are allowed to drift apart
+    def verify_with_drift(otp, drift, time = Time.now)
+      drift_intervals = drift / interval
+      (-drift_intervals..drift_intervals).any? { |n|  verify(otp, time + n * interval) }
+    end
+
     # Returns the provisioning URI for the OTP
     # This can then be encoded in a QR Code and used
     # to provision the Google Authenticator app
