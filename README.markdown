@@ -44,7 +44,7 @@ This is compatible with Google Authenticator apps available for Android and iPho
 
 ### Generating a Base32 Secret key
 
-    ROTP.random_base32 # returns a 16 character base32 secret. Compatible with Google Authenticator
+    ROTP::Base32.random_base32 # returns a 16 character base32 secret. Compatible with Google Authenticator
 
 ### Google Authenticator Compatible
 
