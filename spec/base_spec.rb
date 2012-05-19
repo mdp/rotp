@@ -1,4 +1,4 @@
-require 'spec_helper'
+require File.dirname(__FILE__) + '/spec_helper'
 
 describe "generating a random base32 secret" do
   it "should be 16 characters by default" do
