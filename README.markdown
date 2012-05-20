@@ -71,16 +71,28 @@ Now run the following and compare the output
     totp = ROTP::TOTP.new("JBSWY3DPEHPK3PXP")
     p "Current OTP: #{totp.now}"
 
+### Testing
+
+    bundle install
+    bundle exec rspec spec/*
+
 ### Contributors
 
     git shortlog -s -n
 
-        31  Mark Percival
-         3  David Vrensk
-         1  Micah Gates
+        37  Mark Percival
+         5  David Vrensk
          1  Nathan Reynolds
+         1  Shai Rosenfeld
+         1  Shai Rosenfeld & Michael Brodhead
+         1  Michael Brodhead & Shai Rosenfeld
+         1  Micah Gates
 
 ### Changelog
+
+#### 1.4.0
+
+- Added clock drift support via 'verify_with_drift' for TOTP
 
 ####1.3.0
 
