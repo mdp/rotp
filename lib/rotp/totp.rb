@@ -38,8 +38,10 @@ module ROTP
     # @param [Integer] drift the number of seconds that the client
     #     and server are allowed to drift apart
     def verify_with_drift(otp, drift, time = Time.now)
-      drift_intervals = drift / interval
-      (-drift_intervals..drift_intervals).any? { |n|  verify(otp, time + n * interval) }
+      time = time.to_i
+      times = (time-drift..time+drift).step(interval).to_a
+      times << time + drift if times.last < time + drift
+      times.any? { |ti| verify(otp, ti) }
     end
 
     # Returns the provisioning URI for the OTP
