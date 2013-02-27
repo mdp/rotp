@@ -1,4 +1,5 @@
 # ROTP - The Ruby One Time Password Library
+![Travis](https://secure.travis-ci.org/mdp/rturk.png)
 
 A ruby library for generating one time passwords according to [ RFC 4226 ](http://tools.ietf.org/html/rfc4226) and the [ HOTP RFC ](http://tools.ietf.org/html/draft-mraihi-totp-timebased-00)
 
