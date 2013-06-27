@@ -25,7 +25,9 @@ This is compatible with Google Authenticator apps available for Android and iPho
 ### Time based OTP's
 
     totp = ROTP::TOTP.new("base32secret3232")
-    totp.now # => 492039
+    totp.now # => 92039
+    totp.now_padded # => "092039"
+    totp.now_padded(10) # => "0000092039"
 
     # OTP verified for current time
     totp.verify(492039) # => true
@@ -81,13 +83,14 @@ Now run the following and compare the output
 
     git shortlog -s -n
 
-        37  Mark Percival
-         5  David Vrensk
-         1  Nathan Reynolds
-         1  Shai Rosenfeld
-         1  Shai Rosenfeld & Michael Brodhead
-         1  Michael Brodhead & Shai Rosenfeld
-         1  Micah Gates
+        41  Mark Percival
+        6  David Vrensk
+        1  Michael Brodhead & Shai Rosenfeld
+        1  Nathan Reynolds
+        1  Shai Rosenfeld
+        1  Dave Williams
+        1  Shai Rosenfeld & Michael Brodhead
+        1  Micah Gates
 
 ### Changelog
 
