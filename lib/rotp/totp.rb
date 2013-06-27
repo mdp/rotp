@@ -26,6 +26,18 @@ module ROTP
       generate_otp(timecode(Time.now))
     end
 
+    # Generate the current time OTP with zero-padding
+    # Useful for consumers expecting six digits
+    # @param [Integer] pad_to Zero-pad to this many digits
+    # @return [String] the padded OTP as a string
+    def now_padded(pad_to = 6)
+      otp = now.to_s
+      while otp.length < pad_to
+        otp = "0" + otp
+      end
+      otp
+    end
+
     # Verifies the OTP passed in against the current time OTP
     # @param [String/Integer] otp the OTP to check against
     def verify(otp, time = Time.now)
