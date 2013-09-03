@@ -26,7 +26,7 @@ module ROTP
         int_to_bytestring(input)
       )
 
-      offset = hmac[19].ord & 0xf
+      offset = hmac[-1].ord & 0xf
       code = (hmac[offset].ord & 0x7f) << 24 |
         (hmac[offset + 1].ord & 0xff) << 16 |
         (hmac[offset + 2].ord & 0xff) << 8 |
