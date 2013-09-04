@@ -17,9 +17,10 @@ module ROTP
     end
 
     # @param [Integer] input the number used seed the HMAC
+    # @option padded [Boolean] (false) Output the otp as a 0 padded string
     # Usually either the counter, or the computed integer
     # based on the Unix timestamp
-    def generate_otp(input)
+    def generate_otp(input, padded=false)
       hmac = OpenSSL::HMAC.digest(
         OpenSSL::Digest::Digest.new(digest),
         byte_secret,
@@ -31,7 +32,11 @@ module ROTP
         (hmac[offset + 1].ord & 0xff) << 16 |
         (hmac[offset + 2].ord & 0xff) << 8 |
         (hmac[offset + 3].ord & 0xff)
-      code % 10 ** digits
+      if padded
+        (code % 10 ** digits).to_s.rjust(digits, '0')
+      else
+        code % 10 ** digits
+      end
     end
 
     private
