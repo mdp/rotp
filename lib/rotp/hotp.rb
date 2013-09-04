@@ -2,9 +2,10 @@ module ROTP
   class HOTP < OTP
     # Generates the OTP for the given count
     # @param [Integer] count counter
+    # @option [Boolean] padding (false) Issue the number as a 0 padded string
     # @returns [Integer] OTP
-    def at(count)
-      generate_otp(count)
+    def at(count, padding=false)
+      generate_otp(count, padding)
     end
 
     # Verifies the OTP passed in against the current time OTP

@@ -13,17 +13,18 @@ module ROTP
     # Accepts either a Unix timestamp integer or a Time object.
     # Time objects will be adjusted to UTC automatically
     # @param [Time/Integer] time the time to generate an OTP for
-    def at(time)
+    # @option [Boolean] padding (false) Issue the number as a 0 padded string
+    def at(time, padding=false)
       unless time.class == Time
         time = Time.at(time.to_i)
       end
-      generate_otp(timecode(time))
+      generate_otp(timecode(time), padding)
     end
 
     # Generate the current time OTP
     # @return [Integer] the OTP as an integer
-    def now
-      generate_otp(timecode(Time.now))
+    def now(padding=false)
+      generate_otp(timecode(Time.now), padding)
     end
 
     # Verifies the OTP passed in against the current time OTP

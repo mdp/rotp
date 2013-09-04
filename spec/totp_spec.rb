@@ -3,24 +3,27 @@ require 'spec_helper'
 describe ROTP::TOTP do
   before(:all) { @now = Time.utc(2012,1,1) }
 
-  subject { ROTP::TOTP.new('a' * 32) }
+  subject { ROTP::TOTP.new("JBSWY3DPEHPK3PXP") }
 
   it "should generate a number given a number" do
-    subject.at(@now).should == 160864
+    subject.at(@now).should == 68212
+  end
+  it "should generate a number as a padded string" do
+    subject.at(@now, true).should == "068212"
   end
   it "should verify a number" do
-    subject.verify(160864, @now).should be_true
+    subject.verify(68212, @now).should be_true
   end
   it "should verify a string" do
-    subject.verify("160864", @now).should be_true
+    subject.verify("68212", @now).should be_true
   end
 
   context "with drift" do
     it "should verify a number" do
-      subject.verify_with_drift(160864, 0, @now).should be_true
+      subject.verify_with_drift(68212, 0, @now).should be_true
     end
     it "should verify a string" do
-      subject.verify_with_drift("160864", 0, @now).should be_true
+      subject.verify_with_drift("68212", 0, @now).should be_true
     end
     it "should verify a slightly old number" do
       subject.verify_with_drift(subject.at(@now - 30), 60, @now).should be_true
