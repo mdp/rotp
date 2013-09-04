@@ -8,9 +8,9 @@ This is compatible with Google Authenticator apps available for Android and iPho
 ## Quick overview of using One Time Passwords on your phone
 
 * OTP's involve a shared secret, stored both on the phone and the server
-* OTP's can be generated on a phone without internet connectivity(AT&T mode)
-* OTP's should always be used as a second factor of authentication(if your phone is lost, you account is still secured with a password)
-* Google Authenticator allows you to store multiple OTP secrets and provision those using a QR Code(no more typing in the secret)
+* OTP's can be generated on a phone without internet connectivity (AT&T mode)
+* OTP's should always be used as a second factor of authentication (if your phone is lost, your account is still secured with a password)
+* Google Authenticator allows you to store multiple OTP secrets and provision those using a QR Code (no more typing in the secret)
 
 ## Dependencies
 
@@ -81,13 +81,14 @@ Now run the following and compare the output
 
     git shortlog -s -n
 
-        37  Mark Percival
-         5  David Vrensk
-         1  Nathan Reynolds
-         1  Shai Rosenfeld
-         1  Shai Rosenfeld & Michael Brodhead
-         1  Michael Brodhead & Shai Rosenfeld
-         1  Micah Gates
+        47  Mark Percival
+        6  David Vrensk
+        1  Guillaume Rose
+        1  Micah Gates
+        1  Michael Brodhead & Shai Rosenfeld
+        1  Nathan Reynolds
+        1  Shai Rosenfeld
+        1  Shai Rosenfeld & Michael Brodhead
 
 ### Changelog
 
