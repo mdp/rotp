@@ -21,6 +21,9 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_development_dependency('rspec')
-  s.add_development_dependency('timecop')
-  s.add_development_dependency('rake')
+  if RUBY_VERSION < "1.9"
+    s.add_development_dependency('timecop', "~>0.5.9.2")
+  else
+    s.add_development_dependency('timecop')
+  end
 end
