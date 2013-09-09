@@ -92,6 +92,22 @@ Now run the following and compare the output
 
 ### Changelog
 
+#### 1.4.4
+
+- Fix issue with base32 decoding of strings in a length that's not a multiple of 8
+
+#### 1.4.3
+
+- Bugfix on padding
+
+#### 1.4.2
+
+- Better padding options (Pad the output with leading 0's)
+
+#### 1.4.1
+
+- Clean up drift logic
+
 #### 1.4.0
 
 - Added clock drift support via 'verify_with_drift' for TOTP
