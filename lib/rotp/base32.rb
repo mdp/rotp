@@ -5,7 +5,7 @@ module ROTP
     class << self
       def decode(str)
         output = []
-        str.scan(/.{8}/).each do |block|
+        str.scan(/.{1,8}/).each do |block|
           char_array = decode_block(block).map{|c| c.chr}
           output << char_array
         end
@@ -23,7 +23,6 @@ module ROTP
       private
 
       def decode_block(block)
-        return 0 unless (block.bytesize % 8 == 0) || (block.bytesize == 0)
         length = block.scan(/[^=]/).length
         quints = block.each_char.map {|c| decode_quint(c)}
         bytes = []

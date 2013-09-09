@@ -51,6 +51,12 @@ describe "TOTP example values from the rfc" do
       totp.now.should ==(102705)
     end
   end
+  it "should match Dropbox 26 char secret output" do
+    totp = ROTP::TOTP.new("tjtpqea6a42l56g5eym73go2oa")
+    Timecop.freeze(Time.at(1378762454)) do
+      totp.now.should ==(747864)
+    end
+  end
   it "should validate a time based OTP" do
     totp = ROTP::TOTP.new("wrn3pqx5uqxqvnqr")
     Timecop.freeze(Time.at(1297553958)) do
