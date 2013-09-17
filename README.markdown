@@ -92,6 +92,10 @@ Now run the following and compare the output
 
 ### Changelog
 
+#### 1.4.5
+
+- Fix and test correct implementation of Base32
+
 #### 1.4.4
 
 - Fix issue with base32 decoding of strings in a length that's not a multiple of 8
