@@ -46,7 +46,7 @@ module ROTP
     end
 
     def byte_secret
-      Base32.decode(@secret)
+      Base32.decode(@secret.upcase)
     end
 
     # Turns an integer to the OATH specified
