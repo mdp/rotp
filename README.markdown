@@ -1,7 +1,7 @@
 # ROTP - The Ruby One Time Password Library
 [![Build Status](https://secure.travis-ci.org/mdp/rotp.png)](http://travis-ci.org/mdp/rotp)
 
-A ruby library for generating one time passwords according to [ RFC 4226 ](http://tools.ietf.org/html/rfc4226) and [ RFC 6238 ](http://tools.ietf.org/html/rfc6238)
+A ruby library for generating one time passwords (HOTP & TOTP) according to [ RFC 4226 ](http://tools.ietf.org/html/rfc4226) and [ RFC 6238 ](http://tools.ietf.org/html/rfc6238)
 
 This is compatible with Google Authenticator apps available for Android and iPhone, and now in use on GMail
 
