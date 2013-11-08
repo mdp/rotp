@@ -51,7 +51,7 @@ module ROTP
     # @param [String] name of the account
     # @return [String] provisioning uri
     def provisioning_uri(name)
-      "otpauth://totp/#{URI.encode(name)}?secret=#{secret}"
+      "otpauth://totp/#{URI.encode(name)}?secret=#{secret}&period=#{interval}"
     end
 
     private
