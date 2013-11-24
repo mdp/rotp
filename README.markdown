@@ -92,6 +92,15 @@ Now run the following and compare the output
 
 ### Changelog
 
+#### 1.5.0
+
+- Add support for "issuer" parameter on provisioning url
+- Add support for "period/interval" parameter on provisioning url
+
+#### 1.4.6
+
+- Revert to previous Base32
+
 #### 1.4.5
 
 - Fix and test correct implementation of Base32
