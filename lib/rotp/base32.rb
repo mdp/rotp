@@ -1,5 +1,6 @@
 module ROTP
   class Base32
+    class Base32Error < RuntimeError; end
     CHARS = "abcdefghijklmnopqrstuvwxyz234567".each_char.to_a
 
     class << self
@@ -39,7 +40,11 @@ module ROTP
       end
 
       def decode_quint(q)
-        CHARS.index(q.downcase)
+        if d = CHARS.index(q.downcase)
+          d
+        else
+          raise Base32Error, "Invalid Base32 Character - '#{q}'"
+        end
       end
 
     end
