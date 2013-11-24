@@ -1,3 +1,5 @@
+DEFAULT_INTERVAL = 30
+
 module ROTP
   class TOTP < OTP
 
@@ -6,7 +8,7 @@ module ROTP
     # @option options [Integer] interval (30) the time interval in seconds for OTP
     #     This defaults to 30 which is standard.
     def initialize(s, options = {})
-      @interval = options[:interval] || 30
+      @interval = options[:interval] || DEFAULT_INTERVAL
       @issuer = options[:issuer]
       super
     end
@@ -52,7 +54,8 @@ module ROTP
     # @param [String] name of the account
     # @return [String] provisioning uri
     def provisioning_uri(name)
-      "otpauth://totp/#{URI.encode(name)}?secret=#{secret}&period=#{interval}&issuer=#{issuer}"
+      encode_params("otpauth://totp/#{URI.encode(name)}",
+                    :period => (interval==30 ? nil : interval), :issuer => issuer, :secret => secret)
     end
 
     private

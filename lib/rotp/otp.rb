@@ -62,5 +62,17 @@ module ROTP
       result.reverse.join.rjust(padding, 0.chr)
     end
 
+    # A very simple param encoder
+    def encode_params(uri, params)
+      params_str = "?"
+      params.each do |k,v|
+        if v
+          params_str << "#{k}=#{CGI::escape(v.to_s)}&"
+        end
+      end
+      params_str.chop!
+      uri + params_str
+    end
+
   end
 end
