@@ -24,6 +24,20 @@ describe ROTP::HOTP do
     params["secret"].first.should == "a" * 32
   end
 
+  context "with retries" do
+    it "should verify that retry is a valid number" do
+      subject.verify_with_retries(161024, @counter, -1).should be_false
+      subject.verify_with_retries(161024, @counter, 0).should be_false
+    end
+
+    it "should verify up to the total number of retries and return the counter" do
+      subject.verify_with_retries(161024, @counter - 10, 10).should == @counter
+    end
+
+    it "should verify that retry is a valid number" do
+      subject.verify_with_retries(161024, @counter - 20, 10).should be_false
+    end
+  end
 end
 
 describe "HOTP example values from the rfc" do

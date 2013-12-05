@@ -15,6 +15,22 @@ module ROTP
       super(otp, self.at(counter))
     end
 
+    # Verifies the OTP passed in against the current time OTP, with a given number of retries.
+    # Returns the counter that was verified successfully
+    # @param [String/Integer] otp the OTP to check against
+    # @param [Integer] initial counter the counter of the OTP
+    # @param [Integer] number of retries
+    def verify_with_retries(otp, initial_count, retries = 1)
+      return false if retries <= 0
+
+      1.upto(retries) do |counter|
+        current_counter = initial_count + counter
+        return current_counter if verify(otp, current_counter)
+      end
+
+      false
+    end
+
     # Returns the provisioning URI for the OTP
     # This can then be encoded in a QR Code and used
     # to provision the Google Authenticator app
