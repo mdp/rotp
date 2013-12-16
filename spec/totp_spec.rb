@@ -1,4 +1,3 @@
-require 'cgi'
 require 'spec_helper'
 
 describe ROTP::TOTP do
