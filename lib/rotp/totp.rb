@@ -1,6 +1,5 @@
-DEFAULT_INTERVAL = 30
-
 module ROTP
+  DEFAULT_INTERVAL = 30
   class TOTP < OTP
 
     attr_reader :interval, :issuer
