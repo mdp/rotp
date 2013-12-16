@@ -92,6 +92,11 @@ Now run the following and compare the output
 
 ### Changelog
 
+#### 1.6.0
+
+- Add verify_with_retries to HOTP
+- Fix 'cgi' require and global DEFAULT_INTERVAL
+
 #### 1.5.0
 
 - Add support for "issuer" parameter on provisioning url
