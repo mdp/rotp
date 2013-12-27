@@ -22,7 +22,7 @@ module ROTP
     # based on the Unix timestamp
     def generate_otp(input, padded=false)
       hmac = OpenSSL::HMAC.digest(
-        OpenSSL::Digest::Digest.new(digest),
+        OpenSSL::Digest.new(digest),
         byte_secret,
         int_to_bytestring(input)
       )
