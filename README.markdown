@@ -92,6 +92,11 @@ Now run the following and compare the output
 
 ### Changelog
 
+#### 1.6.1
+
+- Remove deprecation warning in Ruby 2.1.0 (@ylansegal)
+- Add Ruby 2.0 and 2.1 to Travis
+
 #### 1.6.0
 
 - Add verify_with_retries to HOTP
