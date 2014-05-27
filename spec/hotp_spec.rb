@@ -21,7 +21,7 @@ describe ROTP::HOTP do
     url = subject.provisioning_uri('mark@percival')
     params = CGI::parse(URI::parse(url).query)
     url.should match(/otpauth:\/\/hotp.+/)
-    params["secret"].first.should == "a" * 32
+    params["secret"].first.should == "A" * 32
   end
 
   context "with retries" do
