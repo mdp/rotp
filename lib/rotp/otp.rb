@@ -13,7 +13,7 @@ module ROTP
     def initialize(s, options = {})
       @digits = options[:digits] || 6
       @digest = options[:digest] || "sha1"
-      @secret = s
+      @secret = s.upcase
     end
 
     # @param [Integer] input the number used seed the HMAC
