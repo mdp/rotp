@@ -40,11 +40,7 @@ module ROTP
       end
 
       def decode_quint(q)
-        if d = CHARS.index(q.downcase)
-          d
-        else
-          raise Base32Error, "Invalid Base32 Character - '#{q}'"
-        end
+        CHARS.index(q.downcase) or raise(Base32Error, "Invalid Base32 Character - '#{q}'")
       end
 
     end
