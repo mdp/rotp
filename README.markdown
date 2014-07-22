@@ -97,13 +97,10 @@ Now run the following and compare the output
 
 - Move to only comparing string OTP's.
 
-#### 1.7.1
-
-- Revert to former API
 
 #### 1.7.0
 
-- Move to only comparing string OTP's. See mdp/rotp/issues/32 - Moved to 2.0.0
+- Move to only comparing string OTP's. See mdp/rotp/issues/32 - Moved to 2.0.0 - yanked from RubyGems
 
 #### 1.6.1
 
