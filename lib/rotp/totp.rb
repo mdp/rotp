@@ -15,8 +15,8 @@ module ROTP
     # Accepts either a Unix timestamp integer or a Time object.
     # Time objects will be adjusted to UTC automatically
     # @param [Time/Integer] time the time to generate an OTP for
-    # @option [Boolean] padding (true) Issue the number as a 0 padded string
-    def at(time, padding=true)
+    # @option [Boolean] padding (false) Issue the number as a 0 padded string
+    def at(time, padding=false)
       unless time.class == Time
         time = Time.at(time.to_i)
       end
@@ -25,7 +25,7 @@ module ROTP
 
     # Generate the current time OTP
     # @return [Integer] the OTP as an integer
-    def now(padding=true)
+    def now(padding=false)
       generate_otp(timecode(Time.now), padding)
     end
 
@@ -37,7 +37,7 @@ module ROTP
 
     # Verifies the OTP passed in against the current time OTP
     # and adjacent intervals up to +drift+.
-    # @param [String] otp the OTP to check against
+    # @param [String/Integer] otp the OTP to check against
     # @param [Integer] drift the number of seconds that the client
     #     and server are allowed to drift apart
     def verify_with_drift(otp, drift, time = Time.now)

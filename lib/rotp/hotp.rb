@@ -4,7 +4,7 @@ module ROTP
     # @param [Integer] count counter
     # @option [Boolean] padding (false) Issue the number as a 0 padded string
     # @returns [Integer] OTP
-    def at(count, padding=true)
+    def at(count, padding=false)
       generate_otp(count, padding)
     end
 

@@ -25,23 +25,23 @@ This is compatible with Google Authenticator apps available for Android and iPho
 ### Time based OTP's
 
     totp = ROTP::TOTP.new("base32secret3232")
-    totp.now # => "492039"
+    totp.now # => 492039
 
     # OTP verified for current time
-    totp.verify("492039") # => true
+    totp.verify(492039) # => true
     sleep 30
-    totp.verify("492039") # => false
+    totp.verify(492039) # => false
 
 ### Counter based OTP's
 
     hotp = ROTP::HOTP.new("base32secretkey3232")
-    hotp.at(0) # => "260182"
-    hotp.at(1) # => "055283"
-    hotp.at(1401) # => "316439"
+    hotp.at(0) # => 260182
+    hotp.at(1) # => 55283
+    hotp.at(1401) # => 316439
 
     # OTP verified with a counter
-    totp.verify("316439", 1401) # => true
-    totp.verify("316439", 1402) # => false
+    totp.verify(316439, 1401) # => true
+    totp.verify(316439, 1402) # => false
 
 ### Generating a Base32 Secret key
 
@@ -91,10 +91,6 @@ Now run the following and compare the output
         1  Shai Rosenfeld & Michael Brodhead
 
 ### Changelog
-
-#### 1.7.0
-
-- Move to only comparing string OTP's. See mdp/rotp/issues/32
 
 #### 1.6.1
 
