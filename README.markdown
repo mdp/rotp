@@ -92,6 +92,14 @@ Now run the following and compare the output
 
 ### Changelog
 
+#### 1.7.1
+
+- Revert to former API
+
+#### 1.7.0
+
+- Changes to string returned by default
+
 #### 1.6.1
 
 - Remove deprecation warning in Ruby 2.1.0 (@ylansegal)
