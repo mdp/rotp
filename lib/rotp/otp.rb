@@ -20,7 +20,7 @@ module ROTP
     # @option padded [Boolean] (false) Output the otp as a 0 padded string
     # Usually either the counter, or the computed integer
     # based on the Unix timestamp
-    def generate_otp(input, padded=false)
+    def generate_otp(input, padded=true)
       hmac = OpenSSL::HMAC.digest(
         OpenSSL::Digest.new(digest),
         byte_secret,
@@ -42,7 +42,10 @@ module ROTP
     private
 
     def verify(input, generated)
-      input.to_i == generated
+      unless input.is_a?(String) && generated.is_a?(String)
+        raise ArgumentError, "ROTP only verifies strings - See: https://github.com/mdp/rotp/issues/32"
+      end
+      time_constant_compare(input, generated)
     end
 
     def byte_secret
@@ -72,6 +75,17 @@ module ROTP
       end
       params_str.chop!
       uri + params_str
+    end
+
+    private
+
+    # constant-time compare the strings
+    def time_constant_compare(a, b)
+      return false if a.empty? || b.empty? || a.bytesize != b.bytesize
+      l = a.unpack "C#{a.bytesize}"
+      res = 0
+      b.each_byte { |byte| res |= byte ^ l.shift }
+      res == 0
     end
 
   end
