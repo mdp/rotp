@@ -40,8 +40,8 @@ This is compatible with Google Authenticator apps available for Android and iPho
     hotp.at(1401) # => "316439"
 
     # OTP verified with a counter
-    totp.verify("316439", 1401) # => true
-    totp.verify("316439", 1402) # => false
+    hotp.verify("316439", 1401) # => true
+    hotp.verify("316439", 1402) # => false
 
 ### Generating a Base32 Secret key
 
