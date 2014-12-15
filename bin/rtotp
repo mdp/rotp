@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+require 'rotp'
+
+secret = ARGV.shift.to_s.strip
+
+if secret == ''
+  puts
+  puts "  USAGE: #{File.basename(__FILE__)} SECRET"
+  puts
+else
+  puts ROTP::TOTP.new(secret).now
+end
