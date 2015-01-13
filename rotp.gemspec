@@ -20,11 +20,7 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_development_dependency('rake', '~>10.1.0')
-  s.add_development_dependency('rspec', '~>2.13.0')
-  if RUBY_VERSION < "1.9"
-    s.add_development_dependency('timecop', "~>0.5.9.2")
-  else
-    s.add_development_dependency('timecop')
-  end
+  s.add_development_dependency 'rake', '~> 10.4.2'
+  s.add_development_dependency 'rspec', '~> 3.1.0'
+  s.add_development_dependency 'timecop', '~> 0.7.1'
 end
