@@ -75,7 +75,7 @@ Now run the following and compare the output
 ### Testing
 
     bundle install
-    bundle exec rspec spec/*
+    bundle exec rspec
 
 ### Contributors
 
@@ -156,5 +156,5 @@ MIT Licensed
 
 ### See also:
 
-Python port PYOTP by [Nathan Reynolds](https://github.com/nathforge) - [https://github.com/nathforge/pyotp](https://github.com/nathforge/pyotp)  
+Python port PYOTP by [Nathan Reynolds](https://github.com/nathforge) - [https://github.com/nathforge/pyotp](https://github.com/nathforge/pyotp)
 PHP port OTPHP by [Le Lag](https://github.com/lelag) - [https://github.com/lelag/otphp](https://github.com/lelag/otphp)
