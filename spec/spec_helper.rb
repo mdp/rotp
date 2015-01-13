@@ -1,11 +1,14 @@
-require 'rubygems'
-require 'bundler/setup'
-require 'timecop'
-require 'rspec'
-require 'rspec/autorun'
-
 require 'rotp'
+require 'timecop'
 
 RSpec.configure do |config|
-  # some (optional) config here
+  config.disable_monkey_patching!
+  config.raise_errors_for_deprecations!
+  config.color = true
+  config.fail_fast = true
+  config.formatter = :progress
+
+  config.before do
+    Timecop.return
+  end
 end
