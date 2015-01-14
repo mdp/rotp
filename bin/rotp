@@ -4,4 +4,4 @@ $: << File.expand_path('../../lib', __FILE__)
 require 'rotp'
 require 'rotp/cli'
 
-ROTP::CLI.run File.basename(__FILE__), ARGV
+ROTP::CLI.new(File.basename(__FILE__), ARGV).run

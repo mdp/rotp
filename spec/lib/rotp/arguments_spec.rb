@@ -16,10 +16,33 @@ RSpec.describe ROTP::Arguments do
 
     describe '#options' do
       it 'has the default options' do
-        expect(options.help).to be_falsey
+        expect(options.mode).to eq :time
         expect(options.secret).to be_nil
         expect(options.counter).to eq 0
-        expect(options.hmac).to be_falsey
+      end
+    end
+  end
+
+  context 'unknown arguments' do
+    let(:argv) { %w(--does-not-exist -xyz) }
+
+    describe '#options' do
+      it 'is in help mode' do
+        expect(options.mode).to eq :help
+      end
+
+      it 'knows about the problem' do
+        expect(options.warnings).to include 'invalid option: --does-not-exist'
+      end
+    end
+  end
+
+  context 'no arguments' do
+    let(:argv) { [] }
+
+    describe '#options' do
+      it 'is in help mode' do
+        expect(options.mode).to eq :help
       end
     end
   end
@@ -28,22 +51,36 @@ RSpec.describe ROTP::Arguments do
     let(:argv) { %w(--help) }
 
     describe '#options' do
-      it 'has the help flag' do
-        expect(options.help).to be_truthy
+      it 'is in help mode' do
+        expect(options.mode).to eq :help
       end
     end
   end
 
   context 'generating a counter based secret' do
-    let(:argv) { %w(--hmac --secret GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ) }
+    let(:argv) { %w(--hmac --secret s3same) }
 
     describe '#options' do
-      it 'has the hmac flag' do
-        expect(options.hmac).to be_truthy
+      it 'is in hmac mode' do
+        expect(options.mode).to eq :hmac
       end
 
       it 'knows the secret' do
-        expect(options.secret).to eq 'GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ'
+        expect(options.secret).to eq 's3same'
+      end
+    end
+  end
+
+  context 'generating a time based secret' do
+    let(:argv) { %w(--secret s3same) }
+
+    describe '#options' do
+      it 'is in time mode' do
+        expect(options.mode).to eq :time
+      end
+
+      it 'knows the secret' do
+        expect(options.secret).to eq 's3same'
       end
     end
   end
