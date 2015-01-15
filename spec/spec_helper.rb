@@ -6,7 +6,6 @@ RSpec.configure do |config|
   config.raise_errors_for_deprecations!
   config.color = true
   config.fail_fast = true
-  config.formatter = :progress
 
   config.before do
     Timecop.return
