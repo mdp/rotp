@@ -99,8 +99,8 @@ Once the rotp rubygem is installed on your system, you should be able to run the
 rotp --help
 
 # Examples
-rotp --secret p4ssw0rd                       # Generates a time-based one-time password
-rotp --hmac --secret p4ssw0rd --counter 42   # Generates a counter-based one-time password
+rotp --secret p4ssword                       # Generates a time-based one-time password
+rotp --hmac --secret p4ssword --counter 42   # Generates a counter-based one-time password
 ```
 
 ## Contributors
