@@ -2,7 +2,7 @@
 
 [![Build Status](https://secure.travis-ci.org/mdp/rotp.png)](https://travis-ci.org/mdp/rotp)
 [![Gem Version](https://badge.fury.io/rb/rotp.svg)](https://rubygems.org/gems/rotp)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/mdp/rotp/blob/master/LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/mdp/rotp/blob/master/LICENSE)
 
 A ruby library for generating one time passwords (HOTP & TOTP) according to [RFC 4226](http://tools.ietf.org/html/rfc4226) and [RFC 6238](http://tools.ietf.org/html/rfc6238).
 
@@ -62,7 +62,7 @@ to be scanned with the in-built QR Code scanner.
 ```ruby
 totp.provisioning_uri("alice@google.com") # => 'otpauth://totp/alice@google.com?secret=JBSWY3DPEHPK3PXP'
 hotp.provisioning_uri("alice@google.com", 0) # => 'otpauth://hotp/alice@google.com?secret=JBSWY3DPEHPK3PXP&counter=0'
-```ruby
+```
 
 This can then be rendered as a QR Code which can then be scanned and added to the users
 list of OTP credentials.
@@ -95,10 +95,10 @@ Once the rotp rubygem is installed on your system, you should be able to run the
 (if not, you might find trouble-shooting help [at this stackoverflow question](http://stackoverflow.com/a/909980)).
 
 ```bash
-# Try this to get an overview of the commands:
+# Try this to get an overview of the commands
 rotp --help
 
-# Examples:
+# Examples
 rotp --secret p4ssw0rd                       # Generates a time-based one-time password
 rotp --hmac --secret p4ssw0rd --counter 42   # Generates a counter-based one-time password
 ```
