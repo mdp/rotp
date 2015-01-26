@@ -14,8 +14,12 @@ module ROTP
     end
 
     def errors
-      if [:time, :hmac].include?(options.mode) && options.secret.to_s == ''
-        red 'You must also specify a --secret. Try --help for help.'
+      if [:time, :hmac].include?(options.mode)
+        if options.secret.to_s == ''
+          red 'You must also specify a --secret. Try --help for help.'
+        elsif options.secret.to_s.chars.any? { |c| ROTP::Base32::CHARS.index(c.downcase) == nil }
+          red 'Secret must be in RFC4648 Base32 format - http://en.wikipedia.org/wiki/Base32#RFC_4648_Base32_alphabet'
+        end
       elsif options.mode == :hmac && options.counter.to_i < 0
         red 'You must also specify a --counter. Try --help for help.'
       end
@@ -28,7 +32,6 @@ module ROTP
 
       if options.mode == :time
         ROTP::TOTP.new(options.secret).now
-
       elsif options.mode == :hmac
         ROTP::HOTP.new(options.secret).at options.counter
 

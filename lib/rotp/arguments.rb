@@ -45,8 +45,8 @@ module ROTP
         parser.separator green('  Usage: ') + bold("#{filename} [options]")
         parser.separator ''
         parser.separator green '  Examples:   '
-        parser.separator '    ' + bold("#{filename} --secret p4ssw0rd") + '                       # Generates a time-based one-time password'
-        parser.separator '    ' + bold("#{filename} --hmac --secret p4ssw0rd --counter 42") + '   # Generates a counter-based one-time password'
+        parser.separator '    ' + bold("#{filename} --secret p4ssword") + '                       # Generates a time-based one-time password'
+        parser.separator '    ' + bold("#{filename} --hmac --secret p4ssword --counter 42") + '   # Generates a counter-based one-time password'
         parser.separator ''
         parser.separator green '  Options:'
 

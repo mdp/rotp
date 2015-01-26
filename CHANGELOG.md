@@ -1,5 +1,9 @@
 ### Changelog
 
+#### 2.1.0
+
+- Add a CLI for generating OTP's mdp/rotp/pull/35
+
 #### 2.0.0
 
 - Move to only comparing string OTP's.
