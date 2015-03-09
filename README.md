@@ -35,6 +35,12 @@ sleep 30
 totp.verify("492039") # => false
 ```
 
+Optionally, you can provide an issuer which will be used as a title in Google Authenticator.
+
+```ruby
+totp = ROTP::TOTP.new("base32secret3232", issuer: "Google")
+```
+
 ### Counter based OTP's
 
 ```ruby
