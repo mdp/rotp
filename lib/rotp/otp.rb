@@ -77,8 +77,6 @@ module ROTP
       uri + params_str
     end
 
-    private
-
     # constant-time compare the strings
     def time_constant_compare(a, b)
       return false if a.empty? || b.empty? || a.bytesize != b.bytesize
