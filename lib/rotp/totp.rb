@@ -54,7 +54,7 @@ module ROTP
     # @return [String] provisioning uri
     def provisioning_uri(name)
       encode_params("otpauth://totp/#{URI.encode(name)}",
-                    :period => (interval==30 ? nil : interval), :issuer => issuer, :secret => secret)
+                    :secret => secret, :period => (interval==30 ? nil : interval), :issuer => issuer)
     end
 
     private
