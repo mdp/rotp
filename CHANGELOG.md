@@ -2,7 +2,7 @@
 
 #### 2.1.1
 
-- Reorder the params for Windows Phone Authenticator #42
+- Reorder the params for Windows Phone Authenticator - #43
 
 #### 2.1.0
 
