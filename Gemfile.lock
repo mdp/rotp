@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rotp (2.1.0)
+    rotp (2.1.1)
 
 GEM
   remote: http://rubygems.org/
@@ -68,8 +68,8 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  guard-rspec (~> 4.5.0)
-  rake (~> 10.4.2)
+  guard-rspec (~> 4.5)
+  rake (~> 10.4)
   rotp!
-  rspec (~> 3.1.0)
-  timecop (~> 0.7.1)
+  rspec (~> 3.1)
+  timecop (~> 0.7)
