@@ -73,6 +73,12 @@ RSpec.describe ROTP::TOTP do
         it 'is true' do
           expect(totp.verify('102705')).to be_truthy
         end
+
+        it 'can\'t be verified more than once' do
+          expect(totp.verify('102705')).to be_truthy
+          expect(totp.verify('102705')).to be_falsey
+          expect(totp.verify('102705')).to be_falsey
+        end
       end
 
       context 'wrong time based OTP' do

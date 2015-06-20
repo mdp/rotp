@@ -2,13 +2,14 @@ module ROTP
   DEFAULT_INTERVAL = 30
   class TOTP < OTP
 
-    attr_reader :interval, :issuer
+    attr_reader :interval, :issuer, :consumed_totps
 
     # @option options [Integer] interval (30) the time interval in seconds for OTP
     #     This defaults to 30 which is standard.
     def initialize(s, options = {})
       @interval = options[:interval] || DEFAULT_INTERVAL
       @issuer = options[:issuer]
+      @consumed_totps = {}
       super
     end
 
@@ -17,9 +18,6 @@ module ROTP
     # @param [Time/Integer] time the time to generate an OTP for
     # @option [Boolean] padding (true) Issue the number as a 0 padded string
     def at(time, padding=true)
-      unless time.class == Time
-        time = Time.at(time.to_i)
-      end
       generate_otp(timecode(time), padding)
     end
 
@@ -30,9 +28,18 @@ module ROTP
     end
 
     # Verifies the OTP passed in against the current time OTP
-    # @param [String/Integer] otp the OTP to check against
+    # Once a given OTP is verified as valid, it is "consumed" and is
+    # no longer considered valid for subsequent verifications.
+    # @param [String] otp the OTP to check against
     def verify(otp, time = Time.now)
-      super(otp, self.at(time))
+      result = super(otp, self.at(time))
+      if result
+        time_step = timecode(time)
+        return false if @consumed_totps.key?(time_step) && @consumed_totps[time_step] === otp
+        @consumed_totps[time_step] = otp
+      end
+
+      result
     end
 
     # Verifies the OTP passed in against the current time OTP
@@ -60,6 +67,9 @@ module ROTP
     private
 
     def timecode(time)
+      unless time.class == Time
+        time = Time.at(time.to_i)
+      end
       time.utc.to_i / interval
     end
 
