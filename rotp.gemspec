@@ -1,6 +1,5 @@
 # -*- encoding: utf-8 -*-
-$:.push File.expand_path("../lib", __FILE__)
-require "rotp/version"
+require "./lib/rotp/version"
 
 Gem::Specification.new do |s|
   s.name        = "rotp"
