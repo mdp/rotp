@@ -1,5 +1,9 @@
 ### Changelog
 
+#### 2.1.2
+
+- Remove string literals to prepare immutable strings in Ruby 3.0
+
 #### 2.1.1
 
 - Reorder the params for Windows Phone Authenticator - #43
