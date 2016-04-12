@@ -67,7 +67,7 @@ module ROTP
 
     # A very simple param encoder
     def encode_params(uri, params)
-      params_str = "?"
+      params_str = String.new("?")
       params.each do |k,v|
         if v
           params_str << "#{k}=#{CGI::escape(v.to_s)}&"
