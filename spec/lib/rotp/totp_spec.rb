@@ -101,7 +101,7 @@ RSpec.describe ROTP::TOTP do
       let(:totp)  { ROTP::TOTP.new 'JBSWY3DPEHPK3PXP', issuer: 'FooCo' }
 
       it 'has the correct format' do
-        expect(uri).to match %r{\Aotpauth:\/\/totp.+}
+        expect(uri).to match %r{\Aotpauth:\/\/totp/FooCo:.+}
       end
 
       it 'includes the secret as parameter' do
