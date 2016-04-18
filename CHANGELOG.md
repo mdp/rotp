@@ -1,5 +1,9 @@
 ### Changelog
 
+#### 3.0.0
+
+- Provisioning URL includes issuer label per RFC 5234 See mdp/rotp/pull/51
+
 #### 2.1.2
 
 - Remove string literals to prepare immutable strings in Ruby 3.0
