@@ -51,9 +51,14 @@ module ROTP
     # This can then be encoded in a QR Code and used
     # to provision the Google Authenticator app
     # @param [String] name of the account
-    # @return [String] provisioning uri
+    # @return [String] provisioning URI
     def provisioning_uri(name)
-      encode_params("otpauth://totp/#{URI.encode(name)}",
+      # The format of this URI is documented at:
+      # https://github.com/google/google-authenticator/wiki/Key-Uri-Format
+      # For compatibility the issuer appears both before that account name and also in the
+      # query string.
+      issuer_string = issuer.nil? ? "" : "#{URI.encode(issuer)}:"
+      encode_params("otpauth://totp/#{issuer_string}#{URI.encode(name)}",
                     :secret => secret, :period => (interval==30 ? nil : interval), :issuer => issuer)
     end
 
