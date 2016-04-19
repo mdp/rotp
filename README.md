@@ -54,6 +54,41 @@ hotp.at(1401) # => "316439"
 hotp.verify("316439", 1401) # => true
 hotp.verify("316439", 1402) # => false
 ```
+### Activate TOTP single usage
+
+[RFC 6238](https://tools.ietf.org/html/rfc6238) - chapter 5.2 - page 7
+
+In order to ensure at your TOTP as used only one then you can give a uid
+at this to enable this mode
+
+#### Requirements
+- `redis-server`
+- Into your app:
+  - Add gems `redis` & `redis-mutex`
+  - Add redis conf:
+    ```bash
+    require 'rotp'
+
+    ROTP.configure do |config|
+      config.opt_mem_cache = :redis
+      config.opt_mem_cache_conf = {
+        url: 'redis://localhost:6379',
+        db: 10,
+        expiration_time: 300
+      }
+    end
+    ```
+
+#### Usage
+
+```bash
+totp = ROTP::TOTP.new("base32secret3232")
+totp.now # => "492039"
+
+totp.verify("492039", Time.now, uid: 1) # => true
+# less than 30 secs
+totp.verify("492039", Time.now, uid: 1) # => false
+```
 
 ### Generating a Base32 Secret key
 

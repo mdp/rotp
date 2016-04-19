@@ -80,6 +80,42 @@ RSpec.describe ROTP::TOTP do
           expect(totp.verify('102705')).to be_falsey
         end
       end
+
+      context 'when time constant compare is valid' do
+        let(:input) { '102705' }
+        let(:uid)   { 1 }
+        let(:now)   { Time.at 1_297_553_958 }
+
+        context 'when otp is not used' do
+          before do
+            allow(totp.opt_mem_cache).to receive(:unused?).with(uid, input).and_return(true)
+          end
+
+          it 'is true' do
+            expect(totp.verify(input, Time.now, uid: uid)).to be_truthy
+          end
+        end
+
+        context 'when otp is already used' do
+          before do
+            allow(totp.opt_mem_cache).to receive(:unused?).with(uid, input).and_return(false)
+          end
+
+          it 'is false' do
+            expect(totp.verify(input, Time.now, uid: uid)).to be_falsey
+          end
+        end
+      end
+
+
+      context 'when time constant compare is invalid' do
+        let(:input) { '123456' }
+        let(:uid)   { 1 }
+
+        it 'is not called' do
+          expect(totp).not_to receive(:unused?)
+        end
+      end
     end
   end
 

@@ -1,6 +1,6 @@
 module ROTP
   class OTP
-    attr_reader :secret, :digits, :digest
+    attr_reader :secret, :digits, :digest, :opt_mem_cache
     DEFAULT_DIGITS = 6
 
     # @param [String] secret in the form of base32
@@ -15,6 +15,7 @@ module ROTP
       @digits = options[:digits] || DEFAULT_DIGITS
       @digest = options[:digest] || "sha1"
       @secret = s
+      @opt_mem_cache = ROTP::OptMemCaches.new
     end
 
     # @param [Integer] input the number used seed the HMAC
@@ -42,11 +43,13 @@ module ROTP
 
     private
 
-    def verify(input, generated)
+    def verify(input, generated, opts = {})
       unless input.is_a?(String) && generated.is_a?(String)
         raise ArgumentError, "ROTP only verifies strings - See: https://github.com/mdp/rotp/issues/32"
       end
-      time_constant_compare(input, generated)
+
+      time_constant_compare(input, generated) &&
+        opt_mem_cache.unused?(opts[:uid], input)
     end
 
     def byte_secret
