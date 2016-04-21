@@ -1,5 +1,9 @@
 ### Changelog
 
+#### 3.0.1
+
+- Use SecureRandom. See mdp/rotp/pull/52
+
 #### 3.0.0
 
 - Provisioning URL includes issuer label per RFC 5234 See mdp/rotp/pull/51
