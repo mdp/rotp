@@ -15,7 +15,7 @@ module ROTP
 
       def random_base32(length=16)
         b32 = String.new
-        OpenSSL::Random.random_bytes(length).each_byte do |b|
+        SecureRandom.random_bytes(length).each_byte do |b|
           b32 << CHARS[b % 32]
         end
         b32

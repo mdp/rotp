@@ -1,6 +1,6 @@
 require 'cgi'
 require 'uri'
-require 'openssl'
+require 'securerandom'
 require 'rotp/base32'
 require 'rotp/otp'
 require 'rotp/hotp'
