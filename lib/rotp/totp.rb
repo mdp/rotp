@@ -58,8 +58,13 @@ module ROTP
       # For compatibility the issuer appears both before that account name and also in the
       # query string.
       issuer_string = issuer.nil? ? "" : "#{URI.encode(issuer)}:"
-      encode_params("otpauth://totp/#{issuer_string}#{URI.encode(name)}",
-                    :secret => secret, :period => (interval==30 ? nil : interval), :issuer => issuer)
+      params = {
+        secret: secret,
+        period: interval == 30 ? nil : interval,
+        issuer: issuer,
+        digits: digits == DEFAULT_DIGITS ? nil : digits,
+      }
+      encode_params("otpauth://totp/#{issuer_string}#{URI.encode(name)}", params)
     end
 
     private

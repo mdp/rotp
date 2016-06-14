@@ -1,6 +1,7 @@
 module ROTP
   class OTP
     attr_reader :secret, :digits, :digest
+    DEFAULT_DIGITS = 6
 
     # @param [String] secret in the form of base32
     # @option options digits [Integer] (6)
@@ -11,7 +12,7 @@ module ROTP
     #     Google Authenticate only supports 'sha1' currently
     # @returns [OTP] OTP instantiation
     def initialize(s, options = {})
-      @digits = options[:digits] || 6
+      @digits = options[:digits] || DEFAULT_DIGITS
       @digest = options[:digest] || "sha1"
       @secret = s
     end

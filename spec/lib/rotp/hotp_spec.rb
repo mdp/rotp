@@ -82,6 +82,20 @@ RSpec.describe ROTP::HOTP do
     it 'includes the secret as parameter' do
       expect(params['secret'].first).to eq 'a' * 32
     end
+
+    context 'with default digits' do
+      it 'does not include digits parameter with default digits' do
+        expect(params['digits'].first).to be_nil
+      end
+    end
+
+    context 'with non-default digits' do
+      let(:hotp) { ROTP::HOTP.new('a' * 32, digits: 8) }
+
+      it 'includes digits parameter' do
+        expect(params['digits'].first).to eq '8'
+      end
+    end
   end
 
   describe '#verify_with_retries' do

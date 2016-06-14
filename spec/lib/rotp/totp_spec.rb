@@ -97,6 +97,20 @@ RSpec.describe ROTP::TOTP do
       end
     end
 
+    context 'with default digits' do
+      it 'does does not include digits parameter' do
+        expect(params['digits'].first).to be_nil
+      end
+    end
+
+    context 'with non-default digits' do
+      let(:totp)  { ROTP::TOTP.new 'JBSWY3DPEHPK3PXP', digits: 8 }
+
+      it 'does does not include digits parameter' do
+        expect(params['digits'].first).to eq '8'
+      end
+    end
+
     context 'with issuer' do
       let(:totp)  { ROTP::TOTP.new 'JBSWY3DPEHPK3PXP', issuer: 'FooCo' }
 
