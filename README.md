@@ -56,39 +56,15 @@ hotp.verify("316439", 1402) # => false
 ```
 ### Activate TOTP single usage
 
-[RFC 6238](https://tools.ietf.org/html/rfc6238) - chapter 5.2 - page 7
+By default, a token cannot be discarded when used, it only expires after 30 seconds. Therefore, it can be used multiple times before expiring, creating a security risk. See [this issue](https://github.com/mdp/rotp/issues/44) for more information.
 
-In order to ensure at your TOTP as used only one then you can give a uid
-at this to enable this mode
+To prevent this behaviour, you can set up a cache and store an uid for the token. At this time an [implementation exists in Redis](https://github.com/PredicSis/rotp-redis)
 
-#### Requirements
-- `redis-server`
-- Into your app:
-  - Add gems `redis` & `redis-mutex`
-  - Add redis conf:
-    ```bash
-    require 'rotp'
+Note: TOTP is conforms to [RFC 6238 - section 5.2](https://tools.ietf.org/html/rfc6238#section-5.2)
 
-    ROTP.configure do |config|
-      config.opt_mem_cache = :redis
-      config.opt_mem_cache_conf = {
-        url: 'redis://localhost:6379',
-        db: 10,
-        expiration_time: 300
-      }
-    end
-    ```
-
-#### Usage
-
-```bash
-totp = ROTP::TOTP.new("base32secret3232")
-totp.now # => "492039"
-
-totp.verify("492039", Time.now, uid: 1) # => true
-# less than 30 secs
-totp.verify("492039", Time.now, uid: 1) # => false
-```
+*"The verifier MUST NOT accept the second attempt of the OTP after
+the successful validation has been issued for the first OTP, which
+ensures one-time only use of an OTP."*
 
 ### Generating a Base32 Secret key
 

@@ -13,7 +13,6 @@ module ROTP
       end.join('::')
     end
 
-    autoload :Redis, 'rotp/opt_mem_caches/redis'
     autoload :NullCache, 'rotp/opt_mem_caches/null_cache'
   end
 end

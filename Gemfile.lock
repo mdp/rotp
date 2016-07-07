@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rotp (3.0.1)
+    rotp (3.1.0)
 
 GEM
   remote: http://rubygems.org/
@@ -45,13 +45,6 @@ GEM
     rb-fsevent (0.9.4)
     rb-inotify (0.9.5)
       ffi (>= 0.5.0)
-    redis (3.3.0)
-    redis-classy (2.2.0)
-      redis-namespace (~> 1.0)
-    redis-mutex (4.0.0)
-      redis-classy (~> 2.0)
-    redis-namespace (1.5.2)
-      redis (~> 3.0, >= 3.0.4)
     rspec (3.1.0)
       rspec-core (~> 3.1.0)
       rspec-expectations (~> 3.1.0)
@@ -77,11 +70,9 @@ PLATFORMS
 DEPENDENCIES
   guard-rspec (~> 4.5)
   rake (~> 10.4)
-  redis
-  redis-mutex
   rotp!
   rspec (~> 3.1)
   timecop (~> 0.7)
 
 BUNDLED WITH
-   1.10.6
+   1.12.5
