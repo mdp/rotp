@@ -47,6 +47,30 @@ module ROTP
       times.any? { |ti| verify(otp, ti) }
     end
 
+    # Verifies the OTP passed in against the current time OTP
+    # and adjacent intervals up to +drift+.  Excludes OTPs
+    # from prior_time and earlier.  Returns time value of
+    # matching OTP code for use in subsequent call.
+    # @param [String] otp the OTP to check against
+    # @param [Integer] drift the number of seconds that the client
+    #     and server are allowed to drift apart
+    # @param [Integer] time value of previous match
+    def verify_with_drift_and_prior(otp, drift, prior_time = nil, time = Time.now)
+      # calculate normalized bin start times based on drift
+      first_bin = (time - drift).to_i / interval * interval
+      last_bin = (time + drift).to_i / interval * interval
+
+      # if prior_time was supplied, adjust first bin if necessary to exclude it
+      if prior_time
+        prior_bin = prior_time.to_i / interval * interval
+        first_bin = prior_bin + interval if prior_bin >= first_bin
+        # fail if we've already used the last available OTP code
+        return if first_bin > last_bin
+      end
+      times = (first_bin..last_bin).step(interval).to_a
+      times.find { |ti| verify(otp, ti) }
+    end
+
     # Returns the provisioning URI for the OTP
     # This can then be encoded in a QR Code and used
     # to provision the Google Authenticator app
