@@ -19,9 +19,8 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_development_dependency 'guard-rspec', '~> 4.5'
-  s.add_development_dependency 'rake', '~> 10.4'
-  s.add_development_dependency 'rspec', '~> 3.1'
-  s.add_development_dependency 'timecop', '~> 0.7'
+  s.add_development_dependency 'rake', '~> 10.5'
+  s.add_development_dependency 'rspec', '~> 3.5'
+  s.add_development_dependency 'timecop', '~> 0.8'
   s.add_development_dependency 'simplecov', '~> 0.12'
 end

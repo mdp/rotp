@@ -50,7 +50,7 @@ RSpec.describe ROTP::HOTP do
       let(:token) { 161024 }
 
       it 'raises an error' do
-        expect { verification }.to raise_error
+        expect { verification }.to raise_error(ArgumentError)
       end
     end
 
