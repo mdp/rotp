@@ -1,5 +1,9 @@
 ### Changelog
 
+#### 3.2.0
+
+- Add 'verify_with_drift_and_prior' to prevent prior token use - #58 from @jlfaber
+
 #### 3.1.0
 
 - Add Add digits paramater to provisioning URI. #54 from @sbc100
