@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rotp (2.1.2)
+    rotp (3.2.0)
 
 GEM
   remote: http://rubygems.org/
@@ -10,6 +10,7 @@ GEM
       timers (~> 4.0.0)
     coderay (1.1.0)
     diff-lcs (1.2.5)
+    docile (1.1.5)
     ffi (1.9.6)
     formatador (0.2.5)
     guard (2.11.1)
@@ -27,6 +28,7 @@ GEM
       guard-compat (~> 1.1)
       rspec (>= 2.99.0, < 4.0)
     hitimes (1.2.2)
+    json (1.8.1)
     listen (2.8.5)
       celluloid (>= 0.15.2)
       rb-fsevent (>= 0.9.3)
@@ -58,6 +60,11 @@ GEM
       rspec-support (~> 3.1.0)
     rspec-support (3.1.2)
     shellany (0.0.1)
+    simplecov (0.12.0)
+      docile (~> 1.1.0)
+      json (>= 1.8, < 3)
+      simplecov-html (~> 0.10.0)
+    simplecov-html (0.10.0)
     slop (3.6.0)
     thor (0.19.1)
     timecop (0.7.1)
@@ -72,4 +79,5 @@ DEPENDENCIES
   rake (~> 10.4)
   rotp!
   rspec (~> 3.1)
+  simplecov (~> 0.12)
   timecop (~> 0.7)
