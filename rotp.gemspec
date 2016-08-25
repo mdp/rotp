@@ -23,4 +23,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rake', '~> 10.4'
   s.add_development_dependency 'rspec', '~> 3.1'
   s.add_development_dependency 'timecop', '~> 0.7'
+  s.add_development_dependency 'simplecov', '~> 0.12'
 end

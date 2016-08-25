@@ -1,5 +1,6 @@
 require 'rotp'
 require 'timecop'
+require 'simplecov'
 
 RSpec.configure do |config|
   config.disable_monkey_patching!
@@ -11,3 +12,7 @@ RSpec.configure do |config|
     Timecop.return
   end
 end
+
+SimpleCov.start
+
+require_relative '../lib/rotp'

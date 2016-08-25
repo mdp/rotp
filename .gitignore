@@ -2,3 +2,4 @@
 .bundle
 .yardoc
 pkg/*
+coverage

@@ -55,6 +55,39 @@ hotp.verify("316439", 1401) # => true
 hotp.verify("316439", 1402) # => false
 ```
 
+### Verifying a Time based OTP with drift
+
+Some users devices may be slightly behind or ahead of the actual time. ROTP allows users to verify
+an OTP code with an specific amount of 'drift'
+
+```ruby
+totp = ROTP::TOTP.new("base32secret3232")
+totp.now # => "492039"
+
+# OTP verified for current time with 120 seconds allowed drift
+totp.verify_with_drift("492039", 60, Time.now - 30) # => true
+totp.verify_with_drift("492039", 60, Time.now - 90) # => false
+```
+
+### Preventing reuse of Time based OTP's
+
+In order to prevent reuse of time based tokens within the interval window (default 30 seconds)
+it is necessary to store the last time an OTP was used. The following is an example of this in action:
+
+```ruby
+User.find(someUserID)
+totp = ROTP::TOTP.new(user.otp_secret)
+totp.now # => "492039"
+
+user.last_otp_at # => 1472145530
+
+# Verify the OTP
+verified_at_timestamp = totp.verify_with_drift_and_prior("492039", 0, user.last_otp_at) #=> 1472145760
+# Store this on the user's account
+user.update(last_otp_at: verified_at_timestamp)
+verified_at_timestamp = totp.verify_with_drift_and_prior("492039", 0, user.last_otp_at) #=> false
+```
+
 ### Generating a Base32 Secret key
 
 ```ruby
