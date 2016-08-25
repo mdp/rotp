@@ -222,6 +222,118 @@ RSpec.describe ROTP::TOTP do
     end
   end
 
+  describe '#verify_with_drift_and_prior' do
+    let(:verification) { totp.verify_with_drift_and_prior token, drift, prior, now }
+    let(:drift) { 0 }
+    let(:prior) { nil }
+
+    context 'numeric token' do
+      let(:token) { 68212 }
+
+      it 'raises an error' do
+        # In the "old" specs this was not tested due to a typo. What is the expected behavior here?
+        expect { verification }.to raise_error
+      end
+    end
+
+    context 'unpadded string token' do
+      let(:token) { '68212' }
+
+      it 'is false' do
+        # Not sure whether this should be tested. It didn't exist in the "old" specs
+        expect(verification).to be_falsey
+      end
+    end
+
+    context 'correctly padded string token' do
+      let(:token) { '068212' }
+
+      it 'is true' do
+        expect(verification).to be_truthy
+      end
+    end
+
+    context 'slightly old number' do
+      let(:token) { totp.at now - 30 }
+      let(:drift) { 60 }
+
+      it 'is true' do
+        expect(verification).to be_truthy
+      end
+    end
+
+    context 'slightly new number' do
+      let(:token) { totp.at now + 60 }
+      let(:drift) { 60 }
+
+      it 'is true' do
+        expect(verification).to be_truthy
+      end
+    end
+
+    context 'outside of drift range' do
+      let(:token) { totp.at now - 60 }
+      let(:drift) { 30 }
+
+      it 'is false' do
+        expect(verification).to be_falsey
+      end
+    end
+
+    context 'drift is not multiple of TOTP interval' do
+      context 'slightly old number' do
+        let(:token) { totp.at now - 45 }
+        let(:drift) { 45 }
+
+        it 'is true' do
+          expect(verification).to be_truthy
+        end
+      end
+
+      context 'slightly new number' do
+        let(:token) { totp.at now + 40 }
+        let(:drift) { 40 }
+
+        it 'is true' do
+          expect(verification).to be_truthy
+        end
+      end
+    end
+
+    context 'with a prior verify' do
+      let(:prior) { totp.verify_with_drift_and_prior '068212', 0, nil, now }
+
+      it 'returns a timecode' do
+        expect(prior).to be_within(30).of(now.to_i)
+      end
+
+      context 'reusing same token' do
+
+        it 'is false' do
+          expect(verification).to be_falsy
+        end
+      end
+
+      context 'newer token' do
+        let(:token) { totp.at now + 40 }
+        let(:drift) { 40 }
+
+        it 'is true' do
+          expect(verification).to be_truthy
+        end
+      end
+
+      context 'older token' do
+        let(:token) { totp.at now - 40 }
+        let(:drift) { 40 }
+
+        it 'is false' do
+          expect(verification).to be_falsy
+        end
+      end
+    end
+  end
+
   describe '#now' do
     before do
       Timecop.freeze now
