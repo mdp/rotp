@@ -54,6 +54,17 @@ hotp.at(1401) # => "316439"
 hotp.verify("316439", 1401) # => true
 hotp.verify("316439", 1402) # => false
 ```
+### Activate TOTP single usage
+
+By default, a token cannot be discarded when used, it only expires after 30 seconds. Therefore, it can be used multiple times before expiring, creating a security risk. See [this issue](https://github.com/mdp/rotp/issues/44) for more information.
+
+To prevent this behaviour, you can set up a cache and store an uid for the token. At this time an [implementation exists in Redis](https://github.com/PredicSis/rotp-redis)
+
+Note: TOTP is conforms to [RFC 6238 - section 5.2](https://tools.ietf.org/html/rfc6238#section-5.2)
+
+*"The verifier MUST NOT accept the second attempt of the OTP after
+the successful validation has been issued for the first OTP, which
+ensures one-time only use of an OTP."*
 
 ### Generating a Base32 Secret key
 

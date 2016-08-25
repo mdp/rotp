@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rotp (2.1.2)
+    rotp (3.1.0)
 
 GEM
   remote: http://rubygems.org/
@@ -73,3 +73,6 @@ DEPENDENCIES
   rotp!
   rspec (~> 3.1)
   timecop (~> 0.7)
+
+BUNDLED WITH
+   1.12.5

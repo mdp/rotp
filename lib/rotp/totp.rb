@@ -31,8 +31,8 @@ module ROTP
 
     # Verifies the OTP passed in against the current time OTP
     # @param [String/Integer] otp the OTP to check against
-    def verify(otp, time = Time.now)
-      super(otp, self.at(time))
+    def verify(otp, time = Time.now, opts = {})
+      super(otp, self.at(time), opts)
     end
 
     # Verifies the OTP passed in against the current time OTP
@@ -40,11 +40,11 @@ module ROTP
     # @param [String] otp the OTP to check against
     # @param [Integer] drift the number of seconds that the client
     #     and server are allowed to drift apart
-    def verify_with_drift(otp, drift, time = Time.now)
+    def verify_with_drift(otp, drift, time = Time.now, opts = {})
       time = time.to_i
       times = (time-drift..time+drift).step(interval).to_a
       times << time + drift if times.last < time + drift
-      times.any? { |ti| verify(otp, ti) }
+      times.any? { |ti| verify(otp, ti, opts) }
     end
 
     # Verifies the OTP passed in against the current time OTP

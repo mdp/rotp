@@ -11,8 +11,8 @@ module ROTP
     # Verifies the OTP passed in against the current time OTP
     # @param [String/Integer] otp the OTP to check against
     # @param [Integer] counter the counter of the OTP
-    def verify(otp, counter)
-      super(otp, self.at(counter))
+    def verify(otp, counter, opts = {})
+      super(otp, self.at(counter), opts)
     end
 
     # Verifies the OTP passed in against the current time OTP, with a given number of retries.
@@ -20,12 +20,12 @@ module ROTP
     # @param [String/Integer] otp the OTP to check against
     # @param [Integer] initial counter the counter of the OTP
     # @param [Integer] number of retries
-    def verify_with_retries(otp, initial_count, retries = 1)
+    def verify_with_retries(otp, initial_count, retries = 1, opts = {})
       return false if retries <= 0
 
       1.upto(retries) do |counter|
         current_counter = initial_count + counter
-        return current_counter if verify(otp, current_counter)
+        return current_counter if verify(otp, current_counter, opts)
       end
 
       false
