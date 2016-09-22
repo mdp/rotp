@@ -87,6 +87,7 @@ module ROTP
         period: interval == 30 ? nil : interval,
         issuer: issuer,
         digits: digits == DEFAULT_DIGITS ? nil : digits,
+        algorithm: digest.upcase == 'SHA1' ? nil : digest.upcase,
       }
       encode_params("otpauth://totp/#{issuer_string}#{URI.encode(name)}", params)
     end
