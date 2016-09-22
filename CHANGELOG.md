@@ -1,5 +1,9 @@
 ### Changelog
 
+#### 3.3.0
+
+- Add digest algorithm parameter for non SHA1 digests - #62 from @btalbot
+
 #### 3.2.0
 
 - Add 'verify_with_drift_and_prior' to prevent prior token use - #58 from @jlfaber
