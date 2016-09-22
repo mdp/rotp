@@ -142,6 +142,23 @@ RSpec.describe ROTP::TOTP do
         expect(params['period'].first).to eq '60'
       end
     end
+
+    context 'with custom digest' do
+      let(:totp)  { ROTP::TOTP.new 'JBSWY3DPEHPK3PXP', digest: 'sha256' }
+
+      it 'has the correct format' do
+        expect(uri).to match %r{\Aotpauth:\/\/totp.+}
+      end
+
+      it 'includes the secret as parameter' do
+        expect(params['secret'].first).to eq 'JBSWY3DPEHPK3PXP'
+      end
+
+      it 'includes the digest as algorithm parameter' do
+        expect(params['algorithm'].first).to eq 'SHA256'
+      end
+    end
+
   end
 
   describe '#verify_with_drift' do
