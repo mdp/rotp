@@ -1,6 +1,12 @@
+require 'simplecov'
+SimpleCov.start do
+  add_filter "/spec/"
+  add_filter "/lib/rotp/cli.rb"
+  add_filter "/lib/rotp/arguments.rb"
+end
+
 require 'rotp'
 require 'timecop'
-require 'simplecov'
 
 RSpec.configure do |config|
   config.disable_monkey_patching!
@@ -13,6 +19,5 @@ RSpec.configure do |config|
   end
 end
 
-SimpleCov.start
 
 require_relative '../lib/rotp'
