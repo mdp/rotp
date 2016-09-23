@@ -2,33 +2,24 @@ module ROTP
   class HOTP < OTP
     # Generates the OTP for the given count
     # @param [Integer] count counter
-    # @option [Boolean] padding (false) Issue the number as a 0 padded string
     # @returns [Integer] OTP
-    def at(count, padding=true)
-      generate_otp(count, padding)
+    def at(count)
+      generate_otp(count)
     end
 
     # Verifies the OTP passed in against the current time OTP
     # @param [String/Integer] otp the OTP to check against
     # @param [Integer] counter the counter of the OTP
-    def verify(otp, counter)
-      super(otp, self.at(counter))
-    end
-
-    # Verifies the OTP passed in against the current time OTP, with a given number of retries.
-    # Returns the counter that was verified successfully
-    # @param [String/Integer] otp the OTP to check against
-    # @param [Integer] initial counter the counter of the OTP
-    # @param [Integer] number of retries
-    def verify_with_retries(otp, initial_count, retries = 1)
-      return false if retries <= 0
-
-      1.upto(retries) do |counter|
-        current_counter = initial_count + counter
-        return current_counter if verify(otp, current_counter)
+    def verify(otp, counter, retries: 0)
+      result = nil
+      0.upto(retries) do |i|
+        current_counter = counter + i
+        if super(otp, self.at(current_counter))
+          result = current_counter
+          break
+        end
       end
-
-      false
+      return result
     end
 
     # Returns the provisioning URI for the OTP

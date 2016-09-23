@@ -14,14 +14,6 @@ RSpec.describe ROTP::HOTP do
       end
     end
 
-    context 'without padding' do
-      let(:token) { hotp.at counter, false }
-
-      it 'generates an integer OTP' do
-        expect(token).to eq 161024
-      end
-    end
-
     context 'RFC compatibility' do
       let(:hotp) { ROTP::HOTP.new('GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ') }
 
@@ -69,6 +61,45 @@ RSpec.describe ROTP::HOTP do
         expect(hotp.verify(token, 10)).to be_falsey
       end
     end
+    describe 'with retries' do
+      let(:verification) { hotp.verify token, counter, retries:retries }
+
+      context 'counter outside than retries' do
+        let(:counter) { 1223 }
+        let(:retries) { 10 }
+
+        it 'is false' do
+          expect(verification).to be_falsey
+        end
+      end
+
+      context 'counter exactly in retry range' do
+        let(:counter) { 1224 }
+        let(:retries) { 10 }
+
+        it 'is true' do
+          expect(verification).to eq 1234
+        end
+      end
+
+      context 'counter in retry range' do
+        let(:counter) { 1224 }
+        let(:retries) { 11 }
+
+        it 'is true' do
+          expect(verification).to eq 1234
+        end
+      end
+
+      context 'counter ahead of token' do
+        let(:counter) { 1235 }
+        let(:retries) { 3 }
+
+        it 'is false' do
+          expect(verification).to be_falsey
+        end
+      end
+    end
   end
 
   describe '#provisioning_uri' do
@@ -98,59 +129,4 @@ RSpec.describe ROTP::HOTP do
     end
   end
 
-  describe '#verify_with_retries' do
-    let(:verification) { hotp.verify_with_retries token, counter, retries }
-
-    context 'negative retries' do
-      let(:retries) { -1 }
-
-      it 'is false' do
-        expect(verification).to be_falsey
-      end
-    end
-
-    context 'zero retries' do
-      let(:retries) { 0 }
-
-      it 'is false' do
-        expect(verification).to be_falsey
-      end
-    end
-
-    context 'counter lower than retries' do
-      let(:counter) { 1223 }
-      let(:retries) { 10 }
-
-      it 'is false' do
-        expect(verification).to be_falsey
-      end
-    end
-
-    context 'counter exactly in retry range' do
-      let(:counter) { 1224 }
-      let(:retries) { 10 }
-
-      it 'is true' do
-        expect(verification).to eq 1234
-      end
-    end
-
-    context 'counter in retry range' do
-      let(:counter) { 1224 }
-      let(:retries) { 11 }
-
-      it 'is true' do
-        expect(verification).to eq 1234
-      end
-    end
-
-    context 'counter too high' do
-      let(:counter) { 1235 }
-      let(:retries) { 3 }
-
-      it 'is false' do
-        expect(verification).to be_falsey
-      end
-    end
-  end
 end

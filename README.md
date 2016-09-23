@@ -4,7 +4,7 @@
 [![Gem Version](https://badge.fury.io/rb/rotp.svg)](https://rubygems.org/gems/rotp)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/mdp/rotp/blob/master/LICENSE)
 
-A ruby library for generating one time passwords (HOTP & TOTP) according to [RFC 4226](http://tools.ietf.org/html/rfc4226) and [RFC 6238](http://tools.ietf.org/html/rfc6238).
+A ruby library for generating and validating one time passwords (HOTP & TOTP) according to [RFC 4226](http://tools.ietf.org/html/rfc4226) and [RFC 6238](http://tools.ietf.org/html/rfc6238).
 
 ROTP is compatible with the [Google Authenticator](https://github.com/google/google-authenticator) available for [Android](https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2) and [iPhone](https://itunes.apple.com/en/app/google-authenticator/id388497605).
 
@@ -30,9 +30,9 @@ totp = ROTP::TOTP.new("base32secret3232")
 totp.now # => "492039"
 
 # OTP verified for current time
-totp.verify("492039") # => true
+totp.verify("492039") # => 1474590700
 sleep 30
-totp.verify("492039") # => false
+totp.verify("492039") # => nil
 ```
 
 Optionally, you can provide an issuer which will be used as a title in Google Authenticator.
@@ -51,8 +51,8 @@ hotp.at(1) # => "055283"
 hotp.at(1401) # => "316439"
 
 # OTP verified with a counter
-hotp.verify("316439", 1401) # => true
-hotp.verify("316439", 1402) # => false
+hotp.verify("316439", 1401) # => 1401
+hotp.verify("316439", 1402) # => nil
 ```
 
 ### Verifying a Time based OTP with drift
@@ -64,9 +64,9 @@ an OTP code with an specific amount of 'drift'
 totp = ROTP::TOTP.new("base32secret3232")
 totp.now # => "492039"
 
-# OTP verified for current time with 120 seconds allowed drift
-totp.verify_with_drift("492039", 60, Time.now - 30) # => true
-totp.verify_with_drift("492039", 60, Time.now - 90) # => false
+# OTP verified for current time with ±60 seconds (120 total) allowed drift
+totp.verify("492039", drift: 60, at: Time.now - 30) # => 1474590700
+totp.verify("492039", drift: 60, at: Time.now - 90) # => nil
 ```
 
 ### Preventing reuse of Time based OTP's
@@ -82,10 +82,10 @@ totp.now # => "492039"
 user.last_otp_at # => 1472145530
 
 # Verify the OTP
-verified_at_timestamp = totp.verify_with_drift_and_prior("492039", 0, user.last_otp_at) #=> 1472145760
+last_otp_at = totp.verify("492039", after: user.last_otp_at) #=> 1472145760
 # Store this on the user's account
-user.update(last_otp_at: verified_at_timestamp)
-verified_at_timestamp = totp.verify_with_drift_and_prior("492039", 0, user.last_otp_at) #=> false
+user.update(last_otp_at: last_otp_at)
+last_otp_at = totp.verify("492039", after: user.last_otp_at) #=> nil
 ```
 
 ### Generating a Base32 Secret key
@@ -151,7 +151,7 @@ Have a look at the [contributors graph](https://github.com/mdp/rotp/graphs/contr
 
 ## License
 
-MIT Copyright (C) 2011 by Mark Percival, see [LICENSE](https://github.com/mdp/rotp/blob/master/LICENSE) for details.
+MIT Copyright (C) 2016 by Mark Percival, see [LICENSE](https://github.com/mdp/rotp/blob/master/LICENSE) for details.
 
 ## Other implementations
 

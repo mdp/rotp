@@ -15,61 +15,45 @@ module ROTP
     # Accepts either a Unix timestamp integer or a Time object.
     # Time objects will be adjusted to UTC automatically
     # @param [Time/Integer] time the time to generate an OTP for
-    # @option [Boolean] padding (true) Issue the number as a 0 padded string
-    def at(time, padding=true)
+    def at(time)
       unless time.class == Time
         time = Time.at(time.to_i)
       end
-      generate_otp(timecode(time), padding)
+      generate_otp(timecode(time))
     end
 
     # Generate the current time OTP
     # @return [Integer] the OTP as an integer
-    def now(padding=true)
-      generate_otp(timecode(Time.now), padding)
-    end
-
-    # Verifies the OTP passed in against the current time OTP
-    # @param [String/Integer] otp the OTP to check against
-    def verify(otp, time = Time.now)
-      super(otp, self.at(time))
-    end
-
-    # Verifies the OTP passed in against the current time OTP
-    # and adjacent intervals up to +drift+.
-    # @param [String] otp the OTP to check against
-    # @param [Integer] drift the number of seconds that the client
-    #     and server are allowed to drift apart
-    def verify_with_drift(otp, drift, time = Time.now)
-      time = time.to_i
-      times = (time-drift..time+drift).step(interval).to_a
-      times << time + drift if times.last < time + drift
-      times.any? { |ti| verify(otp, ti) }
+    def now()
+      generate_otp(timecode(Time.now))
     end
 
     # Verifies the OTP passed in against the current time OTP
     # and adjacent intervals up to +drift+.  Excludes OTPs
-    # from prior_time and earlier.  Returns time value of
+    # from `after` and earlier.  Returns time value of
     # matching OTP code for use in subsequent call.
-    # @param [String] otp the OTP to check against
-    # @param [Integer] drift the number of seconds that the client
-    #     and server are allowed to drift apart
-    # @param [Integer] time value of previous match
-    def verify_with_drift_and_prior(otp, drift, prior_time = nil, time = Time.now)
+    def verify(otp, drift: 0, after: nil, at: nil)
+      at ||= Time.now
       # calculate normalized bin start times based on drift
-      first_bin = (time - drift).to_i / interval * interval
-      last_bin = (time + drift).to_i / interval * interval
+      first_interval = (at - drift).to_i / interval * interval
+      last_interval = (at + drift).to_i / interval * interval
 
-      # if prior_time was supplied, adjust first bin if necessary to exclude it
-      if prior_time
-        prior_bin = prior_time.to_i / interval * interval
-        first_bin = prior_bin + interval if prior_bin >= first_bin
+
+      # if after was supplied, adjust first bin if necessary to exclude it
+      if after
+        after_interval = after.to_i / interval * interval
+        if after_interval >= first_interval
+          first_interval = after_interval + interval
+        end
         # fail if we've already used the last available OTP code
-        return if first_bin > last_bin
+        return false if first_interval > last_interval
       end
-      times = (first_bin..last_bin).step(interval).to_a
-      times.find { |ti| verify(otp, ti) }
+      times = (first_interval..last_interval).step(interval).to_a
+      times.find { |ti|
+        super(otp, self.at(ti))
+      }
     end
+
 
     # Returns the provisioning URI for the OTP
     # This can then be encoded in a QR Code and used

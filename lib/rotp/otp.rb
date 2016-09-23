@@ -21,7 +21,7 @@ module ROTP
     # @option padded [Boolean] (false) Output the otp as a 0 padded string
     # Usually either the counter, or the computed integer
     # based on the Unix timestamp
-    def generate_otp(input, padded=true)
+    def generate_otp(input)
       hmac = OpenSSL::HMAC.digest(
         OpenSSL::Digest.new(digest),
         byte_secret,
@@ -33,19 +33,33 @@ module ROTP
         (hmac[offset + 1].ord & 0xff) << 16 |
         (hmac[offset + 2].ord & 0xff) << 8 |
         (hmac[offset + 3].ord & 0xff)
-      if padded
-        (code % 10 ** digits).to_s.rjust(digits, '0')
-      else
-        code % 10 ** digits
-      end
+      (code % 10 ** digits).to_s.rjust(digits, '0')
     end
 
     private
 
+    def check_types(opts)
+      opts.each { |key, value|
+        if value.is_a?(Integer) && value < 0
+          raise ArgumentError, "#{key} can't be less than 0"
+        end
+        case key
+        when :otp
+          raise ArgumentError, "`#{key}` should be a String" if
+          value && !value.is_a?(String)
+        when :drift, :after, :retries, :counter
+          raise ArgumentError, "`#{key}` should be an Integer" if
+          value && !value.is_a?(Integer)
+        when :at
+          raise ArgumentError, "`at` should be a Interger or Time" if
+          value && !(value.is_a?(Time) || value.is_a?(Integer))
+        end
+      }
+    end
+
     def verify(input, generated)
-      unless input.is_a?(String) && generated.is_a?(String)
-        raise ArgumentError, "ROTP only verifies strings - See: https://github.com/mdp/rotp/issues/32"
-      end
+      raise ArgumentError, "`otp` should be a String" unless
+          input.is_a?(String)
       time_constant_compare(input, generated)
     end
 

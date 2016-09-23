@@ -1,25 +1,15 @@
 require 'spec_helper'
 
 RSpec.describe ROTP::TOTP do
-  let(:now)   { Time.utc 2012,1,1 }
+  let(:now)   { Time.utc 2012,1,1 } #1325376000
   let(:token) { '068212' }
   let(:totp)  { ROTP::TOTP.new 'JBSWY3DPEHPK3PXP' }
 
   describe '#at' do
-    context 'with padding' do
-      let(:token) { totp.at now }
+    let(:token) { totp.at now }
 
-      it 'is a string number' do
-        expect(token).to eq '068212'
-      end
-    end
-
-    context 'without padding' do
-      let(:token) { totp.at now, false }
-
-      it 'is an integer' do
-        expect(token).to eq 68212
-      end
+    it 'is a string number' do
+      expect(token).to eq '068212'
     end
 
     context 'RFC compatibility' do
@@ -35,12 +25,12 @@ RSpec.describe ROTP::TOTP do
   end
 
   describe '#verify' do
-    let(:verification) { totp.verify token, now }
+    let(:verification) { totp.verify token, at: now }
 
     context 'numeric token' do
       let(:token) { 68212 }
 
-      it 'raises an error' do
+      it 'raises an error with an integer' do
         expect { verification }.to raise_error(ArgumentError)
       end
     end
@@ -48,13 +38,13 @@ RSpec.describe ROTP::TOTP do
     context 'unpadded string token' do
       let(:token) { '68212' }
 
-      it 'is false' do
+      it 'fails to verify' do
         expect(verification).to be_falsey
       end
     end
 
     context 'correctly padded string token' do
-      it 'is true' do
+      it 'verifies' do
         expect(verification).to be_truthy
       end
     end
@@ -70,14 +60,41 @@ RSpec.describe ROTP::TOTP do
         let(:token) { '102705' }
         let(:now)   { Time.at 1297553958 }
 
-        it 'is true' do
+        it 'verifies' do
           expect(totp.verify('102705')).to be_truthy
         end
       end
 
       context 'wrong time based OTP' do
-        it 'is false' do
+        it 'fails to verify' do
           expect(totp.verify('102705')).to be_falsey
+        end
+      end
+    end
+    context 'invalidating reused tokens' do
+      let(:verification) {
+        totp.verify token,
+        drift: drift,
+        after: after,
+        at: now
+      }
+      let(:drift) { 0 }
+      let(:after) { nil }
+
+      context 'passing in the `after` timestamp' do
+        let(:after) {
+          totp.verify '068212', drift: 0, after: nil, at: now
+        }
+
+        it 'returns a timecode' do
+          expect(after).to be_kind_of(Integer)
+          expect(after).to be_within(30).of(now.to_i)
+        end
+
+        context 'reusing same token' do
+          it 'is false' do
+            expect(verification).to be_falsy
+          end
         end
       end
     end
@@ -161,8 +178,8 @@ RSpec.describe ROTP::TOTP do
 
   end
 
-  describe '#verify_with_drift' do
-    let(:verification) { totp.verify_with_drift token, drift, now }
+  describe '#verify with drift' do
+    let(:verification) { totp.verify token, drift: drift, at: now }
     let(:drift) { 0 }
 
 
@@ -214,17 +231,17 @@ RSpec.describe ROTP::TOTP do
     end
   end
 
-  describe '#verify_with_drift_and_prior' do
-    let(:verification) { totp.verify_with_drift_and_prior token, drift, prior, now }
+  describe '#verify with drift and after' do
+    let(:verification) { totp.verify token, drift: drift, after: after, at: now }
     let(:drift) { 0 }
-    let(:prior) { nil }
+    let(:after) { nil }
 
-    context 'with a prior verify' do
-      let(:prior) { totp.verify_with_drift_and_prior '068212', 0, nil, now }
+    context 'with a after verify' do
+      let(:after) { totp.verify '068212', drift: 0, after: nil, at: now }
 
       it 'returns a timecode' do
-        expect(prior).to be_kind_of(Integer)
-        expect(prior).to be_within(30).of(now.to_i)
+        expect(after).to be_kind_of(Integer)
+        expect(after).to be_within(30).of(now.to_i)
       end
 
       context 'reusing same token' do
