@@ -71,6 +71,20 @@ RSpec.describe ROTP::Arguments do
     end
   end
 
+  context 'generating a counter based secret' do
+    let(:argv) { %w(--time --secret s3same) }
+
+    describe '#options' do
+      it 'is in hmac mode' do
+        expect(options.mode).to eq :time
+      end
+
+      it 'knows the secret' do
+        expect(options.secret).to eq 's3same'
+      end
+    end
+  end
+
   context 'generating a time based secret' do
     let(:argv) { %w(--secret s3same) }
 

@@ -1,8 +1,6 @@
 require 'simplecov'
 SimpleCov.start do
   add_filter "/spec/"
-  add_filter "/lib/rotp/cli.rb"
-  add_filter "/lib/rotp/arguments.rb"
 end
 
 require 'rotp'
