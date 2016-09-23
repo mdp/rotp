@@ -8,18 +8,14 @@ module ROTP
     end
 
     # Verifies the OTP passed in against the current time OTP
-    # @param [String/Integer] otp the OTP to check against
-    # @param [Integer] counter the counter of the OTP
+    # @param otp [String/Integer] the OTP to check against
+    # @param counter [Integer] the counter of the OTP
+    # @param retries [Integer] number of counters to incrementally retry
     def verify(otp, counter, retries: 0)
-      result = nil
-      0.upto(retries) do |i|
-        current_counter = counter + i
-        if super(otp, self.at(current_counter))
-          result = current_counter
-          break
-        end
-      end
-      return result
+      counters = (counter..counter+retries).to_a
+      counters.find { |c|
+        super(otp, self.at(c))
+      }
     end
 
     # Returns the provisioning URI for the OTP
