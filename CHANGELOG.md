@@ -1,5 +1,10 @@
 ### Changelog
 
+#### 4.0.0
+
+- Simplify API
+- Remove support for Ruby < 2.0
+
 #### 3.3.0
 
 - Add digest algorithm parameter for non SHA1 digests - #62 from @btalbot
