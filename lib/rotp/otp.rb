@@ -38,25 +38,6 @@ module ROTP
 
     private
 
-    def check_types(opts)
-      opts.each { |key, value|
-        if value.is_a?(Integer) && value < 0
-          raise ArgumentError, "#{key} can't be less than 0"
-        end
-        case key
-        when :otp
-          raise ArgumentError, "`#{key}` should be a String" if
-          value && !value.is_a?(String)
-        when :drift, :after, :retries, :counter
-          raise ArgumentError, "`#{key}` should be an Integer" if
-          value && !value.is_a?(Integer)
-        when :at
-          raise ArgumentError, "`at` should be a Interger or Time" if
-          value && !(value.is_a?(Time) || value.is_a?(Integer))
-        end
-      }
-    end
-
     def verify(input, generated)
       raise ArgumentError, "`otp` should be a String" unless
           input.is_a?(String)

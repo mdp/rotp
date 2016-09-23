@@ -32,25 +32,24 @@ module ROTP
     # and adjacent intervals up to +drift+.  Excludes OTPs
     # from `after` and earlier.  Returns time value of
     # matching OTP code for use in subsequent call.
-    def verify(otp, drift: 0, after: nil, at: nil)
-      at ||= Time.now
+    # @param otp [String] the one time password to verify
+    # @param drift [Integer] seconds of drift
+    # @param after [Integer] timestamp to exclude
+    # @param at [Time] time at which to generate and verify a particular
+    #   otp. default Time.now
+    # @return [Integer, nil] the last successful timestamp
+    #   interval
+    def verify(otp, drift: 0, after: nil, at: Time.now)
       # calculate normalized bin start times based on drift
-      first_interval = (at - drift).to_i / interval * interval
-      last_interval = (at + drift).to_i / interval * interval
+      drift_start = (at - drift).to_i / interval * interval
+      drift_end   = (at + drift).to_i / interval * interval
 
-
-      # if after was supplied, adjust first bin if necessary to exclude it
+      times = (drift_start..drift_end).step(interval).to_a
       if after
-        after_interval = after.to_i / interval * interval
-        if after_interval >= first_interval
-          first_interval = after_interval + interval
-        end
-        # fail if we've already used the last available OTP code
-        return false if first_interval > last_interval
+        times = times.select { |t| t > after }
       end
-      times = (first_interval..last_interval).step(interval).to_a
-      times.find { |ti|
-        super(otp, self.at(ti))
+      times.find { |t|
+        super(otp, self.at(t))
       }
     end
 
