@@ -40,7 +40,6 @@ module ROTP
     # @return [Integer, nil] the last successful timestamp
     #   interval
     def verify(otp, drift: 0, after: nil, at: Time.now)
-      # calculate normalized bin start times based on drift
       drift_start = (at - drift).to_i / interval * interval
       drift_end   = (at + drift).to_i / interval * interval
 
