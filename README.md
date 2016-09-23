@@ -1,6 +1,6 @@
 # The Ruby One Time Password Library
 
-[![Build Status](https://secure.travis-ci.org/mdp/rotp.png)](https://travis-ci.org/mdp/rotp)
+[![Build Status](https://travis-ci.org/mdp/rotp.svg?branch=master)](https://travis-ci.org/mdp/rotp)
 [![Gem Version](https://badge.fury.io/rb/rotp.svg)](https://rubygems.org/gems/rotp)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/mdp/rotp/blob/master/LICENSE)
 
@@ -13,7 +13,7 @@ Many websites use this for [multi-factor authentication](https://www.youtube.com
 ## Dependencies
 
 * OpenSSL
-* Ruby 1.9.3 or higher
+* Ruby 2.0 or higher
 
 ## Installation
 
