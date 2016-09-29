@@ -15,10 +15,16 @@ Many websites use this for [multi-factor authentication](https://www.youtube.com
 * OpenSSL
 * Ruby 2.0 or higher
 
+## Breaking changes in >= 4.0
+
+- Simpler API
+- Dropping support for Ruby < 2.0
+- Docs for 3.x can be found [here](https://github.com/mdp/rotp/tree/v3.3.0)
+
 ## Installation
 
 ```bash
-gem install rotp
+gem install rotp --version 4.0.0.rc1
 ```
 
 ## Library Usage
@@ -70,7 +76,7 @@ last_otp_at = totp.verify("492039", after: user.last_otp_at) #=> nil
 ### Verifying a Time based OTP with drift
 
 Some users devices may be slightly behind or ahead of the actual time. ROTP allows users to verify
-an OTP code with an specific amount of 'drift'
+an OTP code with a specific amount of 'drift'
 
 ```ruby
 totp = ROTP::TOTP.new("base32secret3232")
