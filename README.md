@@ -17,7 +17,7 @@ Many websites use this for [multi-factor authentication](https://www.youtube.com
 
 ## Breaking changes in >= 4.0
 
-- Simpler API
+- Simplified API
 - Dropping support for Ruby < 2.0
 - Docs for 3.x can be found [here](https://github.com/mdp/rotp/tree/v3.3.0)
 
@@ -35,9 +35,10 @@ gem install rotp --version 4.0.0.rc1
 totp = ROTP::TOTP.new("base32secret3232", issuer: "My Service")
 totp.now # => "492039"
 
-# OTP verified for current time
+# OTP verified for current time - returns timestamp of verification
 totp.verify("492039") # => 1474590700
 sleep 30
+# OTP fails to verify - returns nil
 totp.verify("492039") # => nil
 ```
 
@@ -75,16 +76,20 @@ last_otp_at = totp.verify("492039", after: user.last_otp_at) #=> nil
 
 ### Verifying a Time based OTP with drift
 
-Some users devices may be slightly behind or ahead of the actual time. ROTP allows users to verify
+Some users may enter a code just after it expires. ROTP allows users to verify
 an OTP code with a specific amount of 'drift'
+_Warning: there are security implications to allowing 'drift'_
+Eg. Odd of guessing an otp are 1 in 10**otp_digits / (drift_behind + drift_ahead + 1)
 
 ```ruby
 totp = ROTP::TOTP.new("base32secret3232")
 totp.now # => "492039"
 
-# OTP verified for current time with ±60 seconds (120 total) allowed drift
-totp.verify("492039", drift: 60, at: Time.now - 30) # => 1474590700
-totp.verify("492039", drift: 60, at: Time.now - 90) # => nil
+# OTP verified for current time along with 1 previous interval
+# User enters a code just after it expires
+totp.verify("492039", drift_behind: 1, at: Time.now - 30) # => 1474590700
+# User enters a code 2 intervals back, fails to verify
+totp.verify("492039", drift_behind: 1, at: Time.now - 60) # => nil
 ```
 
 

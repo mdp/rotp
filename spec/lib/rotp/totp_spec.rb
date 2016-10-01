@@ -74,16 +74,14 @@ RSpec.describe ROTP::TOTP do
     context 'invalidating reused tokens' do
       let(:verification) {
         totp.verify token,
-        drift: drift,
         after: after,
         at: now
       }
-      let(:drift) { 0 }
       let(:after) { nil }
 
       context 'passing in the `after` timestamp' do
         let(:after) {
-          totp.verify '068212', drift: 0, after: nil, at: now
+          totp.verify '068212', after: nil, at: now
         }
 
         it 'returns a timecode' do
@@ -179,13 +177,14 @@ RSpec.describe ROTP::TOTP do
   end
 
   describe '#verify with drift' do
-    let(:verification) { totp.verify token, drift: drift, at: now }
-    let(:drift) { 0 }
+    let(:verification) { totp.verify token, drift_ahead: drift_ahead, drift_behind: drift_behind, at: now }
+    let(:drift_ahead) { 0 }
+    let(:drift_behind) { 0 }
 
 
     context 'slightly old number' do
       let(:token) { totp.at now - 30 }
-      let(:drift) { 60 }
+      let(:drift_behind) { 1 }
 
       it 'is true' do
         expect(verification).to be_truthy
@@ -193,8 +192,8 @@ RSpec.describe ROTP::TOTP do
     end
 
     context 'slightly new number' do
-      let(:token) { totp.at now + 60 }
-      let(:drift) { 60 }
+      let(:token) { totp.at now + 40 }
+      let(:drift_ahead) { 1 }
 
       it 'is true' do
         expect(verification).to be_truthy
@@ -202,42 +201,23 @@ RSpec.describe ROTP::TOTP do
     end
 
     context 'outside of drift range' do
-      let(:token) { totp.at now - 60 }
-      let(:drift) { 30 }
+      let(:token) { totp.at now - 55 }
+      let(:drift_behind) { 1 }
 
       it 'is false' do
         expect(verification).to be_falsey
       end
     end
-
-    context 'drift is not multiple of TOTP interval' do
-      context 'slightly old number' do
-        let(:token) { totp.at now - 45 }
-        let(:drift) { 45 }
-
-        it 'is true' do
-          expect(verification).to be_truthy
-        end
-      end
-
-      context 'slightly new number' do
-        let(:token) { totp.at now + 40 }
-        let(:drift) { 40 }
-
-        it 'is true' do
-          expect(verification).to be_truthy
-        end
-      end
-    end
   end
 
   describe '#verify with drift and after' do
-    let(:verification) { totp.verify token, drift: drift, after: after, at: now }
-    let(:drift) { 0 }
+    let(:verification) { totp.verify token, drift_ahead: drift_ahead, drift_behind: drift_behind, after: after, at: now }
+    let(:drift_ahead) { 0 }
+    let(:drift_behind) { 0 }
     let(:after) { nil }
 
     context 'with a after verify' do
-      let(:after) { totp.verify '068212', drift: 0, after: nil, at: now }
+      let(:after) { totp.verify '068212', after: nil, at: now }
 
       it 'returns a timecode' do
         expect(after).to be_kind_of(Integer)
@@ -251,8 +231,8 @@ RSpec.describe ROTP::TOTP do
       end
 
       context 'newer token' do
-        let(:token) { totp.at now + 40 }
-        let(:drift) { 40 }
+        let(:token) { totp.at now + 30 }
+        let(:drift_ahead) { 1 }
 
         it 'is true' do
           expect(verification).to be_kind_of(Integer)
@@ -262,8 +242,8 @@ RSpec.describe ROTP::TOTP do
       end
 
       context 'older token' do
-        let(:token) { totp.at now - 40 }
-        let(:drift) { 40 }
+        let(:token) { totp.at now - 30 }
+        let(:drift_behind) { 1 }
 
         it 'is false' do
           expect(verification).to be_falsy

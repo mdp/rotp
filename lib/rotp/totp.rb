@@ -14,11 +14,8 @@ module ROTP
 
     # Accepts either a Unix timestamp integer or a Time object.
     # Time objects will be adjusted to UTC automatically
-    # @param [Time/Integer] time the time to generate an OTP for
+    # @param time [Time/Integer] the time to generate an OTP for, integer unix timestamp or Time object
     def at(time)
-      unless time.class == Time
-        time = Time.at(time.to_i)
-      end
       generate_otp(timecode(time))
     end
 
@@ -33,22 +30,26 @@ module ROTP
     # from `after` and earlier.  Returns time value of
     # matching OTP code for use in subsequent call.
     # @param otp [String] the one time password to verify
-    # @param drift [Integer] seconds of drift
-    # @param after [Integer] timestamp to exclude
+    # @param drift_behind [Integer] how many intervals to look back
+    # @param drift_ahead [Integer] how many intervals to look ahead
+    # @param after [Integer] prevent token reuse, last login timestamp
     # @param at [Time] time at which to generate and verify a particular
     #   otp. default Time.now
     # @return [Integer, nil] the last successful timestamp
     #   interval
-    def verify(otp, drift: 0, after: nil, at: Time.now)
-      drift_start = (at - drift).to_i / interval * interval
-      drift_end   = (at + drift).to_i / interval * interval
+    def verify(otp, drift_ahead: 0, drift_behind: 0, after: nil, at: Time.now)
+      current_timecode = timecode(at)
+      timecode_start = current_timecode - drift_behind
+      timecode_end = current_timecode + drift_ahead
 
-      times = (drift_start..drift_end).step(interval).to_a
+      timecodes = (timecode_start..timecode_end).step(1).to_a
       if after
-        times = times.select { |t| t > after }
+        timecodes = timecodes.select { |t| t > timecode(after) }
       end
-      times.find { |t|
-        super(otp, self.at(t))
+      timecodes.find { |t|
+        if (super(otp, self.generate_otp(t)))
+          return t * interval
+        end
       }
     end
 
@@ -77,7 +78,10 @@ module ROTP
     private
 
     def timecode(time)
-      time.utc.to_i / interval
+      unless time.class == Time
+        return time.to_i / interval
+      end
+      return time.utc.to_i / interval
     end
 
   end
