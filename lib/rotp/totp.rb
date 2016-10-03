@@ -30,17 +30,17 @@ module ROTP
     # from `after` and earlier.  Returns time value of
     # matching OTP code for use in subsequent call.
     # @param otp [String] the one time password to verify
-    # @param drift_behind [Integer] how many intervals to look back
-    # @param drift_ahead [Integer] how many intervals to look ahead
+    # @param drift_behind [Integer] how many seconds to look back
+    # @param drift_ahead [Integer] how many seconds to look ahead
     # @param after [Integer] prevent token reuse, last login timestamp
     # @param at [Time] time at which to generate and verify a particular
     #   otp. default Time.now
     # @return [Integer, nil] the last successful timestamp
     #   interval
     def verify(otp, drift_ahead: 0, drift_behind: 0, after: nil, at: Time.now)
-      current_timecode = timecode(at)
-      timecode_start = current_timecode - drift_behind
-      timecode_end = current_timecode + drift_ahead
+      now = timeint(at)
+      timecode_start = timecode(now - drift_behind)
+      timecode_end = timecode(now + drift_ahead)
 
       timecodes = (timecode_start..timecode_end).step(1).to_a
       if after
@@ -77,11 +77,15 @@ module ROTP
 
     private
 
-    def timecode(time)
+    def timeint(time)
       unless time.class == Time
-        return time.to_i / interval
+        return time.to_i
       end
-      return time.utc.to_i / interval
+      return time.utc.to_i
+    end
+
+    def timecode(time)
+      return timeint(time) / interval
     end
 
   end

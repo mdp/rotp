@@ -76,22 +76,21 @@ last_otp_at = totp.verify("492039", after: user.last_otp_at) #=> nil
 
 ### Verifying a Time based OTP with drift
 
-Some users may enter a code just after it expires. ROTP allows users to verify
-an OTP code with a specific amount of 'drift'
+Some users may enter a code just after has expired. By adding 'drift' you can allow
+for a recently expired token to remain valid.
 _Warning: there are security implications to allowing 'drift'_
-Eg. Odd of guessing an otp are 1 in 10**otp_digits / (drift_behind + drift_ahead + 1)
 
 ```ruby
 totp = ROTP::TOTP.new("base32secret3232")
-totp.now # => "492039"
+now = Time.at(1474590600) #2016-09-23 00:30:00 UTC
+totp.at(now) # => "250939"
 
-# OTP verified for current time along with 1 previous interval
-# User enters a code just after it expires
-totp.verify("492039", drift_behind: 1, at: Time.now - 30) # => 1474590700
-# User enters a code 2 intervals back, fails to verify
-totp.verify("492039", drift_behind: 1, at: Time.now - 60) # => nil
+# OTP verified for current time along with 15 seconds earlier
+# ie. User enters a code just after it expired
+totp.verify("250939", drift_behind: 15, at: now + 35) # => 1474590600
+# User waits too long. Fails to validate previous OTP
+totp.verify("250939", drift_behind: 15, at: now + 46) # => nil
 ```
-
 
 ### Generating a Base32 Secret key
 
