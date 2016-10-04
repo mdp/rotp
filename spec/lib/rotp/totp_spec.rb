@@ -113,13 +113,13 @@ RSpec.describe ROTP::TOTP do
 
       # Tested at 2016-09-23 09:00:00 UTC, and with drift back to 2016-09-23 08:59:45 UTC
       # This would therefore include 2 intervals
-      it 'is true' do
+      it 'inside of drift range' do
         expect(verification).to be_truthy
       end
 
       # Tested at 2016-09-23 09:00:20 UTC, and with drift back to 2016-09-23 09:00:05 UTC
       # This only includes 1 interval, therefore only the current token is valid
-      context 'slightly older number outside of the drift boundary' do
+      context 'outside of drift range' do
         let(:now)   { TEST_TIME + 20 }
 
         it 'is nil' do
@@ -127,20 +127,36 @@ RSpec.describe ROTP::TOTP do
         end
       end
 
+      context 'with a large drift' do
+        let(:drift_behind) { 240 }
+
+        it 'inside of drift range' do
+          expect(verification).to be_truthy
+        end
+
+        context 'outside of drift range' do
+          let(:now)   { TEST_TIME + 240 }
+          it 'is nil' do
+            expect(verification).to be_nil
+          end
+        end
+
+      end
+
     end
 
     context 'with a forward dated OTP' do
-      let(:token) { totp.at TEST_TIME + 45 } # The next valid token - 2016-09-23 09:00:45 UTC
+      let(:token) { totp.at TEST_TIME + 30 } # The next valid token - 2016-09-23 09:00:30 UTC
       let(:drift_ahead) { 15 }
 
       # Tested at 2016-09-23 09:00:00 UTC, and ahead to 2016-09-23 09:00:15 UTC
       # This only includes 1 interval, therefore only the current token is valid
-      it 'is false' do
+      it 'outside of drift range' do
         expect(verification).to be_falsey
       end
       # Tested at 2016-09-23 09:00:20 UTC, and with drift ahead to 2016-09-23 09:00:35 UTC
       # This would therefore include 2 intervals
-      context 'outside of drift range' do
+      context 'inside of drift range' do
         let(:now)   { TEST_TIME + 20 }
 
         it 'is true' do
