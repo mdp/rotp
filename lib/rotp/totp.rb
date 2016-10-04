@@ -46,11 +46,13 @@ module ROTP
       if after
         timecodes = timecodes.select { |t| t > timecode(after) }
       end
-      timecodes.find { |t|
+      result = nil
+      timecodes.each { |t|
         if (super(otp, self.generate_otp(t)))
-          return t * interval
+          result = t * interval
         end
       }
+      return result
     end
 
 
