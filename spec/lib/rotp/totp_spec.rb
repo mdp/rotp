@@ -101,6 +101,31 @@ RSpec.describe ROTP::TOTP do
     end
   end
 
+  def get_timecodes(at, b, a)
+    # Test the private method
+    totp.send('get_timecodes', at, b, a)
+  end
+
+  describe "drifting timecodes" do
+    it 'should get timecodes behind' do
+      expect(get_timecodes(TEST_TIME+15, 15, 0)).to eq([49154040])
+      expect(get_timecodes(TEST_TIME, 15, 0)).to eq([49154039, 49154040])
+      expect(get_timecodes(TEST_TIME, 40, 0)).to eq([49154038, 49154039, 49154040])
+      expect(get_timecodes(TEST_TIME, 90, 0)).to eq([49154037, 49154038, 49154039, 49154040])
+    end
+    it 'should get timecodes ahead' do
+      expect(get_timecodes(TEST_TIME, 0, 15)).to eq([49154040])
+      expect(get_timecodes(TEST_TIME+15, 0, 15)).to eq([49154040, 49154041])
+      expect(get_timecodes(TEST_TIME, 0, 30)).to eq([49154040, 49154041])
+      expect(get_timecodes(TEST_TIME, 0, 70)).to eq([49154040, 49154041, 49154042])
+      expect(get_timecodes(TEST_TIME, 0, 90)).to eq([49154040, 49154041, 49154042, 49154043])
+    end
+    it 'should get timecodes behind and ahead' do
+      expect(get_timecodes(TEST_TIME, 30, 30)).to eq([49154039, 49154040, 49154041])
+      expect(get_timecodes(TEST_TIME, 60, 60)).to eq([49154038, 49154039, 49154040, 49154041, 49154042])
+    end
+  end
+
   describe '#verify with drift' do
     let(:verification) { totp.verify token, drift_ahead: drift_ahead, drift_behind: drift_behind, at: now }
     let(:drift_ahead) { 0 }
@@ -127,25 +152,9 @@ RSpec.describe ROTP::TOTP do
         end
       end
 
-      context 'with a large drift' do
-        let(:drift_behind) { 240 }
-
-        it 'inside of drift range' do
-          expect(verification).to be_truthy
-        end
-
-        context 'outside of drift range' do
-          let(:now)   { TEST_TIME + 240 }
-          it 'is nil' do
-            expect(verification).to be_nil
-          end
-        end
-
-      end
-
     end
 
-    context 'with a forward dated OTP' do
+    context 'with a future OTP' do
       let(:token) { totp.at TEST_TIME + 30 } # The next valid token - 2016-09-23 09:00:30 UTC
       let(:drift_ahead) { 15 }
 

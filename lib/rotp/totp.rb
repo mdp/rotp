@@ -38,14 +38,12 @@ module ROTP
     # @return [Integer, nil] the last successful timestamp
     #   interval
     def verify(otp, drift_ahead: 0, drift_behind: 0, after: nil, at: Time.now)
-      now = timeint(at)
-      timecode_start = timecode(now - drift_behind)
-      timecode_end = timecode(now + drift_ahead)
+      timecodes = get_timecodes(at, drift_behind, drift_ahead)
 
-      timecodes = (timecode_start..timecode_end).step(1).to_a
       if after
         timecodes = timecodes.select { |t| t > timecode(after) }
       end
+
       result = nil
       timecodes.each { |t|
         if (super(otp, self.generate_otp(t)))
@@ -79,6 +77,15 @@ module ROTP
 
     private
 
+    # Get back an array of timecodes for a period
+    def get_timecodes(at, drift_behind, drift_ahead)
+      now = timeint(at)
+      timecode_start = timecode(now - drift_behind)
+      timecode_end = timecode(now + drift_ahead)
+      return (timecode_start..timecode_end).step(1).to_a
+    end
+
+    # Ensure UTC int
     def timeint(time)
       unless time.class == Time
         return time.to_i
