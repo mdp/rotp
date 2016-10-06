@@ -57,8 +57,10 @@ hotp.verify("316439", 1402) # => nil
 
 ### Preventing reuse of Time based OTP's
 
-In order to prevent reuse of time based tokens within the interval window (default 30 seconds)
-it is necessary to store the last time an OTP was used. The following is an example of this in action:
+By keeping track of the last time a user's OTP was verified, we can prevent token reuse during
+the interval window (default 30 seconds)
+
+The following is an example of this in action:
 
 ```ruby
 User.find(someUserID)
@@ -69,9 +71,11 @@ user.last_otp_at # => 1472145530
 
 # Verify the OTP
 last_otp_at = totp.verify("492039", after: user.last_otp_at) #=> 1472145760
+# ROTP returns the timestamp(int)
 # Store this on the user's account
 user.update(last_otp_at: last_otp_at)
-last_otp_at = totp.verify("492039", after: user.last_otp_at) #=> nil
+# Someone attempts to reused the OTP inside the 30s window
+last_otp_at = totp.verify("492039", after: user.last_otp_at) #=> nil # Fails to verify
 ```
 
 ### Verifying a Time based OTP with drift
