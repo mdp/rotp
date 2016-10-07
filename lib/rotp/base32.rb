@@ -13,7 +13,7 @@ module ROTP
         output.join
       end
 
-      def random_base32(length=16)
+      def random_base32(length=20)
         b32 = String.new
         SecureRandom.random_bytes(length).each_byte do |b|
           b32 << CHARS[b % 32]

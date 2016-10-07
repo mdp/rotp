@@ -67,15 +67,16 @@ User.find(someUserID)
 totp = ROTP::TOTP.new(user.otp_secret)
 totp.now # => "492039"
 
-user.last_otp_at # => 1472145530
+user.last_otp_at # => 1432703530
 
 # Verify the OTP
 last_otp_at = totp.verify("492039", after: user.last_otp_at) #=> 1472145760
-# ROTP returns the timestamp(int)
+# ROTP returns the timestamp(int) of the current period
 # Store this on the user's account
 user.update(last_otp_at: last_otp_at)
 # Someone attempts to reused the OTP inside the 30s window
-last_otp_at = totp.verify("492039", after: user.last_otp_at) #=> nil # Fails to verify
+last_otp_at = totp.verify("492039", after: user.last_otp_at) #=> nil
+# It fails to verify because we are still in the same 30s interval window
 ```
 
 ### Verifying a Time based OTP with drift
@@ -93,13 +94,13 @@ totp.at(now) # => "250939"
 # ie. User enters a code just after it expired
 totp.verify("250939", drift_behind: 15, at: now + 35) # => 1474590600
 # User waits too long. Fails to validate previous OTP
-totp.verify("250939", drift_behind: 15, at: now + 46) # => nil
+totp.verify("250939", drift_behind: 15, at: now + 45) # => nil
 ```
 
 ### Generating a Base32 Secret key
 
 ```ruby
-ROTP::Base32.random_base32  # returns a 16 character base32 secret. Compatible with Google Authenticator
+ROTP::Base32.random_base32  # returns a 20 character base32 secret. Compatible with Google Authenticator
 ```
 
 Note: The Base32 format conforms to [RFC 4648 Base32](http://en.wikipedia.org/wiki/Base32#RFC_4648_Base32_alphabet)
