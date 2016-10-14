@@ -100,7 +100,7 @@ totp.verify("250939", drift_behind: 15, at: now + 45) # => nil
 ### Generating a Base32 Secret key
 
 ```ruby
-ROTP::Base32.random_base32  # returns a 20 character base32 secret. Compatible with Google Authenticator
+ROTP::Base32.random_base32  # returns a 32 character base32 secret. Compatible with Google Authenticator
 ```
 
 Note: The Base32 format conforms to [RFC 4648 Base32](http://en.wikipedia.org/wiki/Base32#RFC_4648_Base32_alphabet)

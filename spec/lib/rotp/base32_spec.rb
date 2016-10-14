@@ -6,8 +6,8 @@ RSpec.describe ROTP::Base32 do
     context 'without arguments' do
       let(:base32) { ROTP::Base32.random_base32 }
 
-      it 'is 16 characters long' do
-        expect(base32.length).to eq 16
+      it 'is 32 characters long' do
+        expect(base32.length).to eq 32
       end
 
       it 'is hexadecimal' do
