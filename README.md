@@ -18,13 +18,15 @@ Many websites use this for [multi-factor authentication](https://www.youtube.com
 ## Breaking changes in >= 4.0
 
 - Simplified API
+  - `verify` now takes options for `drift` and `after`
+  - `verify` returns a timestamp if true, nil if false
 - Dropping support for Ruby < 2.0
 - Docs for 3.x can be found [here](https://github.com/mdp/rotp/tree/v3.3.0)
 
 ## Installation
 
 ```bash
-gem install rotp --version 4.0.0.rc1
+gem install rotp --version 4.0.0.beta.1
 ```
 
 ## Library Usage
@@ -83,7 +85,6 @@ last_otp_at = totp.verify("492039", after: user.last_otp_at) #=> nil
 
 Some users may enter a code just after has expired. By adding 'drift' you can allow
 for a recently expired token to remain valid.
-_Warning: there are security implications to allowing 'drift'_
 
 ```ruby
 totp = ROTP::TOTP.new("base32secret3232")
