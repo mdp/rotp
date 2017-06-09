@@ -46,13 +46,13 @@ totp.provisioning_uri("alice@google.com")
 
 ```ruby
 hotp = ROTP::HOTP.new("base32secretkey3232")
-hotp.at(0) # => "260182"
-hotp.at(1) # => "055283"
-hotp.at(1401) # => "316439"
+hotp.at(0) # => "786922"
+hotp.at(1) # => "595254"
+hotp.at(1401) # => "259769"
 
 # OTP verified with a counter
-hotp.verify("316439", 1401) # => true
-hotp.verify("316439", 1402) # => false
+hotp.verify("259769", 1401) # => true
+hotp.verify("259769", 1402) # => false
 ```
 
 ### Verifying a Time based OTP with drift
