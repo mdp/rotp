@@ -34,7 +34,8 @@ module ROTP
         ROTP::TOTP.new(options.secret).now
       elsif options.mode == :hmac
         ROTP::HOTP.new(options.secret).at options.counter
-
+      elsif options.mode == :file
+        ROTP::FILE.new(options.file).codes
       else
         fail NotImplementedError
       end

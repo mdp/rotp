@@ -45,6 +45,7 @@ module ROTP
         parser.separator green('  Usage: ') + bold("#{filename} [options]")
         parser.separator ''
         parser.separator green '  Examples:   '
+        parser.separator '    ' + bold("#{filename} --file otp_accounts.json") + '                # Generates passwords from a config file'
         parser.separator '    ' + bold("#{filename} --secret p4ssword") + '                       # Generates a time-based one-time password'
         parser.separator '    ' + bold("#{filename} --hmac --secret p4ssword --counter 42") + '   # Generates a counter-based one-time password'
         parser.separator ''
@@ -52,6 +53,11 @@ module ROTP
 
         parser.on('-s', '--secret [SECRET]', 'The shared secret') do |secret|
           options!.secret = secret
+        end
+
+        parser.on('-f', '--file [FILE]', 'Passwords for accounts in a JSON file') do |file|
+          options!.file = file
+          options!.mode = :file
         end
 
         parser.on('-c', '--counter [COUNTER]', 'The counter for counter-based hmac OTP') do |counter|

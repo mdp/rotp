@@ -142,7 +142,29 @@ rotp --help
 
 # Examples
 rotp --secret p4ssword                       # Generates a time-based one-time password
+rotp --file otp_accounts.json                # Generates passwords from a config file
 rotp --hmac --secret p4ssword --counter 42   # Generates a counter-based one-time password
+```
+
+The JSON config file for the accounts should be of the form:
+
+```JSON
+[
+  {
+    "secret":"JBSWY3DPEHPK3PXP",
+    "label":"Test label",
+    "period":30,
+    "digits":6,
+    "algorithm":"SHA1"
+  },
+  {
+    "secret":"wrn3pqx5uqxqvnqr",
+    "label":"Test label 2",
+    "period":40,
+    "digits":7,
+    "algorithm":"SHA256"
+  }
+]
 ```
 
 ## Contributors
