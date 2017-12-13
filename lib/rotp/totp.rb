@@ -20,6 +20,7 @@ module ROTP
       unless time.class == Time
         time = Time.at(time.to_i)
       end
+
       generate_otp(timecode(time), padding)
     end
 

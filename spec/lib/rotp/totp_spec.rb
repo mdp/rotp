@@ -161,6 +161,21 @@ RSpec.describe ROTP::TOTP do
 
   end
 
+  describe 'invalid_verification with nil time as argument' do
+    let(:verification) { totp.verify_with_drift token, drift, nil }
+
+    context 'positive drift' do
+      let(:token) { totp.at now - 30 }
+      let(:drift) { 60 }
+
+      it 'raises error' do
+        expect do
+          verification
+        end.to raise_error(ArgumentError)
+      end
+    end
+  end
+
   describe '#verify_with_drift' do
     let(:verification) { totp.verify_with_drift token, drift, now }
     let(:drift) { 0 }
