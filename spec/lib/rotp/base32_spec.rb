@@ -47,7 +47,7 @@ RSpec.describe ROTP::Base32 do
 
       context 'with padding' do
         it 'correctly decodes a string' do
-        expect(ROTP::Base32.decode('F==').unpack('H*').first).to eq '28'
+          expect(ROTP::Base32.decode('F==').unpack('H*').first).to eq '28'
         end
       end
     end
