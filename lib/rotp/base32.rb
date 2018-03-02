@@ -5,6 +5,7 @@ module ROTP
 
     class << self
       def decode(str)
+        str = str.tr('=','')
         output = []
         str.scan(/.{1,8}/).each do |block|
           char_array = decode_block(block).map{|c| c.chr}
