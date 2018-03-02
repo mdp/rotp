@@ -4,6 +4,7 @@
 
 - Add OpenSSL as a requirement for Ruby 2.5. Fixes #70 & #64
 - Allow Base32 with padding. #71
+- Prevent verify with drift being negative #69
 
 #### 3.3.0
 
