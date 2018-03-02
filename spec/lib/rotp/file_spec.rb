@@ -12,18 +12,18 @@ RSpec.describe ROTP::FILE do
     it 'returns the correct code' do
       file_content = [
         {
-          "secret":"JBSWY3DPEHPK3PXP",
-          "label":"Test label",
-          "period":30,
-          "digits":6,
-          "algorithm":"SHA1"
+          "secret" => "JBSWY3DPEHPK3PXP",
+          "label" => "Test label",
+          "period" => 30,
+          "digits" => 6,
+          "algorithm" => "SHA1"
         },
         {
-          "secret":"wrn3pqx5uqxqvnqr",
-          "label":"Test label 2",
-          "period":30,
-          "digits":6,
-          "algorithm":"SHA1"
+          "secret" => "wrn3pqx5uqxqvnqr",
+          "label" => "Test label 2",
+          "period" => 30,
+          "digits" => 6,
+          "algorithm" => "SHA1"
         }
       ].to_json
 
@@ -37,11 +37,11 @@ RSpec.describe ROTP::FILE do
       it 'returns the correct code' do
         file_content = [
           {
-            "secret":"JBSWY3DPEHPK3PXP",
-            "label":"Test label",
-            "period":40,
-            "digits":7,
-            "algorithm":"SHA256"
+            "secret" => "JBSWY3DPEHPK3PXP",
+            "label" => "Test label",
+            "period" => 40,
+            "digits" => 7,
+            "algorithm" => "SHA256"
           }
         ].to_json
 
