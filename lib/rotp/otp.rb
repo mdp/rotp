@@ -1,3 +1,5 @@
+require 'openssl'
+
 module ROTP
   class OTP
     attr_reader :secret, :digits, :digest
