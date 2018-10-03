@@ -66,10 +66,10 @@ module ROTP
         prior_bin = prior_time.to_i / interval * interval
         first_bin = prior_bin + interval if prior_bin >= first_bin
         # fail if we've already used the last available OTP code
-        return if first_bin > last_bin
+        return false if first_bin > last_bin
       end
       times = (first_bin..last_bin).step(interval).to_a
-      times.find { |ti| verify(otp, ti) }
+      times.find { |ti| verify(otp, ti) } || false
     end
 
     # Returns the provisioning URI for the OTP
