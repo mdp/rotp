@@ -244,7 +244,7 @@ RSpec.describe ROTP::TOTP do
 
       context 'reusing same token' do
         it 'is false' do
-          expect(verification).to be_falsy
+          expect(verification).to be_false
         end
       end
 

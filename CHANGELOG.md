@@ -1,5 +1,9 @@
 ### Changelog
 
+#### 3.3.2
+
+- Fix 'verify_with_drift_and_prior' not returning false but nil
+
 #### 3.3.1
 
 - Add OpenSSL as a requirement for Ruby 2.5. Fixes #70 & #64
