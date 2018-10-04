@@ -84,5 +84,4 @@ RSpec.describe ROTP::Arguments do
       end
     end
   end
-
 end

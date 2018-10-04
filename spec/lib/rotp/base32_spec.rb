@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 RSpec.describe ROTP::Base32 do
-
   describe '.random_base32' do
     context 'without arguments' do
       let(:base32) { ROTP::Base32.random_base32 }

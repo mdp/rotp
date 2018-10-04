@@ -11,6 +11,4 @@ COPY Gemfile.lock /usr/src/app/
 COPY . /usr/src/app
 RUN bundle install
 
-
 CMD ["bundler", "exec", "rspec"]
-

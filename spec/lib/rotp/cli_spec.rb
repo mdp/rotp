@@ -25,5 +25,4 @@ RSpec.describe ROTP::CLI do
       expect(output).to eq '161024'
     end
   end
-
 end

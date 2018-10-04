@@ -293,5 +293,4 @@ RSpec.describe ROTP::TOTP do
       end
     end
   end
-
 end

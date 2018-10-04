@@ -1,7 +1,7 @@
 module ROTP
   DEFAULT_INTERVAL = 30
+  
   class TOTP < OTP
-
     attr_reader :interval, :issuer
 
     # @option options [Integer] interval (30) the time interval in seconds for OTP
@@ -9,6 +9,7 @@ module ROTP
     def initialize(s, options = {})
       @interval = options[:interval] || DEFAULT_INTERVAL
       @issuer = options[:issuer]
+
       super
     end
 
@@ -16,7 +17,7 @@ module ROTP
     # Time objects will be adjusted to UTC automatically
     # @param [Time/Integer] time the time to generate an OTP for
     # @option [Boolean] padding (true) Issue the number as a 0 padded string
-    def at(time, padding=true)
+    def at(time, padding = true)
       unless time.class == Time
         time = Time.at(time.to_i)
       end
@@ -26,7 +27,7 @@ module ROTP
 
     # Generate the current time OTP
     # @return [Integer] the OTP as an integer
-    def now(padding=true)
+    def now(padding = true)
       generate_otp(timecode(Time.now), padding)
     end
 
@@ -82,7 +83,7 @@ module ROTP
       # https://github.com/google/google-authenticator/wiki/Key-Uri-Format
       # For compatibility the issuer appears both before that account name and also in the
       # query string.
-      issuer_string = issuer.nil? ? "" : "#{URI.encode(issuer)}:"
+      issuer_string = issuer.nil? ? '' : "#{URI.encode(issuer)}:"
       params = {
         secret: secret,
         period: interval == 30 ? nil : interval,
@@ -98,6 +99,5 @@ module ROTP
     def timecode(time)
       time.utc.to_i / interval
     end
-
   end
 end

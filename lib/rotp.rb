@@ -7,6 +7,4 @@ require 'rotp/otp'
 require 'rotp/hotp'
 require 'rotp/totp'
 
-
-module ROTP
-end
+module ROTP; end
