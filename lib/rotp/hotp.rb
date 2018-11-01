@@ -12,10 +12,10 @@ module ROTP
     # @param counter [Integer] the counter of the OTP
     # @param retries [Integer] number of counters to incrementally retry
     def verify(otp, counter, retries: 0)
-      counters = (counter..counter+retries).to_a
-      counters.find { |c|
-        super(otp, self.at(c))
-      }
+      counters = (counter..counter + retries).to_a
+      counters.find do |c|
+        super(otp, at(c))
+      end
     end
 
     # Returns the provisioning URI for the OTP
@@ -24,15 +24,13 @@ module ROTP
     # @param [String] name of the account
     # @param [Integer] initial_count starting counter value, defaults to 0
     # @return [String] provisioning uri
-    def provisioning_uri(name, initial_count=0)
+    def provisioning_uri(name, initial_count = 0)
       params = {
         secret: secret,
         counter: initial_count,
         digits: digits == DEFAULT_DIGITS ? nil : digits
       }
-      encode_params("otpauth://hotp/#{URI.encode(name)}", params)
+      encode_params("otpauth://hotp/#{Addressable::URI.escape(name)}", params)
     end
-
   end
-
 end

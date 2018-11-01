@@ -16,10 +16,10 @@ module ROTP
     # :nocov:
 
     def errors
-      if [:time, :hmac].include?(options.mode)
+      if %i[time hmac].include?(options.mode)
         if options.secret.to_s == ''
           red 'You must also specify a --secret. Try --help for help.'
-        elsif options.secret.to_s.chars.any? { |c| ROTP::Base32::CHARS.index(c.downcase) == nil }
+        elsif options.secret.to_s.chars.any? { |c| ROTP::Base32::CHARS.index(c.downcase).nil? }
           red 'Secret must be in RFC4648 Base32 format - http://en.wikipedia.org/wiki/Base32#RFC_4648_Base32_alphabet'
         end
       end
@@ -48,6 +48,5 @@ module ROTP
     def red(string)
       "\033[31m#{string}\033[0m"
     end
-
   end
 end

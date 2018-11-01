@@ -16,7 +16,7 @@ RSpec.describe ROTP::HOTP do
 
     context 'invalid counter' do
       it 'raises an error' do
-        expect { hotp.at(-123456) }.to raise_error(ArgumentError)
+        expect { hotp.at(-123_456) }.to raise_error(ArgumentError)
       end
     end
 
@@ -37,7 +37,6 @@ RSpec.describe ROTP::HOTP do
         expect(hotp.at(8)).to eq '399871'
         expect(hotp.at(9)).to eq '520489'
       end
-
     end
   end
 
@@ -45,7 +44,7 @@ RSpec.describe ROTP::HOTP do
     let(:verification) { hotp.verify token, counter }
 
     context 'numeric token' do
-      let(:token) { 161024 }
+      let(:token) { 161_024 }
 
       it 'raises an error' do
         expect { verification }.to raise_error(ArgumentError)
@@ -68,7 +67,7 @@ RSpec.describe ROTP::HOTP do
       end
     end
     describe 'with retries' do
-      let(:verification) { hotp.verify token, counter, retries:retries }
+      let(:verification) { hotp.verify token, counter, retries: retries }
 
       context 'counter outside than retries' do
         let(:counter) { 1223 }
@@ -110,7 +109,7 @@ RSpec.describe ROTP::HOTP do
 
   describe '#provisioning_uri' do
     let(:uri)    { hotp.provisioning_uri('mark@percival') }
-    let(:params) { CGI::parse URI::parse(uri).query }
+    let(:params) { CGI.parse URI.parse(uri).query }
 
     it 'has the correct format' do
       expect(uri).to match %r{\Aotpauth:\/\/hotp.+}
@@ -134,5 +133,4 @@ RSpec.describe ROTP::HOTP do
       end
     end
   end
-
 end

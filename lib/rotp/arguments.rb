@@ -3,7 +3,6 @@ require 'ostruct'
 
 module ROTP
   class Arguments
-
     def initialize(filename, arguments)
       @filename = filename
       @arguments = Array(arguments)
@@ -32,11 +31,11 @@ module ROTP
 
     def parse
       return options!.mode = :help if arguments.empty?
-      parser.parse arguments
 
+      parser.parse arguments
     rescue OptionParser::InvalidOption => exception
       options!.mode = :help
-      options!.warnings = red(exception.message +  '. Try --help for help.')
+      options!.warnings = red(exception.message + '. Try --help for help.')
     end
 
     def parser
@@ -83,7 +82,5 @@ module ROTP
     def red(string)
       "\033[31m#{string}\033[0m"
     end
-
   end
 end
-

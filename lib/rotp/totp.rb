@@ -1,7 +1,6 @@
 module ROTP
   DEFAULT_INTERVAL = 30
   class TOTP < OTP
-
     attr_reader :interval, :issuer
 
     # @option options [Integer] interval (30) the time interval in seconds for OTP
@@ -21,7 +20,7 @@ module ROTP
 
     # Generate the current time OTP
     # @return [Integer] the OTP as an integer
-    def now()
+    def now
       generate_otp(timecode(Time.now))
     end
 
@@ -40,19 +39,14 @@ module ROTP
     def verify(otp, drift_ahead: 0, drift_behind: 0, after: nil, at: Time.now)
       timecodes = get_timecodes(at, drift_behind, drift_ahead)
 
-      if after
-        timecodes = timecodes.select { |t| t > timecode(after) }
-      end
+      timecodes = timecodes.select { |t| t > timecode(after) } if after
 
       result = nil
-      timecodes.each { |t|
-        if (super(otp, self.generate_otp(t)))
-          result = t * interval
-        end
-      }
-      return result
+      timecodes.each do |t|
+        result = t * interval if super(otp, generate_otp(t))
+      end
+      result
     end
-
 
     # Returns the provisioning URI for the OTP
     # This can then be encoded in a QR Code and used
@@ -64,15 +58,15 @@ module ROTP
       # https://github.com/google/google-authenticator/wiki/Key-Uri-Format
       # For compatibility the issuer appears both before that account name and also in the
       # query string.
-      issuer_string = issuer.nil? ? "" : "#{URI.encode(issuer)}:"
+      issuer_string = issuer.nil? ? '' : "#{Addressable::URI.escape(issuer)}:"
       params = {
         secret: secret,
         period: interval == 30 ? nil : interval,
         issuer: issuer,
         digits: digits == DEFAULT_DIGITS ? nil : digits,
-        algorithm: digest.upcase == 'SHA1' ? nil : digest.upcase,
+        algorithm: digest.casecmp('SHA1').zero? ? nil : digest.upcase
       }
-      encode_params("otpauth://totp/#{issuer_string}#{URI.encode(name)}", params)
+      encode_params("otpauth://totp/#{issuer_string}#{Addressable::URI.escape(name)}", params)
     end
 
     private
@@ -82,20 +76,18 @@ module ROTP
       now = timeint(at)
       timecode_start = timecode(now - drift_behind)
       timecode_end = timecode(now + drift_ahead)
-      return (timecode_start..timecode_end).step(1).to_a
+      (timecode_start..timecode_end).step(1).to_a
     end
 
     # Ensure UTC int
     def timeint(time)
-      unless time.class == Time
-        return time.to_i
-      end
-      return time.utc.to_i
+      return time.to_i unless time.class == Time
+
+      time.utc.to_i
     end
 
     def timecode(time)
-      return timeint(time) / interval
+      timeint(time) / interval
     end
-
   end
 end

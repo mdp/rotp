@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 RSpec.describe ROTP::Base32 do
-
   describe '.random_base32' do
     context 'without arguments' do
       let(:base32) { ROTP::Base32.random_base32 }
@@ -10,8 +9,8 @@ RSpec.describe ROTP::Base32 do
         expect(base32.length).to eq 32
       end
 
-      it 'is hexadecimal' do
-        expect(base32).to match %r{\A[a-z2-7]+\z}
+      it 'is base32 charset' do
+        expect(base32).to match(/\A[a-z2-7]+\z/)
       end
     end
 

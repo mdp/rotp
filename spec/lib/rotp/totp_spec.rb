@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-TEST_TIME = Time.utc 2016,9,23,9 # 2016-09-23 09:00:00 UTC
-TEST_TOKEN = "082630"
+TEST_TIME = Time.utc 2016, 9, 23, 9 # 2016-09-23 09:00:00 UTC
+TEST_TOKEN = '082630'.freeze
 
 RSpec.describe ROTP::TOTP do
   let(:now)   { TEST_TIME }
@@ -19,11 +19,10 @@ RSpec.describe ROTP::TOTP do
       let(:totp) { ROTP::TOTP.new('GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ') }
 
       it 'matches the RFC documentation examples' do
-        expect(totp.at 1111111111).to eq '050471'
-        expect(totp.at 1234567890).to eq '005924'
-        expect(totp.at 2000000000).to eq '279037'
+        expect(totp.at(1_111_111_111)).to eq '050471'
+        expect(totp.at(1_234_567_890)).to eq '005924'
+        expect(totp.at(2_000_000_000)).to eq '279037'
       end
-
     end
   end
 
@@ -31,7 +30,7 @@ RSpec.describe ROTP::TOTP do
     let(:verification) { totp.verify token, at: now }
 
     context 'numeric token' do
-      let(:token) { 82630 }
+      let(:token) { 82_630 }
 
       it 'raises an error with an integer' do
         expect { verification }.to raise_error(ArgumentError)
@@ -53,7 +52,7 @@ RSpec.describe ROTP::TOTP do
     end
 
     context 'RFC compatibility' do
-      let(:totp)  { ROTP::TOTP.new 'wrn3pqx5uqxqvnqr' }
+      let(:totp) { ROTP::TOTP.new 'wrn3pqx5uqxqvnqr' }
 
       before do
         Timecop.freeze now
@@ -61,7 +60,7 @@ RSpec.describe ROTP::TOTP do
 
       context 'correct time based OTP' do
         let(:token) { '102705' }
-        let(:now)   { Time.at 1297553958 }
+        let(:now)   { Time.at 1_297_553_958 }
 
         it 'verifies' do
           expect(totp.verify('102705')).to be_truthy
@@ -75,17 +74,17 @@ RSpec.describe ROTP::TOTP do
       end
     end
     context 'invalidating reused tokens' do
-      let(:verification) {
+      let(:verification) do
         totp.verify token,
-        after: after,
-        at: now
-      }
+                    after: after,
+                    at: now
+      end
       let(:after) { nil }
 
       context 'passing in the `after` timestamp' do
-        let(:after) {
+        let(:after) do
           totp.verify TEST_TOKEN, after: nil, at: now
-        }
+        end
 
         it 'returns a timecode' do
           expect(after).to be_kind_of(Integer)
@@ -106,23 +105,23 @@ RSpec.describe ROTP::TOTP do
     totp.send('get_timecodes', at, b, a)
   end
 
-  describe "drifting timecodes" do
+  describe 'drifting timecodes' do
     it 'should get timecodes behind' do
-      expect(get_timecodes(TEST_TIME+15, 15, 0)).to eq([49154040])
-      expect(get_timecodes(TEST_TIME, 15, 0)).to eq([49154039, 49154040])
-      expect(get_timecodes(TEST_TIME, 40, 0)).to eq([49154038, 49154039, 49154040])
-      expect(get_timecodes(TEST_TIME, 90, 0)).to eq([49154037, 49154038, 49154039, 49154040])
+      expect(get_timecodes(TEST_TIME + 15, 15, 0)).to eq([49_154_040])
+      expect(get_timecodes(TEST_TIME, 15, 0)).to eq([49_154_039, 49_154_040])
+      expect(get_timecodes(TEST_TIME, 40, 0)).to eq([49_154_038, 49_154_039, 49_154_040])
+      expect(get_timecodes(TEST_TIME, 90, 0)).to eq([49_154_037, 49_154_038, 49_154_039, 49_154_040])
     end
     it 'should get timecodes ahead' do
-      expect(get_timecodes(TEST_TIME, 0, 15)).to eq([49154040])
-      expect(get_timecodes(TEST_TIME+15, 0, 15)).to eq([49154040, 49154041])
-      expect(get_timecodes(TEST_TIME, 0, 30)).to eq([49154040, 49154041])
-      expect(get_timecodes(TEST_TIME, 0, 70)).to eq([49154040, 49154041, 49154042])
-      expect(get_timecodes(TEST_TIME, 0, 90)).to eq([49154040, 49154041, 49154042, 49154043])
+      expect(get_timecodes(TEST_TIME, 0, 15)).to eq([49_154_040])
+      expect(get_timecodes(TEST_TIME + 15, 0, 15)).to eq([49_154_040, 49_154_041])
+      expect(get_timecodes(TEST_TIME, 0, 30)).to eq([49_154_040, 49_154_041])
+      expect(get_timecodes(TEST_TIME, 0, 70)).to eq([49_154_040, 49_154_041, 49_154_042])
+      expect(get_timecodes(TEST_TIME, 0, 90)).to eq([49_154_040, 49_154_041, 49_154_042, 49_154_043])
     end
     it 'should get timecodes behind and ahead' do
-      expect(get_timecodes(TEST_TIME, 30, 30)).to eq([49154039, 49154040, 49154041])
-      expect(get_timecodes(TEST_TIME, 60, 60)).to eq([49154038, 49154039, 49154040, 49154041, 49154042])
+      expect(get_timecodes(TEST_TIME, 30, 30)).to eq([49_154_039, 49_154_040, 49_154_041])
+      expect(get_timecodes(TEST_TIME, 60, 60)).to eq([49_154_038, 49_154_039, 49_154_040, 49_154_041, 49_154_042])
     end
   end
 
@@ -130,7 +129,6 @@ RSpec.describe ROTP::TOTP do
     let(:verification) { totp.verify token, drift_ahead: drift_ahead, drift_behind: drift_behind, at: now }
     let(:drift_ahead) { 0 }
     let(:drift_behind) { 0 }
-
 
     context 'with an old OTP' do
       let(:token) { totp.at TEST_TIME - 30 } # Previous token at 2016-09-23 08:59:30 UTC
@@ -151,7 +149,6 @@ RSpec.describe ROTP::TOTP do
           expect(verification).to be_nil
         end
       end
-
     end
 
     context 'with a future OTP' do
@@ -166,14 +163,13 @@ RSpec.describe ROTP::TOTP do
       # Tested at 2016-09-23 09:00:20 UTC, and with drift ahead to 2016-09-23 09:00:35 UTC
       # This would therefore include 2 intervals
       context 'inside of drift range' do
-        let(:now)   { TEST_TIME + 20 }
+        let(:now) { TEST_TIME + 20 }
 
         it 'is true' do
           expect(verification).to be_truthy
         end
       end
     end
-
   end
 
   describe '#verify with drift and prevent token reuse' do
@@ -183,7 +179,6 @@ RSpec.describe ROTP::TOTP do
     let(:after) { nil }
 
     context 'with the `after` timestamp set' do
-
       context 'older token' do
         let(:token) { totp.at TEST_TIME - 30 }
         let(:drift_behind) { 15 }
@@ -194,14 +189,13 @@ RSpec.describe ROTP::TOTP do
         end
 
         context 'after it has been used' do
-          let(:after) {
+          let(:after) do
             totp.verify token, after: nil, at: now, drift_behind: drift_behind
-          }
+          end
           it 'is false' do
             expect(verification).to be_falsey
           end
         end
-
       end
 
       context 'newer token' do
@@ -215,21 +209,20 @@ RSpec.describe ROTP::TOTP do
         end
 
         context 'after it has been used' do
-          let(:after) {
+          let(:after) do
             totp.verify token, after: nil, at: now, drift_ahead: drift_ahead
-          }
+          end
           it 'is false' do
             expect(verification).to be_falsey
           end
         end
-
       end
     end
   end
 
   describe '#provisioning_uri' do
     let(:uri)    { totp.provisioning_uri('mark@percival') }
-    let(:params) { CGI::parse URI::parse(uri).query }
+    let(:params) { CGI.parse URI.parse(uri).query }
 
     context 'without issuer' do
       it 'has the correct format' do
@@ -302,7 +295,6 @@ RSpec.describe ROTP::TOTP do
         expect(params['algorithm'].first).to eq 'SHA256'
       end
     end
-
   end
 
   describe '#now' do
@@ -312,7 +304,7 @@ RSpec.describe ROTP::TOTP do
 
     context 'Google Authenticator' do
       let(:totp) { ROTP::TOTP.new 'wrn3pqx5uqxqvnqr' }
-      let(:now)  { Time.at 1297553958 }
+      let(:now)  { Time.at 1_297_553_958 }
 
       it 'matches the known output' do
         expect(totp.now).to eq '102705'
@@ -321,12 +313,11 @@ RSpec.describe ROTP::TOTP do
 
     context 'Dropbox 26 char secret output' do
       let(:totp) { ROTP::TOTP.new 'tjtpqea6a42l56g5eym73go2oa' }
-      let(:now)  { Time.at 1378762454 }
+      let(:now)  { Time.at 1_378_762_454 }
 
       it 'matches the known output' do
         expect(totp.now).to eq '747864'
       end
     end
   end
-
 end

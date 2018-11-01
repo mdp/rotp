@@ -13,7 +13,7 @@ module ROTP
     # @returns [OTP] OTP instantiation
     def initialize(s, options = {})
       @digits = options[:digits] || DEFAULT_DIGITS
-      @digest = options[:digest] || "sha1"
+      @digest = options[:digest] || 'sha1'
       @secret = s
     end
 
@@ -30,17 +30,18 @@ module ROTP
 
       offset = hmac[-1].ord & 0xf
       code = (hmac[offset].ord & 0x7f) << 24 |
-        (hmac[offset + 1].ord & 0xff) << 16 |
-        (hmac[offset + 2].ord & 0xff) << 8 |
-        (hmac[offset + 3].ord & 0xff)
-      (code % 10 ** digits).to_s.rjust(digits, '0')
+             (hmac[offset + 1].ord & 0xff) << 16 |
+             (hmac[offset + 2].ord & 0xff) << 8 |
+             (hmac[offset + 3].ord & 0xff)
+      (code % 10**digits).to_s.rjust(digits, '0')
     end
 
     private
 
     def verify(input, generated)
-      raise ArgumentError, "`otp` should be a String" unless
+      raise ArgumentError, '`otp` should be a String' unless
           input.is_a?(String)
+
       time_constant_compare(input, generated)
     end
 
@@ -54,24 +55,22 @@ module ROTP
     #
     def int_to_bytestring(int, padding = 8)
       unless int >= 0
-        raise ArgumentError, "#int_to_bytestring requires a positive number"
+        raise ArgumentError, '#int_to_bytestring requires a positive number'
       end
 
       result = []
       until int == 0
         result << (int & 0xFF).chr
-        int >>=  8
+        int >>= 8
       end
       result.reverse.join.rjust(padding, 0.chr)
     end
 
     # A very simple param encoder
     def encode_params(uri, params)
-      params_str = String.new("?")
-      params.each do |k,v|
-        if v
-          params_str << "#{k}=#{CGI::escape(v.to_s)}&"
-        end
+      params_str = String.new('?')
+      params.each do |k, v|
+        params_str << "#{k}=#{CGI.escape(v.to_s)}&" if v
       end
       params_str.chop!
       uri + params_str
@@ -80,11 +79,11 @@ module ROTP
     # constant-time compare the strings
     def time_constant_compare(a, b)
       return false if a.empty? || b.empty? || a.bytesize != b.bytesize
+
       l = a.unpack "C#{a.bytesize}"
       res = 0
       b.each_byte { |byte| res |= byte ^ l.shift }
       res == 0
     end
-
   end
 end

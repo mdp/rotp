@@ -1,5 +1,5 @@
 guard :rspec, cmd: 'bundle exec rspec --format progress' do
-  require "guard/rspec/dsl"
+  require 'guard/rspec/dsl'
   dsl = Guard::RSpec::Dsl.new(self)
 
   # RSpec files

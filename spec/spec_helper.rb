@@ -1,6 +1,6 @@
 require 'simplecov'
 SimpleCov.start do
-  add_filter "/spec/"
+  add_filter '/spec/'
 end
 
 require 'rotp'
@@ -16,6 +16,5 @@ RSpec.configure do |config|
     Timecop.return
   end
 end
-
 
 require_relative '../lib/rotp'

@@ -24,7 +24,7 @@ RSpec.describe ROTP::Arguments do
   end
 
   context 'unknown arguments' do
-    let(:argv) { %w(--does-not-exist -xyz) }
+    let(:argv) { %w[--does-not-exist -xyz] }
 
     describe '#options' do
       it 'is in help mode' do
@@ -48,7 +48,7 @@ RSpec.describe ROTP::Arguments do
   end
 
   context 'asking for help' do
-    let(:argv) { %w(--help) }
+    let(:argv) { %w[--help] }
 
     describe '#options' do
       it 'is in help mode' do
@@ -58,7 +58,7 @@ RSpec.describe ROTP::Arguments do
   end
 
   context 'generating a counter based secret' do
-    let(:argv) { %w(--hmac --secret s3same) }
+    let(:argv) { %w[--hmac --secret s3same] }
 
     describe '#options' do
       it 'is in hmac mode' do
@@ -72,7 +72,7 @@ RSpec.describe ROTP::Arguments do
   end
 
   context 'generating a counter based secret' do
-    let(:argv) { %w(--time --secret s3same) }
+    let(:argv) { %w[--time --secret s3same] }
 
     describe '#options' do
       it 'is in hmac mode' do
@@ -86,7 +86,7 @@ RSpec.describe ROTP::Arguments do
   end
 
   context 'generating a time based secret' do
-    let(:argv) { %w(--secret s3same) }
+    let(:argv) { %w[--secret s3same] }
 
     describe '#options' do
       it 'is in time mode' do
@@ -98,5 +98,4 @@ RSpec.describe ROTP::Arguments do
       end
     end
   end
-
 end
