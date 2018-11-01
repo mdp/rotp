@@ -6,7 +6,7 @@
 
 A ruby library for generating and validating one time passwords (HOTP & TOTP) according to [RFC 4226](http://tools.ietf.org/html/rfc4226) and [RFC 6238](http://tools.ietf.org/html/rfc6238).
 
-ROTP is compatible with [Google Authenticator](https://github.com/google/google-authenticator) available for [Android](https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2) and [iPhone](https://itunes.apple.com/en/app/google-authenticator/id388497605).
+ROTP is compatible with [Google Authenticator](https://github.com/google/google-authenticator) available for [Android](https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2) and [iPhone](https://itunes.apple.com/en/app/google-authenticator/id388497605) and any other TOTP based implementations.
 
 Many websites use this for [multi-factor authentication](https://www.youtube.com/watch?v=17rykTIX_HY), such as GMail, Facebook, Amazon EC2, WordPress, and Salesforce. You can find a more complete [list here](https://en.wikipedia.org/wiki/Google_Authenticator#Usage).
 
@@ -26,7 +26,7 @@ Many websites use this for [multi-factor authentication](https://www.youtube.com
 ## Installation
 
 ```bash
-gem install rotp --version 4.0.0.beta.1
+gem install rotp
 ```
 
 ## Library Usage
@@ -86,7 +86,7 @@ last_otp_at = totp.verify("492039", after: user.last_otp_at) #=> nil
 
 ### Verifying a Time based OTP with drift
 
-Some users may enter a code just after has expired. By adding 'drift' you can allow
+Some users may enter a code just after it has expired. By adding 'drift' you can allow
 for a recently expired token to remain valid.
 
 ```ruby
@@ -145,8 +145,7 @@ bundle exec rspec
 
 ## Executable Usage
 
-Once the rotp rubygem is installed on your system, you should be able to run the `rotp` executable
-(if not, you might find trouble-shooting help [at this stackoverflow question](http://stackoverflow.com/a/909980)).
+The rotp rubygem includes an executable for helping with testing and debugging
 
 ```bash
 # Try this to get an overview of the commands
