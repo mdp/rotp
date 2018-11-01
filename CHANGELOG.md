@@ -1,5 +1,10 @@
 ### Changelog
 
+### 4.0.1
+
+- Rubocop for style fixes
+- Replace deprecated URI.encode with Addressable's version
+
 #### 4.0.0
 
 - Simplify API
