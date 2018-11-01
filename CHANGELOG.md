@@ -5,6 +5,12 @@
 - Simplify API
 - Remove support for Ruby < 2.0
 
+#### 3.3.1
+
+- Add OpenSSL as a requirement for Ruby 2.5. Fixes #70 & #64
+- Allow Base32 with padding. #71
+- Prevent verify with drift being negative #69
+
 #### 3.3.0
 
 - Add digest algorithm parameter for non SHA1 digests - #62 from @btalbot

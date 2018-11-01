@@ -53,6 +53,10 @@ module ROTP
     # along with the secret
     #
     def int_to_bytestring(int, padding = 8)
+      unless int >= 0
+        raise ArgumentError, "#int_to_bytestring requires a positive number"
+      end
+
       result = []
       until int == 0
         result << (int & 0xFF).chr

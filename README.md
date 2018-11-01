@@ -37,9 +37,12 @@ gem install rotp --version 4.0.0.beta.1
 totp = ROTP::TOTP.new("base32secret3232", issuer: "My Service")
 totp.now # => "492039"
 
-# OTP verified for current time - returns timestamp of verification
+# OTP verified for current time - returns timestamp of the current interval
+# period.
 totp.verify("492039") # => 1474590700
+
 sleep 30
+
 # OTP fails to verify - returns nil
 totp.verify("492039") # => nil
 ```
@@ -48,9 +51,9 @@ totp.verify("492039") # => nil
 
 ```ruby
 hotp = ROTP::HOTP.new("base32secretkey3232")
-hotp.at(0) # => "260182"
-hotp.at(1) # => "055283"
-hotp.at(1401) # => "316439"
+hotp.at(0) # => "786922"
+hotp.at(1) # => "595254"
+hotp.at(1401) # => "259769"
 
 # OTP verified with a counter
 hotp.verify("316439", 1401) # => 1401
