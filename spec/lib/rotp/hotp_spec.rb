@@ -14,6 +14,12 @@ RSpec.describe ROTP::HOTP do
       end
     end
 
+    context 'invalid counter' do
+      it 'raises an error' do
+        expect { hotp.at(-123456) }.to raise_error(ArgumentError)
+      end
+    end
+
     context 'RFC compatibility' do
       let(:hotp) { ROTP::HOTP.new('GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ') }
 
