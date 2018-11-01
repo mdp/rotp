@@ -21,7 +21,7 @@ Many websites use this for [multi-factor authentication](https://www.youtube.com
   - `verify` now takes options for `drift` and `after`
   - `verify` returns a timestamp if true, nil if false
 - Dropping support for Ruby < 2.0
-- Docs for 3.x can be found [here](https://github.com/mdp/rotp/tree/v3.3.0)
+- Docs for 3.x can be found [here](https://github.com/mdp/rotp/tree/v3.x)
 
 ## Installation
 
