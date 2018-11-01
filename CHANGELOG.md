@@ -1,5 +1,9 @@
 ### Changelog
 
+### 4.0.2
+
+- Fix gemspec requirment for Addressable
+
 ### 4.0.1
 
 - Rubocop for style fixes
