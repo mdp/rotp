@@ -150,6 +150,16 @@ bundle install
 bundle exec rspec
 ```
 
+### Testign with Docker
+
+In order to make it easier to test against different ruby version, ROTP comes
+with a set of Dockerfiles for each version that we test against in Travis
+
+```bash
+docker build -f Dockerfile-2.6 -t rotp_2.6 .
+docker run --rm -v $(pwd):/usr/src/app rotp_2.6
+```
+
 ## Executable Usage
 
 The rotp rubygem includes an executable for helping with testing and debugging
