@@ -5,10 +5,10 @@ module ROTP
 
     # @param [String] secret in the form of base32
     # @option options digits [Integer] (6)
-    #     Number of integers in the OTP
+    #     Number of integers in the OTP.
     #     Google Authenticate only supports 6 currently
     # @option options digest [String] (sha1)
-    #     Digest used in the HMAC
+    #     Digest used in the HMAC.
     #     Google Authenticate only supports 'sha1' currently
     # @returns [OTP] OTP instantiation
     def initialize(s, options = {})

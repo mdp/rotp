@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/mdp/rotp.svg?branch=master)](https://travis-ci.org/mdp/rotp)
 [![Gem Version](https://badge.fury.io/rb/rotp.svg)](https://rubygems.org/gems/rotp)
+[![Documentation](http://img.shields.io/badge/docs-rdoc.info-blue.svg)](https://www.rubydoc.info/github/mdp/rotp/master)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/mdp/rotp/blob/master/LICENSE)
 
 A ruby library for generating and validating one time passwords (HOTP & TOTP) according to [RFC 4226](http://tools.ietf.org/html/rfc4226) and [RFC 6238](http://tools.ietf.org/html/rfc6238).
@@ -72,14 +73,17 @@ User.find(someUserID)
 totp = ROTP::TOTP.new(user.otp_secret)
 totp.now # => "492039"
 
+# Let's take a look at the last time the user authenticated with an OTP
 user.last_otp_at # => 1432703530
 
 # Verify the OTP
 last_otp_at = totp.verify("492039", after: user.last_otp_at) #=> 1472145760
 # ROTP returns the timestamp(int) of the current period
+
 # Store this on the user's account
 user.update(last_otp_at: last_otp_at)
-# Someone attempts to reused the OTP inside the 30s window
+
+# Someone attempts to reuse the OTP inside the 30s window
 last_otp_at = totp.verify("492039", after: user.last_otp_at) #=> nil
 # It fails to verify because we are still in the same 30s interval window
 ```
@@ -165,7 +169,7 @@ Have a look at the [contributors graph](https://github.com/mdp/rotp/graphs/contr
 
 ## License
 
-MIT Copyright (C) 2016 by Mark Percival, see [LICENSE](https://github.com/mdp/rotp/blob/master/LICENSE) for details.
+MIT Copyright (C) 2019 by Mark Percival, see [LICENSE](https://github.com/mdp/rotp/blob/master/LICENSE) for details.
 
 ## Other implementations
 
