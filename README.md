@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/mdp/rotp.svg?branch=master)](https://travis-ci.org/mdp/rotp)
 [![Gem Version](https://badge.fury.io/rb/rotp.svg)](https://rubygems.org/gems/rotp)
-[![Documentation](http://img.shields.io/badge/docs-rdoc.info-blue.svg)](https://www.rubydoc.info/github/mdp/rotp)
+[![Documentation](http://img.shields.io/badge/docs-rdoc.info-blue.svg)](https://www.rubydoc.info/github/mdp/rotp/master)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/mdp/rotp/blob/master/LICENSE)
 
 A ruby library for generating and validating one time passwords (HOTP & TOTP) according to [RFC 4226](http://tools.ietf.org/html/rfc4226) and [RFC 6238](http://tools.ietf.org/html/rfc6238).
@@ -166,7 +166,7 @@ Have a look at the [contributors graph](https://github.com/mdp/rotp/graphs/contr
 
 ## License
 
-MIT Copyright (C) 2016 by Mark Percival, see [LICENSE](https://github.com/mdp/rotp/blob/master/LICENSE) for details.
+MIT Copyright (C) 2019 by Mark Percival, see [LICENSE](https://github.com/mdp/rotp/blob/master/LICENSE) for details.
 
 ## Other implementations
 
