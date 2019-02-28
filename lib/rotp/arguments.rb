@@ -68,6 +68,10 @@ module ROTP
         parser.on_tail('-h', '--help', 'Show this message') do
           options!.mode = :help
         end
+
+        parser.on('-d', '--digest [ALGORITHM]', 'Use algorithm for the digest (default sha1)') do |digest|
+          options!.digest = digest
+        end
       end
     end
 
