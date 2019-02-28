@@ -18,6 +18,14 @@ RSpec.describe ROTP::CLI do
     end
   end
 
+  context 'generating a TOTP with sha256 digest' do
+    let(:argv) { %w[--secret JBSWY3DPEHPK3PXP --digest sha256] }
+
+    it 'prints the corresponding token' do
+      expect(output).to eq '544902'
+    end
+  end
+
   context 'generating a TOTP with no secret' do
     let(:argv) { %w[--time --secret] }
 
@@ -47,6 +55,14 @@ RSpec.describe ROTP::CLI do
 
     it 'prints the corresponding token' do
       expect(output).to eq '161024'
+    end
+  end
+
+  context 'generating a HOTP' do
+    let(:argv) { %W[--hmac --secret #{'a' * 32} --counter 1234 --digest sha256] }
+
+    it 'prints the corresponding token' do
+      expect(output).to eq '325941'
     end
   end
 end
