@@ -1,5 +1,11 @@
 ### Changelog
 
+### 4.1.0
+
+- Add a digest option to the CLI #83
+- Fix provisioning URI is README #82
+- Improvements to docs
+
 ### 4.0.2
 
 - Fix gemspec requirment for Addressable
