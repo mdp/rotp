@@ -1,5 +1,11 @@
 ### Changelog
 
+### 5.0.0
+
+- Clean up base32 implementation to match Google Autheticator
+- BREAKING `Base32.random_base32` renamed to random
+  - The argument is now byte length vs output string length for more precise bit strengths
+
 ### 4.1.0
 
 - Add a digest option to the CLI #83

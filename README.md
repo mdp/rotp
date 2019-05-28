@@ -16,7 +16,16 @@ Many websites use this for [multi-factor authentication](https://www.youtube.com
 * OpenSSL
 * Ruby 2.0 or higher
 
-## Breaking changes in >= 4.0
+## Breaking changes
+
+### Breaking changes in >= 5.0
+
+- `ROTP::Base32.random_base32` is now `ROTP::Base32.random` and the argument
+  has changed from secret string length to byte length to allow for more
+  precision
+- Cleaned up the Base32 implementation to better match Google Authenticator's version
+
+### Breaking changes in >= 4.0
 
 - Simplified API
   - `verify` now takes options for `drift` and `after`
@@ -108,7 +117,7 @@ totp.verify("250939", drift_behind: 15, at: now + 45) # => nil
 ### Generating a Base32 Secret key
 
 ```ruby
-ROTP::Base32.random_base32  # returns a 32 character base32 secret. Compatible with Google Authenticator
+ROTP::Base32.random  # returns a 160 bit (32 character) base32 secret. Compatible with Google Authenticator
 ```
 
 Note: The Base32 format conforms to [RFC 4648 Base32](http://en.wikipedia.org/wiki/Base32#RFC_4648_Base32_alphabet)
@@ -150,7 +159,7 @@ bundle install
 bundle exec rspec
 ```
 
-### Testign with Docker
+### Testing with Docker
 
 In order to make it easier to test against different ruby version, ROTP comes
 with a set of Dockerfiles for each version that we test against in Travis
@@ -162,7 +171,7 @@ docker run --rm -v $(pwd):/usr/src/app rotp_2.6
 
 ## Executable Usage
 
-The rotp rubygem includes an executable for helping with testing and debugging
+The rotp rubygem includes CLI version to help with testing and debugging
 
 ```bash
 # Try this to get an overview of the commands
