@@ -1,51 +1,67 @@
 module ROTP
   class Base32
     class Base32Error < RuntimeError; end
-    CHARS = 'abcdefghijklmnopqrstuvwxyz234567'.each_char.to_a
+    CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567'.each_char.to_a
+    SHIFT = 5
+    MASK = 31
 
     class << self
+
       def decode(str)
-        str = str.tr('=', '')
-        output = []
-        str.scan(/.{1,8}/).each do |block|
-          char_array = decode_block(block).map(&:chr)
-          output << char_array
+        buffer = 0
+        idx = 0
+        bits_left = 0
+        str = str.tr('=', '').upcase
+        result = []
+        str.split('').each do |char|
+          buffer = buffer << SHIFT
+          buffer = buffer | (decode_quint(char) & MASK)
+          bits_left = bits_left + SHIFT
+          if bits_left >= 8
+            result[idx] = (buffer >> (bits_left - 8)) & 255
+            idx = idx + 1
+            bits_left = bits_left - 8
+          end
         end
-        output.join
+        result.pack('c*')
       end
 
-      def random_base32(length = 32)
-        b32 = ''
-        SecureRandom.random_bytes(length).each_byte do |b|
-          b32 << CHARS[b % 32]
+      def encode(b)
+        data = b.unpack('c*')
+        out = ''
+        buffer = data[0]
+        idx = 1
+        bits_left = 8
+        while bits_left > 0 || idx < data.length
+          if bits_left < SHIFT
+            if idx < data.length
+              buffer = buffer << 8
+              buffer = buffer | (data[idx] & 255)
+              bits_left = bits_left + 8
+              idx = idx + 1
+            else
+              pad = SHIFT - bits_left
+              buffer = buffer << pad
+              bits_left = bits_left + pad
+            end
+          end
+          val = MASK & (buffer >> (bits_left - SHIFT))
+          bits_left = bits_left - SHIFT
+          out.concat(CHARS[val])
         end
-        b32
+        return out
+      end
+
+      # Defaults to 160 bit long secret (meaning a 32 character long base32 secret)
+      def random(byte_length = 20)
+       rand_bytes = SecureRandom.random_bytes(byte_length)
+       self.encode(rand_bytes)
       end
 
       private
 
-      def decode_block(block)
-        length = block.scan(/[^=]/).length
-        quints = block.each_char.map { |c| decode_quint(c) }
-        bytes = []
-        bytes[0] = (quints[0] << 3) + (quints[1] ? quints[1] >> 2 : 0)
-        return bytes if length < 3
-
-        bytes[1] = ((quints[1] & 3) << 6) + (quints[2] << 1) + (quints[3] ? quints[3] >> 4 : 0)
-        return bytes if length < 4
-
-        bytes[2] = ((quints[3] & 15) << 4) + (quints[4] ? quints[4] >> 1 : 0)
-        return bytes if length < 6
-
-        bytes[3] = ((quints[4] & 1) << 7) + (quints[5] << 2) + (quints[6] ? quints[6] >> 3 : 0)
-        return bytes if length < 7
-
-        bytes[4] = ((quints[6] & 7) << 5) + (quints[7] || 0)
-        bytes
-      end
-
       def decode_quint(q)
-        CHARS.index(q.downcase) || raise(Base32Error, "Invalid Base32 Character - '#{q}'")
+        CHARS.index(q) || raise(Base32Error, "Invalid Base32 Character - '#{q}'")
       end
     end
   end
