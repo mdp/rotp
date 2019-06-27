@@ -58,6 +58,8 @@ module ROTP
        self.encode(rand_bytes)
       end
 
+      alias_method :random_base32, :random
+
       private
 
       def decode_quint(q)

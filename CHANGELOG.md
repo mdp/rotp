@@ -1,5 +1,10 @@
 ### Changelog
 
+### 5.0.1
+
+- Alias `random_base32` to `random` to avoid breaking
+  - Still needed to bump to 5.x due to Base32 cleanup
+
 ### 5.0.0
 
 - Clean up base32 implementation to match Google Autheticator
