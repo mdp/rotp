@@ -58,7 +58,11 @@ module ROTP
        self.encode(rand_bytes)
       end
 
-      alias_method :random_base32, :random
+      # Prevent breaking changes
+      def random_base32(str_len = 32)
+        byte_length = str_len * 5/8
+        random(byte_length)
+      end
 
       private
 

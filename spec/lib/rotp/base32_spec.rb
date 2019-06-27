@@ -24,9 +24,10 @@ RSpec.describe ROTP::Base32 do
     end
 
     context 'alias to older random_base32' do
-      let(:base32) { ROTP::Base32.random_base32 }
+      let(:base32) { ROTP::Base32.random_base32(36) }
       it 'is base32 charset' do
-        expect(base32).to match(/\A[A-Z2-7]+\z/)
+        expect(base32.length).to eq 36
+        expect(ROTP::Base32.decode(base32).length).to eq 22
       end
     end
   end

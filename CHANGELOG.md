@@ -1,8 +1,8 @@
 ### Changelog
 
-### 5.0.1
+### 5.1.0
 
-- Alias `random_base32` to `random` to avoid breaking
+- Create `random_base32` to perform `random` to avoid breaking changes
   - Still needed to bump to 5.x due to Base32 cleanup
 
 ### 5.0.0
