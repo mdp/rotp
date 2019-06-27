@@ -22,8 +22,8 @@ Many websites use this for [multi-factor authentication](https://www.youtube.com
 
 - `ROTP::Base32.random_base32` is now `ROTP::Base32.random` and the argument
   has changed from secret string length to byte length to allow for more
-  precision
-- Cleaned up the Base32 implementation to better match Google Authenticator's version
+  precision. There is an alias to allow for `random_base32` for the time being.
+- Cleaned up the Base32 implementation to match Google Authenticator's version.
 
 ### Breaking changes in >= 4.0
 
