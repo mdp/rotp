@@ -11,8 +11,6 @@ Gem::Specification.new do |s|
   s.summary     = 'A Ruby library for generating and verifying one time passwords'
   s.description = 'Works for both HOTP and TOTP, and includes QR Code provisioning'
 
-  s.rubyforge_project = 'rotp'
-
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map { |f| File.basename(f) }
