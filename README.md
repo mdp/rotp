@@ -78,7 +78,7 @@ the interval window (default 30 seconds)
 The following is an example of this in action:
 
 ```ruby
-User.find(someUserID)
+user = User.find(someUserID)
 totp = ROTP::TOTP.new(user.otp_secret)
 totp.now # => "492039"
 
