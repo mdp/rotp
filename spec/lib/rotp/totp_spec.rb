@@ -295,6 +295,23 @@ RSpec.describe ROTP::TOTP do
         expect(params['algorithm'].first).to eq 'SHA256'
       end
     end
+
+    context 'with image' do
+      let(:totp)  { ROTP::TOTP.new 'JBSWY3DPEHPK3PXP', image: 'https://example.com/logo.png' }
+
+      it 'has the correct format' do
+        expect(uri).to match %r{\Aotpauth:\/\/totp/.+}
+      end
+
+      it 'includes the secret as parameter' do
+        expect(params['secret'].first).to eq 'JBSWY3DPEHPK3PXP'
+      end
+
+      it 'includes the image as parameter' do
+        expect(params['image'].first).to eq 'https://example.com/logo.png'
+      end
+    end
+
   end
 
   describe '#now' do

@@ -1,13 +1,14 @@
 module ROTP
   DEFAULT_INTERVAL = 30
   class TOTP < OTP
-    attr_reader :interval, :issuer
+    attr_reader :interval, :issuer, :image
 
     # @option options [Integer] interval (30) the time interval in seconds for OTP
     #     This defaults to 30 which is standard.
     def initialize(s, options = {})
       @interval = options[:interval] || DEFAULT_INTERVAL
       @issuer = options[:issuer]
+      @image = options[:image]
       super
     end
 
@@ -63,6 +64,7 @@ module ROTP
         secret: secret,
         period: interval == 30 ? nil : interval,
         issuer: issuer,
+        image: image,
         digits: digits == DEFAULT_DIGITS ? nil : digits,
         algorithm: digest.casecmp('SHA1').zero? ? nil : digest.upcase
       }
