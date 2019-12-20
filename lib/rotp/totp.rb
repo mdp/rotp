@@ -1,13 +1,12 @@
 module ROTP
   DEFAULT_INTERVAL = 30
   class TOTP < OTP
-    attr_reader :interval, :issuer
+    attr_reader :interval
 
     # @option options [Integer] interval (30) the time interval in seconds for OTP
     #     This defaults to 30 which is standard.
     def initialize(s, options = {})
       @interval = options[:interval] || DEFAULT_INTERVAL
-      @issuer = options[:issuer]
       super
     end
 
@@ -53,19 +52,18 @@ module ROTP
     # to provision the Google Authenticator app
     # @param [String] name of the account
     # @return [String] provisioning URI
-    def provisioning_uri(name)
+    def provisioning_uri(name=nil)
       # The format of this URI is documented at:
       # https://github.com/google/google-authenticator/wiki/Key-Uri-Format
       # For compatibility the issuer appears both before that account name and also in the
       # query string.
+      name = name || @name
       issuer_string = issuer.nil? ? '' : "#{Addressable::URI.escape(issuer)}:"
-      params = {
-        secret: secret,
+      params = default_provisioning_params
+      params.merge!({
         period: interval == 30 ? nil : interval,
-        issuer: issuer,
-        digits: digits == DEFAULT_DIGITS ? nil : digits,
-        algorithm: digest.casecmp('SHA1').zero? ? nil : digest.upcase
-      }
+      })
+      params.merge!(provisioning_params)
       encode_params("otpauth://totp/#{issuer_string}#{Addressable::URI.escape(name)}", params)
     end
 

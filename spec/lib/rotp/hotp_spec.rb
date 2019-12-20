@@ -108,7 +108,7 @@ RSpec.describe ROTP::HOTP do
   end
 
   describe '#provisioning_uri' do
-    let(:uri)    { hotp.provisioning_uri('mark@percival') }
+    let(:uri)    { hotp.provisioning_uri() }
     let(:params) { CGI.parse URI.parse(uri).query }
 
     it 'has the correct format' do
@@ -130,6 +130,44 @@ RSpec.describe ROTP::HOTP do
 
       it 'includes digits parameter' do
         expect(params['digits'].first).to eq '8'
+      end
+    end
+
+    context 'with name' do
+      let(:hotp)  { ROTP::HOTP.new 'JBSWY3DPEHPK3PXP', issuer: 'FooCo', name: 'mark@percival' }
+
+      it 'has the correct format' do
+        expect(uri).to match %r{\Aotpauth:\/\/hotp/FooCo:mark@percival.+}
+      end
+
+      it 'includes the secret as parameter' do
+        expect(params['secret'].first).to eq 'JBSWY3DPEHPK3PXP'
+      end
+
+      it 'includes the issuer as parameter' do
+        expect(params['issuer'].first).to eq 'FooCo'
+      end
+    end
+
+    # For backwards compatibility, let people pass through a name to the provisioning_uri method
+    context 'legacy passing name through' do
+      let(:hotp)  { ROTP::HOTP.new 'JBSWY3DPEHPK3PXP', issuer: 'FooCo'}
+      let(:uri)    { hotp.provisioning_uri('alice@google.com') }
+
+      it 'has the correct format' do
+        expect(uri).to match %r{\Aotpauth:\/\/hotp/FooCo:alice@google.com.+}
+      end
+    end
+
+    context 'with non-standard provisioning_params' do
+      let(:hotp) { ROTP::HOTP.new('a' * 32, digits: 8, provisioning_params: {image: 'https://example.com/icon.png'}) }
+
+      it 'has the correct format' do
+        expect(uri).to match %r{\Aotpauth:\/\/hotp.+}
+      end
+
+      it 'includes the issuer as parameter' do
+        expect(params['image'].first).to eq 'https://example.com/icon.png'
       end
     end
   end

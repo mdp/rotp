@@ -1,5 +1,14 @@
 module ROTP
   class HOTP < OTP
+    attr_reader :initial_counter
+
+    # @option options [Integer] initial_counter (0) the initial counter for provisioning
+    #     This defaults to 30 which is standard.
+    def initialize(s, options = {})
+      @initial_counter = options[:initial_counter] || 0
+      super
+    end
+
     # Generates the OTP for the given count
     # @param [Integer] count counter
     # @returns [Integer] OTP
@@ -22,15 +31,17 @@ module ROTP
     # This can then be encoded in a QR Code and used
     # to provision the Google Authenticator app
     # @param [String] name of the account
-    # @param [Integer] initial_count starting counter value, defaults to 0
+    # @param [Integer] initial_counter starting counter value, defaults to 0
     # @return [String] provisioning uri
-    def provisioning_uri(name, initial_count = 0)
-      params = {
-        secret: secret,
-        counter: initial_count,
-        digits: digits == DEFAULT_DIGITS ? nil : digits
-      }
-      encode_params("otpauth://hotp/#{Addressable::URI.escape(name)}", params)
+    def provisioning_uri(name=nil, init_counter = 0)
+      name = name || @name
+      issuer_string = issuer.nil? ? '' : "#{Addressable::URI.escape(issuer)}:"
+      params = default_provisioning_params()
+      params.merge!({
+        counter: init_counter || initial_counter,
+      })
+      params.merge!(@provisioning_params)
+      encode_params("otpauth://hotp/#{issuer_string}#{Addressable::URI.escape(name)}", params)
     end
   end
 end
