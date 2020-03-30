@@ -262,6 +262,14 @@ RSpec.describe ROTP::TOTP do
       it 'includes the issuer as parameter' do
         expect(params['issuer'].first).to eq 'FooCo'
       end
+
+      context 'with spaces in issuer' do
+        let(:totp)  { ROTP::TOTP.new 'JBSWY3DPEHPK3PXP', issuer: 'Foo Co' }
+
+        it 'includes the uri encoded issuer as parameter' do
+          expect(params['issuer'].first).to eq 'Foo%20Co'
+        end
+      end
     end
 
     context 'with custom interval' do
