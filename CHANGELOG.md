@@ -1,10 +1,10 @@
 ### Changelog
 
-### 5.1.1
+### 6.0.0
 
+- Dropping support for Ruby <2.3 (Major version bump)
 - Fix issue when using --enable-frozen-string-literal Ruby option #95 (jeremyevans)
 - Update gems (rake, addressable)
-  - Updated gems removes support for Ruby <2.3
 
 ### 5.1.0
 
