@@ -1,5 +1,11 @@
 ### Changelog
 
+### 5.1.1
+
+- Fix issue when using --enable-frozen-string-literal Ruby option #95 (jeremyevans)
+- Update gems (rake, addressable)
+  - Updated gems removes support for Ruby <2.5. Seeing as 2.3 is now longer getting security patches, this seems like a non-issue
+
 ### 5.1.0
 
 - Create `random_base32` to perform `random` to avoid breaking changes
