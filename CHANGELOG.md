@@ -4,7 +4,7 @@
 
 - Fix issue when using --enable-frozen-string-literal Ruby option #95 (jeremyevans)
 - Update gems (rake, addressable)
-  - Updated gems removes support for Ruby <2.5. Seeing as 2.3 is now longer getting security patches, this seems like a non-issue
+  - Updated gems removes support for Ruby <2.3
 
 ### 5.1.0
 
