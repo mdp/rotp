@@ -28,7 +28,7 @@ module ROTP
 
       def encode(b)
         data = b.unpack('c*')
-        out = ''
+        out = String.new
         buffer = data[0]
         idx = 1
         bits_left = 8
