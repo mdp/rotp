@@ -1,5 +1,12 @@
 ### Changelog
 
+### 6.0.0
+
+- Dropping support for Ruby <2.3 (Major version bump)
+- Fix issue when using --enable-frozen-string-literal Ruby option #95 (jeremyevans)
+- Update gems (rake, addressable)
+- Update Travis tests to include Ruby 2.7
+
 ### 5.1.0
 
 - Create `random_base32` to perform `random` to avoid breaking changes
