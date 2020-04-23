@@ -66,8 +66,8 @@ hotp.at(1) # => "595254"
 hotp.at(1401) # => "259769"
 
 # OTP verified with a counter
-hotp.verify("316439", 1401) # => 1401
-hotp.verify("316439", 1402) # => nil
+hotp.verify("259769", 1401) # => 1401
+hotp.verify("259769", 1402) # => nil
 ```
 
 ### Preventing reuse of Time based OTP's
