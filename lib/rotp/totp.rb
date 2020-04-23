@@ -62,7 +62,7 @@ module ROTP
       params = {
         secret: secret,
         period: interval == 30 ? nil : interval,
-        issuer: issuer,
+        issuer: Addressable::URI.encode(issuer),
         digits: digits == DEFAULT_DIGITS ? nil : digits,
         algorithm: digest.casecmp('SHA1').zero? ? nil : digest.upcase
       }

@@ -129,7 +129,7 @@ Google Authenticator.
 
 ```ruby
 totp = ROTP::TOTP.new("base32secret3232", issuer: "My Service")
-totp.provisioning_uri("alice@google.com") # => 'otpauth://totp/My%20Service:alice@google.com?secret=base32secret3232&issuer=My+Service'
+totp.provisioning_uri("alice@google.com") # => 'otpauth://totp/My%20Service:alice@google.com?secret=base32secret3232&issuer=My%20Service'
 
 hotp = ROTP::HOTP.new("base32secret3232", issuer: "My Service")
 hotp.provisioning_uri("alice@google.com", 0) # => 'otpauth://hotp/alice@google.com?secret=base32secret3232&counter=0'
