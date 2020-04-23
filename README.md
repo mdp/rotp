@@ -18,6 +18,10 @@ Many websites use this for [multi-factor authentication](https://www.youtube.com
 
 ## Breaking changes
 
+### Breaking changes in >= 6.0
+
+- Dropping support for Ruby <2.3
+
 ### Breaking changes in >= 5.0
 
 - `ROTP::Base32.random_base32` is now `ROTP::Base32.random` and the argument
