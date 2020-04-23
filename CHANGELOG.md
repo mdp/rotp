@@ -4,6 +4,7 @@
 
 - Dropping support for Ruby <2.3 (Major version bump)
 - Fix issue when using --enable-frozen-string-literal Ruby option #95 (jeremyevans)
+- URI Encoding fix #94 (ksuh90)
 - Update gems (rake, addressable)
 - Update Travis tests to include Ruby 2.7
 
