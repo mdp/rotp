@@ -66,16 +66,6 @@ module ROTP
       result.reverse.join.rjust(padding, 0.chr)
     end
 
-    # A very simple param encoder
-    def encode_params(uri, params)
-      params_str = String.new('?')
-      params.each do |k, v|
-        params_str << "#{k}=#{CGI.escape(v.to_s)}&" if v
-      end
-      params_str.chop!
-      uri + params_str
-    end
-
     # constant-time compare the strings
     def time_constant_compare(a, b)
       return false if a.empty? || b.empty? || a.bytesize != b.bytesize
