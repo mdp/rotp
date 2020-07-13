@@ -25,12 +25,7 @@ module ROTP
     # @param [Integer] initial_count starting counter value, defaults to 0
     # @return [String] provisioning uri
     def provisioning_uri(name, initial_count = 0)
-      params = {
-        secret: secret,
-        counter: initial_count,
-        digits: digits == DEFAULT_DIGITS ? nil : digits
-      }
-      encode_params("otpauth://hotp/#{Addressable::URI.escape(name)}", params)
+      OTP::URI.new(self, account_name: name, counter: initial_count).to_s
     end
   end
 end
