@@ -1,3 +1,5 @@
+require 'securerandom'
+
 module ROTP
   class Base32
     class Base32Error < RuntimeError; end

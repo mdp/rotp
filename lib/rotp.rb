@@ -1,6 +1,5 @@
 require 'cgi'
 require 'addressable'
-require 'securerandom'
 require 'openssl'
 require 'rotp/base32'
 require 'rotp/otp'
