@@ -3,6 +3,7 @@ require 'addressable'
 require 'openssl'
 require 'rotp/base32'
 require 'rotp/otp'
+require 'rotp/otp/uri'
 require 'rotp/hotp'
 require 'rotp/totp'
 
