@@ -221,87 +221,9 @@ RSpec.describe ROTP::TOTP do
   end
 
   describe '#provisioning_uri' do
-    let(:uri)    { totp.provisioning_uri('mark@percival') }
-    let(:params) { CGI.parse URI.parse(uri).query }
-
-    context 'without issuer' do
-      it 'has the correct format' do
-        expect(uri).to match %r{\Aotpauth:\/\/totp.+}
-      end
-
-      it 'includes the secret as parameter' do
-        expect(params['secret'].first).to eq 'JBSWY3DPEHPK3PXP'
-      end
-    end
-
-    context 'with default digits' do
-      it 'does does not include digits parameter' do
-        expect(params['digits'].first).to be_nil
-      end
-    end
-
-    context 'with non-default digits' do
-      let(:totp)  { ROTP::TOTP.new 'JBSWY3DPEHPK3PXP', digits: 8 }
-
-      it 'does does not include digits parameter' do
-        expect(params['digits'].first).to eq '8'
-      end
-    end
-
-    context 'with issuer' do
-      let(:totp)  { ROTP::TOTP.new 'JBSWY3DPEHPK3PXP', issuer: 'FooCo' }
-
-      it 'has the correct format' do
-        expect(uri).to match %r{\Aotpauth:\/\/totp/FooCo:.+}
-      end
-
-      it 'includes the secret as parameter' do
-        expect(params['secret'].first).to eq 'JBSWY3DPEHPK3PXP'
-      end
-
-      it 'includes the issuer as parameter' do
-        expect(params['issuer'].first).to eq 'FooCo'
-      end
-
-      context 'with spaces in issuer' do
-        let(:totp)  { ROTP::TOTP.new 'JBSWY3DPEHPK3PXP', issuer: 'Foo Co' }
-
-        it 'includes the uri encoded issuer as parameter' do
-          expect(params['issuer'].first).to eq 'Foo%20Co'
-        end
-      end
-    end
-
-    context 'with custom interval' do
-      let(:totp)  { ROTP::TOTP.new 'JBSWY3DPEHPK3PXP', interval: 60 }
-
-      it 'has the correct format' do
-        expect(uri).to match %r{\Aotpauth:\/\/totp.+}
-      end
-
-      it 'includes the secret as parameter' do
-        expect(params['secret'].first).to eq 'JBSWY3DPEHPK3PXP'
-      end
-
-      it 'includes the interval as period parameter' do
-        expect(params['period'].first).to eq '60'
-      end
-    end
-
-    context 'with custom digest' do
-      let(:totp)  { ROTP::TOTP.new 'JBSWY3DPEHPK3PXP', digest: 'sha256' }
-
-      it 'has the correct format' do
-        expect(uri).to match %r{\Aotpauth:\/\/totp.+}
-      end
-
-      it 'includes the secret as parameter' do
-        expect(params['secret'].first).to eq 'JBSWY3DPEHPK3PXP'
-      end
-
-      it 'includes the digest as algorithm parameter' do
-        expect(params['algorithm'].first).to eq 'SHA256'
-      end
+    it 'accepts the account name' do
+      expect(totp.provisioning_uri('mark@percival'))
+        .to eq 'otpauth://totp/mark%40percival?secret=JBSWY3DPEHPK3PXP'
     end
   end
 

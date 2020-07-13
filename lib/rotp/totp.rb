@@ -54,19 +54,7 @@ module ROTP
     # @param [String] name of the account
     # @return [String] provisioning URI
     def provisioning_uri(name)
-      # The format of this URI is documented at:
-      # https://github.com/google/google-authenticator/wiki/Key-Uri-Format
-      # For compatibility the issuer appears both before that account name and also in the
-      # query string.
-      issuer_string = issuer.nil? ? '' : "#{Addressable::URI.escape(issuer)}:"
-      params = {
-        secret: secret,
-        period: interval == 30 ? nil : interval,
-        issuer: Addressable::URI.encode(issuer),
-        digits: digits == DEFAULT_DIGITS ? nil : digits,
-        algorithm: digest.casecmp('SHA1').zero? ? nil : digest.upcase
-      }
-      encode_params("otpauth://totp/#{issuer_string}#{Addressable::URI.escape(name)}", params)
+      OTP::URI.new(self, account_name: name).to_s
     end
 
     private
