@@ -1,5 +1,11 @@
 ### Changelog
 
+### 6.1.0
+
+- Fixing URI encoding issues again, breaking out into it's own module
+  due to the complexity - closes #100 (@atcruice)
+- Add docker-compose.yml to help with easier testing
+
 ### 6.0.0
 
 - Dropping support for Ruby <2.3 (Major version bump)

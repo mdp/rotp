@@ -173,6 +173,12 @@ docker build -f Dockerfile-2.6 -t rotp_2.6 .
 docker run --rm -v $(pwd):/usr/src/app rotp_2.6
 ```
 
+Alternately, you may use docker-compose to run all the tests:
+
+```
+docker-compose up
+```
+
 ## Executable Usage
 
 The rotp rubygem includes CLI version to help with testing and debugging
