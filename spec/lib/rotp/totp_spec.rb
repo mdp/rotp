@@ -170,6 +170,39 @@ RSpec.describe ROTP::TOTP do
         end
       end
     end
+
+    context 'with a drift window' do
+      let(:verification) { totp.verify token, drift_window: drift_window, at: now }
+      let(:drift_window) { 15 }
+
+      context 'inside of drift window with token ahead' do
+        let(:token) { totp.at TEST_TIME + 20 }
+        it 'is true' do
+          expect(verification).to be_truthy
+        end
+      end
+
+      context 'inside of drift window with token behind' do
+        let(:token) { totp.at TEST_TIME - 20 }
+        it 'is true' do
+          expect(verification).to be_truthy
+        end
+      end
+
+      context 'outside of drift window with token behind too much' do
+        let(:token) { totp.at TEST_TIME - 35 }
+        it 'is nil' do
+          expect(verification).to be_falsey
+        end
+      end
+
+      context 'outside of drift window with token ahead too much' do
+        let(:token) { totp.at TEST_TIME + 35 }
+        it 'is nil' do
+          expect(verification).to be_falsey
+        end
+      end
+    end
   end
 
   describe '#verify with drift and prevent token reuse' do
