@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.license     = 'MIT'
   s.authors     = ['Mark Percival']
   s.email       = ['mark@markpercival.us']
-  s.homepage    = 'http://github.com/mdp/rotp'
+  s.homepage    = 'https://github.com/mdp/rotp'
   s.summary     = 'A Ruby library for generating and verifying one time passwords'
   s.description = 'Works for both HOTP and TOTP, and includes QR Code provisioning'
 
