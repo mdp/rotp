@@ -1,5 +1,10 @@
 ### Changelog
 
+### 6.2.0
+
+- Update to expand compatibility with Ruby 3. This was only a change to the
+  gemspec, no code changes were necessary.
+
 ### 6.1.0
 
 - Fixing URI encoding issues again, breaking out into it's own module

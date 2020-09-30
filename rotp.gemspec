@@ -4,7 +4,7 @@ Gem::Specification.new do |s|
   s.name        = 'rotp'
   s.version     = ROTP::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.required_ruby_version = '~> 2.3'
+  s.required_ruby_version = '>= 2.3'
   s.license     = 'MIT'
   s.authors     = ['Mark Percival']
   s.email       = ['mark@markpercival.us']
