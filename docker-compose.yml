@@ -28,3 +28,10 @@ services:
     volumes:
       - "./lib:/usr/src/app/lib"
       - "./spec:/usr/src/app/spec"
+  ruby_3_0_rc:
+    build:
+      context: .
+      dockerfile: Dockerfile-3.0-rc
+    volumes:
+      - "./lib:/usr/src/app/lib"
+      - "./spec:/usr/src/app/spec"
