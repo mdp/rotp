@@ -118,6 +118,8 @@ totp.verify("250939", drift_behind: 15, at: now + 35) # => 1474590600
 totp.verify("250939", drift_behind: 15, at: now + 45) # => nil
 ```
 
+In addition to `drift_behind`, there are also `drift_ahead` and `drift_window` (to validate past and future tokens).
+
 ### Generating a Base32 Secret key
 
 ```ruby

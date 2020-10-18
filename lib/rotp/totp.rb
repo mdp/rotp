@@ -31,13 +31,16 @@ module ROTP
     # @param otp [String] the one time password to verify
     # @param drift_behind [Integer] how many seconds to look back
     # @param drift_ahead [Integer] how many seconds to look ahead
+    # @param drift_window [Integer] how many seconds to look ahead and behind
     # @param after [Integer] prevent token reuse, last login timestamp
     # @param at [Time] time at which to generate and verify a particular
     #   otp. default Time.now
     # @return [Integer, nil] the last successful timestamp
     #   interval
-    def verify(otp, drift_ahead: 0, drift_behind: 0, after: nil, at: Time.now)
-      timecodes = get_timecodes(at, drift_behind, drift_ahead)
+    def verify(otp, drift_ahead: 0, drift_behind: 0, drift_window: 0, after: nil, at: Time.now)
+      timecodes = drift_window > 0 ?
+                    get_timecodes(at, drift_window, drift_window) :
+                    get_timecodes(at, drift_behind, drift_ahead)
 
       timecodes = timecodes.select { |t| t > timecode(after) } if after
 
