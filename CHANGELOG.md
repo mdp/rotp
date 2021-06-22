@@ -49,6 +49,11 @@
 
 - Simplify API
 - Remove support for Ruby < 2.0
+- BREAKING CHANGE: Removed optional second argument (`padding`) from:
+  - `HOTP#at`
+  - `OTP#generate_otp`
+  - `TOTP#at`
+  - `TOTP#now` (first argument)
 
 #### 3.3.1
 
