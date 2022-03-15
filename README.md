@@ -1,9 +1,22 @@
+## Webauthn and the future of 2FA
+
+Although this library will continue to be maintained, if you're implementing a 2FA solution today, you should take a look at [Webauthn](https://webauthn.guide/). It doesn't involve shared secrets and it's supported by most modern browsers and operating systems.
+
+### Ruby resources for Webauthn
+
+- [Multi-Factor Authentication for Rails With WebAuthn and Devise](https://www.honeybadger.io/blog/multi-factor-2fa-authentication-rails-webauthn-devise/)
+- [Webauthn Ruby Gem](https://github.com/cedarcode/webauthn-ruby)
+- [Rails demo app with Webauthn](https://github.com/cedarcode/webauthn-rails-demo-app)
+
+----
+
 # The Ruby One Time Password Library
 
 [![Build Status](https://travis-ci.org/mdp/rotp.svg?branch=master)](https://travis-ci.org/mdp/rotp)
 [![Gem Version](https://badge.fury.io/rb/rotp.svg)](https://rubygems.org/gems/rotp)
 [![Documentation](http://img.shields.io/badge/docs-rdoc.info-blue.svg)](https://www.rubydoc.info/github/mdp/rotp/master)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/mdp/rotp/blob/master/LICENSE)
+
 
 A ruby library for generating and validating one time passwords (HOTP & TOTP) according to [RFC 4226](https://datatracker.ietf.org/doc/html/rfc4226) and [RFC 6238](https://datatracker.ietf.org/doc/html/rfc6238).
 
