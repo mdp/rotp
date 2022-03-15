@@ -14,7 +14,7 @@ Many websites use this for [multi-factor authentication](https://www.youtube.com
 ## Dependencies
 
 * OpenSSL
-* Ruby 2.0 or higher
+* Ruby 2.3 or higher
 
 ## Breaking changes
 
@@ -32,7 +32,7 @@ Many websites use this for [multi-factor authentication](https://www.youtube.com
 ### Breaking changes in >= 4.0
 
 - Simplified API
-  - `verify` now takes options for `drift` and `after`
+  - `verify` now takes options for `drift` and `after`,`padding` is no longer an option
   - `verify` returns a timestamp if true, nil if false
 - Dropping support for Ruby < 2.0
 - Docs for 3.x can be found [here](https://github.com/mdp/rotp/tree/v3.x)
