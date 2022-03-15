@@ -18,7 +18,6 @@ module ROTP
     end
 
     # @param [Integer] input the number used seed the HMAC
-    # @option padded [Boolean] (false) Output the otp as a 0 padded string
     # Usually either the counter, or the computed integer
     # based on the Unix timestamp
     def generate_otp(input)
