@@ -1,4 +1,4 @@
-iname: Ruby CI
+name: Ruby CI
 
 on:
   push:
