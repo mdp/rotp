@@ -24,8 +24,8 @@ module ROTP
     # @param [String] name of the account
     # @param [Integer] initial_count starting counter value, defaults to 0
     # @return [String] provisioning uri
-    def provisioning_uri(name, initial_count = 0)
-      OTP::URI.new(self, account_name: name, counter: initial_count).to_s
+    def provisioning_uri(name = nil, initial_count = 0)
+      OTP::URI.new(self, account_name: name || @name, counter: initial_count).to_s
     end
   end
 end

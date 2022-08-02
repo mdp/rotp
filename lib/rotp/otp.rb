@@ -10,6 +10,12 @@ module ROTP
     # @option options digest [String] (sha1)
     #     Digest used in the HMAC.
     #     Google Authenticate only supports 'sha1' currently
+    # @option options name [String]
+    #     The name of the account for the OTP.
+    #     Used in the provisioning URL
+    # @option options issuer [String]
+    #     The issuer of the OTP.
+    #     Used in the provisioning URL
     # @option options provisioning_params [Hash] ({})
     #     Additional non-standard params you may want appended to the
     #     provisioning URI. Ex. `image: 'https://example.com/icon.png'`

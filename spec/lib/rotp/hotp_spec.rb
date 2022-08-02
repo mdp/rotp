@@ -110,14 +110,21 @@ RSpec.describe ROTP::HOTP do
   end
 
   describe '#provisioning_uri' do
-    it 'accepts the account name' do
+    let(:hotp)    { ROTP::HOTP.new('a' * 32, name: "m@mdp.im", issuer: "Example.com") }
+
+    it 'created from the otp instance data' do
+      expect(hotp.provisioning_uri())
+        .to eq 'otpauth://hotp/Example.com:m%40mdp.im?secret=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&issuer=Example.com&counter=0'
+    end
+
+    it 'allow passing a name to override the OTP name' do
       expect(hotp.provisioning_uri('mark@percival'))
-        .to eq 'otpauth://hotp/mark%40percival?secret=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&counter=0'
+        .to eq 'otpauth://hotp/Example.com:mark%40percival?secret=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&issuer=Example.com&counter=0'
     end
 
     it 'also accepts a custom counter value' do
       expect(hotp.provisioning_uri('mark@percival', 17))
-        .to eq 'otpauth://hotp/mark%40percival?secret=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&counter=17'
+        .to eq 'otpauth://hotp/Example.com:mark%40percival?secret=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&issuer=Example.com&counter=17'
     end
 
     context 'with non-standard provisioning_params' do

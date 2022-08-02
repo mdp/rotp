@@ -34,8 +34,6 @@ module ROTP
       end
 
       def issuer
-        return if @otp.is_a?(HOTP)
-
         @otp.issuer&.strip&.tr(':', '_')
       end
 
