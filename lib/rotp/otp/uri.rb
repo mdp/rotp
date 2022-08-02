@@ -2,9 +2,9 @@ module ROTP
   class OTP
     # https://github.com/google/google-authenticator/wiki/Key-Uri-Format
     class URI
-      def initialize(otp, account_name:, counter: nil)
+      def initialize(otp, account_name: nil, counter: nil)
         @otp = otp
-        @account_name = account_name
+        @account_name = account_name || ''
         @counter = counter
       end
 
@@ -56,6 +56,7 @@ module ROTP
           period: period,
           counter: counter,
         }
+          .merge(@otp.provisioning_params)
           .reject { |_, v| v.nil? }
           .map { |k, v| "#{k}=#{ERB::Util.url_encode(v)}" }
           .join('&')

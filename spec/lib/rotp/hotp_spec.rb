@@ -4,6 +4,8 @@ RSpec.describe ROTP::HOTP do
   let(:counter) { 1234 }
   let(:token)   { '161024' }
   let(:hotp)    { ROTP::HOTP.new('a' * 32) }
+  let(:uri)    { hotp.provisioning_uri("mark@percival") }
+  let(:params) { CGI.parse URI.parse(uri).query }
 
   describe '#at' do
     let(:token) { hotp.at counter }
@@ -116,6 +118,14 @@ RSpec.describe ROTP::HOTP do
     it 'also accepts a custom counter value' do
       expect(hotp.provisioning_uri('mark@percival', 17))
         .to eq 'otpauth://hotp/mark%40percival?secret=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&counter=17'
+    end
+
+    context 'with non-standard provisioning_params' do
+      let(:hotp) { ROTP::HOTP.new('a' * 32, digits: 8, provisioning_params: {image: 'https://example.com/icon.png'}) }
+
+      it 'includes the issuer as parameter' do
+        expect(params['image'].first).to eq 'https://example.com/icon.png'
+      end
     end
   end
 end

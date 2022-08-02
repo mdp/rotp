@@ -1,6 +1,6 @@
 module ROTP
   class OTP
-    attr_reader :secret, :digits, :digest
+    attr_reader :secret, :digits, :digest, :name, :issuer, :provisioning_params
     DEFAULT_DIGITS = 6
 
     # @param [String] secret in the form of base32
@@ -10,10 +10,16 @@ module ROTP
     # @option options digest [String] (sha1)
     #     Digest used in the HMAC.
     #     Google Authenticate only supports 'sha1' currently
+    # @option options provisioning_params [Hash] ({})
+    #     Additional non-standard params you may want appended to the
+    #     provisioning URI. Ex. `image: 'https://example.com/icon.png'`
     # @returns [OTP] OTP instantiation
     def initialize(s, options = {})
       @digits = options[:digits] || DEFAULT_DIGITS
       @digest = options[:digest] || 'sha1'
+      @name = options[:name]
+      @issuer = options[:issuer]
+      @provisioning_params = options[:provisioning_params] || {}
       @secret = s
     end
 
