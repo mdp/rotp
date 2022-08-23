@@ -12,7 +12,7 @@ Although this library will continue to be maintained, if you're implementing a 2
 
 # The Ruby One Time Password Library
 
-![Build Status](https://github.com/mdp/rotp/actions/workflows/test/badge.svg)
+[![Build Status](https://github.com/mdp/rotp/actions/workflows/test.yaml/badge.svg)](https://github.com/mdp/rotp/actions/workflows/test.yaml)
 [![Gem Version](https://badge.fury.io/rb/rotp.svg)](https://rubygems.org/gems/rotp)
 [![Documentation](http://img.shields.io/badge/docs-rdoc.info-blue.svg)](https://www.rubydoc.info/github/mdp/rotp/master)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/mdp/rotp/blob/master/LICENSE)
