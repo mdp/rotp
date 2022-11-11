@@ -1,5 +1,11 @@
 ### Changelog
 
+### 6.2.1
+
+- Removed old rdoc folder that was triggering a security warning due to an
+  old version of JQuery being included in the HTML docs. This has no impact
+  on the Ruby library.
+
 ### 6.2.0
 
 - Update to expand compatibility with Ruby 3. This was only a change to the
