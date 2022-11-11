@@ -1,4 +1,4 @@
-name: Ruby CI
+name: Tests
 
 on:
   push:
