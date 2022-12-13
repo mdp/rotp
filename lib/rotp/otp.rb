@@ -32,7 +32,8 @@ module ROTP
              (hmac[offset + 1].ord & 0xff) << 16 |
              (hmac[offset + 2].ord & 0xff) << 8 |
              (hmac[offset + 3].ord & 0xff)
-      (code % 10**digits).to_s.rjust(digits, '0')
+      code_str = (10 ** digits + (code % 10 ** digits)).to_s
+      code_str[-digits..-1]
     end
 
     private

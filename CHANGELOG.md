@@ -1,5 +1,9 @@
 ### Changelog
 
+### 6.2.2
+
+- Removed `rjust` from `generate_otp` in favor of more time constant version
+
 ### 6.2.1
 
 - Removed old rdoc folder that was triggering a security warning due to an
