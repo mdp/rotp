@@ -4,8 +4,6 @@ RSpec.describe ROTP::HOTP do
   let(:counter) { 1234 }
   let(:token)   { '161024' }
   let(:hotp)    { ROTP::HOTP.new('a' * 32) }
-  let(:uri)    { hotp.provisioning_uri("mark@percival") }
-  let(:params) { CGI.parse URI.parse(uri).query }
 
   describe '#at' do
     let(:token) { hotp.at counter }
@@ -110,8 +108,8 @@ RSpec.describe ROTP::HOTP do
   end
 
   describe '#provisioning_uri' do
-
     let(:hotp) { ROTP::HOTP.new('a' * 32, name: "m@mdp.im") }
+    let(:params) { CGI.parse URI.parse(uri).query }
 
     it 'created from the otp instance data' do
       expect(hotp.provisioning_uri())
@@ -130,6 +128,7 @@ RSpec.describe ROTP::HOTP do
 
     context 'with non-standard provisioning_params' do
       let(:hotp) { ROTP::HOTP.new('a' * 32, digits: 8, provisioning_params: {image: 'https://example.com/icon.png'}) }
+      let(:uri)    { hotp.provisioning_uri("mark@percival") }
 
       it 'includes the issuer as parameter' do
         expect(params['image'].first).to eq 'https://example.com/icon.png'
