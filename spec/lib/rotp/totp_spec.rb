@@ -225,16 +225,16 @@ RSpec.describe ROTP::TOTP do
 
 
   describe '#provisioning_uri' do
-    let(:totp)    { ROTP::TOTP.new(TEST_SECRET, name: "m@mdp.im", issuer: "Example.com") }
+    let(:totp) { ROTP::TOTP.new(TEST_SECRET, name: "m@mdp.im") }
 
     it 'creates a provisioning uri from the OTP instance' do
       expect(totp.provisioning_uri())
-        .to eq 'otpauth://totp/Example.com:m%40mdp.im?secret=JBSWY3DPEHPK3PXP&issuer=Example.com'
+        .to eq 'otpauth://totp/m%40mdp.im?secret=JBSWY3DPEHPK3PXP'
     end
 
     it 'allow passing a name to override the OTP name' do
       expect(totp.provisioning_uri('mark@percival'))
-        .to eq 'otpauth://totp/Example.com:mark%40percival?secret=JBSWY3DPEHPK3PXP&issuer=Example.com'
+        .to eq 'otpauth://totp/mark%40percival?secret=JBSWY3DPEHPK3PXP'
     end
 
     context 'with non-standard provisioning_params' do
@@ -249,6 +249,22 @@ RSpec.describe ROTP::TOTP do
       end
 
     end
+
+    context "with an issuer" do
+      let(:totp) { ROTP::TOTP.new(TEST_SECRET, name: "m@mdp.im", issuer: "Example.com") }
+
+      it 'creates a provisioning uri from the OTP instance' do
+        expect(totp.provisioning_uri())
+          .to eq 'otpauth://totp/Example.com:m%40mdp.im?secret=JBSWY3DPEHPK3PXP&issuer=Example.com'
+      end
+
+      it 'allow passing a name to override the OTP name' do
+        expect(totp.provisioning_uri('mark@percival'))
+          .to eq 'otpauth://totp/Example.com:mark%40percival?secret=JBSWY3DPEHPK3PXP&issuer=Example.com'
+      end
+
+    end
+
   end
 
   describe '#now' do
