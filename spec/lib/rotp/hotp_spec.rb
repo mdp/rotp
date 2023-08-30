@@ -110,7 +110,7 @@ RSpec.describe ROTP::HOTP do
   end
 
   describe '#provisioning_uri' do
-    let(:hotp)    { ROTP::HOTP.new('a' * 32, name: "m@mdp.im", issuer: "Example.com") }
+    let(:hotp) { ROTP::HOTP.new('a' * 32, name: "m@mdp.im", issuer: "Example.com") }
 
     it 'created from the otp instance data' do
       expect(hotp.provisioning_uri())
