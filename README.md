@@ -149,7 +149,7 @@ totp = ROTP::TOTP.new("base32secret3232", issuer: "My Service")
 totp.provisioning_uri("alice@google.com") # => 'otpauth://totp/My%20Service:alice%40google.com?secret=base32secret3232&issuer=My%20Service'
 
 hotp = ROTP::HOTP.new("base32secret3232", issuer: "My Service")
-hotp.provisioning_uri("alice@google.com", 0) # => 'otpauth://hotp/alice%40google.com?secret=base32secret3232&counter=0'
+hotp.provisioning_uri("alice@google.com", 0) # => 'otpauth://hotp/My%20Service:alice%40google.com?secret=base32secret3232&issuer=My%20Service&counter=0'
 ```
 
 This can then be rendered as a QR Code which the user can scan using their mobile phone and the appropriate application.
