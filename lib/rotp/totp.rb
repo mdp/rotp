@@ -53,8 +53,8 @@ module ROTP
     # to provision the Google Authenticator app
     # @param [String] name of the account
     # @return [String] provisioning URI
-    def provisioning_uri(name)
-      OTP::URI.new(self, account_name: name).to_s
+    def provisioning_uri(name = nil)
+      OTP::URI.new(self, account_name: name || @name).to_s
     end
 
     private

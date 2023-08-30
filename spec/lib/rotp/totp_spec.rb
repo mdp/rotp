@@ -2,11 +2,12 @@ require 'spec_helper'
 
 TEST_TIME = Time.utc 2016, 9, 23, 9 # 2016-09-23 09:00:00 UTC
 TEST_TOKEN = '082630'.freeze
+TEST_SECRET = 'JBSWY3DPEHPK3PXP'
 
 RSpec.describe ROTP::TOTP do
   let(:now)   { TEST_TIME }
   let(:token) { TEST_TOKEN }
-  let(:totp)  { ROTP::TOTP.new 'JBSWY3DPEHPK3PXP' }
+  let(:totp)  { ROTP::TOTP.new TEST_SECRET }
 
   describe '#at' do
     let(:token) { totp.at now }
@@ -220,11 +221,52 @@ RSpec.describe ROTP::TOTP do
     end
   end
 
+
   describe '#provisioning_uri' do
-    it 'accepts the account name' do
-      expect(totp.provisioning_uri('mark@percival'))
-        .to eq 'otpauth://totp/mark%40percival?secret=JBSWY3DPEHPK3PXP'
+    let(:params) { CGI.parse URI.parse(uri).query }
+
+    context "with a provided name on the TOTP instance" do
+      let(:totp) { ROTP::TOTP.new(TEST_SECRET, name: "m@mdp.im") }
+      it 'creates a provisioning uri from the OTP instance' do
+        expect(totp.provisioning_uri())
+          .to eq 'otpauth://totp/m%40mdp.im?secret=JBSWY3DPEHPK3PXP'
+      end
+
+      it 'allow passing a name to override the OTP name' do
+        expect(totp.provisioning_uri('mark@percival'))
+          .to eq 'otpauth://totp/mark%40percival?secret=JBSWY3DPEHPK3PXP'
+      end
     end
+
+    context 'with non-standard provisioning_params' do
+      let(:totp)    {
+        ROTP::TOTP.new(TEST_SECRET,
+          provisioning_params: { image: 'https://example.com/icon.png' }
+        )
+      }
+      let(:uri)    { totp.provisioning_uri("mark@percival") }
+
+      it 'includes the issuer as parameter' do
+        expect(params['image'].first).to eq 'https://example.com/icon.png'
+      end
+
+    end
+
+    context "with an issuer" do
+      let(:totp) { ROTP::TOTP.new(TEST_SECRET, name: "m@mdp.im", issuer: "Example.com") }
+
+      it 'creates a provisioning uri from the OTP instance' do
+        expect(totp.provisioning_uri())
+          .to eq 'otpauth://totp/Example.com:m%40mdp.im?secret=JBSWY3DPEHPK3PXP&issuer=Example.com'
+      end
+
+      it 'allow passing a name to override the OTP name' do
+        expect(totp.provisioning_uri('mark@percival'))
+          .to eq 'otpauth://totp/Example.com:mark%40percival?secret=JBSWY3DPEHPK3PXP&issuer=Example.com'
+      end
+
+    end
+
   end
 
   describe '#now' do
