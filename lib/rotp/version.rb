@@ -1,3 +1,3 @@
 module ROTP
-  VERSION = '6.2.2'.freeze
+  VERSION = '6.3.0'.freeze
 end

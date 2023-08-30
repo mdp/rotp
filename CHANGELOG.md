@@ -1,5 +1,12 @@
 # Changelog
 
+## [6.3.0](https://github.com/mdp/rotp/compare/v6.2.2...v6.3.0) (2023-08-30)
+
+
+### Features
+
+* Allow for non-standard provisioning URI params, eg. image/icon ([#91](https://github.com/mdp/rotp/issues/91)) ([45d8aac](https://github.com/mdp/rotp/commit/45d8aac8356424897faf3a0dbda59f88b22df775))
+
 ## 6.2.2
 
 - Removed `rjust` from `generate_otp` in favor of more time constant version
