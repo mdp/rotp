@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ROTP
   DEFAULT_INTERVAL = 30
   class TOTP < OTP
@@ -5,7 +7,7 @@ module ROTP
 
     # @option options [Integer] interval (30) the time interval in seconds for OTP
     #     This defaults to 30 which is standard.
-    def initialize(s, options = {})
+    def initialize(secret, options = {})
       @interval = options[:interval] || DEFAULT_INTERVAL
       @issuer = options[:issuer]
       super
@@ -69,7 +71,7 @@ module ROTP
 
     # Ensure UTC int
     def timeint(time)
-      return time.to_i unless time.class == Time
+      return time.to_i unless time.instance_of?(Time)
 
       time.utc.to_i
     end

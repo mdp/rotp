@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'optparse'
 require 'ostruct'
 
@@ -14,7 +16,7 @@ module ROTP
     end
 
     def to_s
-      parser.help + "\n"
+      "#{parser.help}\n"
     end
 
     private
@@ -33,9 +35,9 @@ module ROTP
       return options!.mode = :help if arguments.empty?
 
       parser.parse arguments
-    rescue OptionParser::InvalidOption => exception
+    rescue OptionParser::InvalidOption => e
       options!.mode = :help
-      options!.warnings = red(exception.message + '. Try --help for help.')
+      options!.warnings = red("#{e.message}. Try --help for help.")
     end
 
     def parser
@@ -44,8 +46,8 @@ module ROTP
         parser.separator green('  Usage: ') + bold("#{filename} [options]")
         parser.separator ''
         parser.separator green '  Examples:   '
-        parser.separator '    ' + bold("#{filename} --secret p4ssword") + '                       # Generates a time-based one-time password'
-        parser.separator '    ' + bold("#{filename} --hmac --secret p4ssword --counter 42") + '   # Generates a counter-based one-time password'
+        parser.separator "    #{bold("#{filename} --secret p4ssword")}                       # Generates a time-based one-time password"
+        parser.separator "    #{bold("#{filename} --hmac --secret p4ssword --counter 42")}   # Generates a counter-based one-time password"
         parser.separator ''
         parser.separator green '  Options:'
 
