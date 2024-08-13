@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ROTP
   class OTP
     # https://github.com/google/google-authenticator/wiki/Key-Uri-Format
@@ -22,7 +24,7 @@ module ROTP
 
       def counter
         return if @otp.is_a?(TOTP)
-        fail if @counter.nil?
+        raise if @counter.nil?
 
         @counter
       end
@@ -45,15 +47,19 @@ module ROTP
           .join(':')
       end
 
-      def parameters
+      def default_parameters_hash
         {
           secret: @otp.secret,
           issuer: issuer,
           algorithm: algorithm,
           digits: digits,
           period: period,
-          counter: counter,
+          counter: counter
         }
+      end
+
+      def parameters
+        default_parameters_hash
           .merge(@otp.provisioning_params)
           .reject { |_, v| v.nil? }
           .map { |k, v| "#{k}=#{ERB::Util.url_encode(v)}" }

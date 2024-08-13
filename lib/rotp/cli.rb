@@ -30,9 +30,10 @@ module ROTP
       return errors if errors
       return arguments.to_s if options.mode == :help
 
-      if options.mode == :time
+      case options.mode
+      when :time
         ROTP::TOTP.new(options.secret, options).now
-      elsif options.mode == :hmac
+      when :hmac
         ROTP::HOTP.new(options.secret, options).at options.counter
       end
     end
