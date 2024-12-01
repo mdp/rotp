@@ -39,14 +39,17 @@ module ROTP
     def verify(otp, drift_ahead: 0, drift_behind: 0, after: nil, at: Time.now)
       now = timeint(at)
 
-      timecode_start = timecode([now - drift_behind, after].compact.max)
+      # we need to skip time <= after
+      timecode_start = [timecode(now - drift_behind), after ? timecode(after) + 1 : nil].compact.max
       timecode_end = timecode(now + drift_ahead)
 
+      result = nil
+
       timecode_start.upto(timecode_end) do |t|
-        return t * interval if super(otp, generate_otp(t))
+        result = t * interval if super(otp, generate_otp(t))
       end
       
-      nil
+      result
     end
 
     # Returns the provisioning URI for the OTP

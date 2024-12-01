@@ -101,31 +101,6 @@ RSpec.describe ROTP::TOTP do
     end
   end
 
-  def get_timecodes(at, b, a)
-    # Test the private method
-    totp.send('get_timecodes', at, b, a)
-  end
-
-  describe 'drifting timecodes' do
-    it 'should get timecodes behind' do
-      expect(get_timecodes(TEST_TIME + 15, 15, 0)).to eq([49_154_040])
-      expect(get_timecodes(TEST_TIME, 15, 0)).to eq([49_154_039, 49_154_040])
-      expect(get_timecodes(TEST_TIME, 40, 0)).to eq([49_154_038, 49_154_039, 49_154_040])
-      expect(get_timecodes(TEST_TIME, 90, 0)).to eq([49_154_037, 49_154_038, 49_154_039, 49_154_040])
-    end
-    it 'should get timecodes ahead' do
-      expect(get_timecodes(TEST_TIME, 0, 15)).to eq([49_154_040])
-      expect(get_timecodes(TEST_TIME + 15, 0, 15)).to eq([49_154_040, 49_154_041])
-      expect(get_timecodes(TEST_TIME, 0, 30)).to eq([49_154_040, 49_154_041])
-      expect(get_timecodes(TEST_TIME, 0, 70)).to eq([49_154_040, 49_154_041, 49_154_042])
-      expect(get_timecodes(TEST_TIME, 0, 90)).to eq([49_154_040, 49_154_041, 49_154_042, 49_154_043])
-    end
-    it 'should get timecodes behind and ahead' do
-      expect(get_timecodes(TEST_TIME, 30, 30)).to eq([49_154_039, 49_154_040, 49_154_041])
-      expect(get_timecodes(TEST_TIME, 60, 60)).to eq([49_154_038, 49_154_039, 49_154_040, 49_154_041, 49_154_042])
-    end
-  end
-
   describe '#verify with drift' do
     let(:verification) { totp.verify token, drift_ahead: drift_ahead, drift_behind: drift_behind, at: now }
     let(:drift_ahead) { 0 }
