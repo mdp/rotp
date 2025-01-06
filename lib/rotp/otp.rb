@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
 module ROTP
   class OTP
     attr_reader :secret, :digits, :digest, :name, :issuer, :provisioning_params
+
     DEFAULT_DIGITS = 6
 
     # @param [String] secret in the form of base32
@@ -20,13 +23,13 @@ module ROTP
     #     Additional non-standard params you may want appended to the
     #     provisioning URI. Ex. `image: 'https://example.com/icon.png'`
     # @returns [OTP] OTP instantiation
-    def initialize(s, options = {})
+    def initialize(secret, options = {})
       @digits = options[:digits] || DEFAULT_DIGITS
       @digest = options[:digest] || 'sha1'
       @name = options[:name]
       @issuer = options[:issuer]
       @provisioning_params = options[:provisioning_params] || {}
-      @secret = s
+      @secret = secret
     end
 
     # @param [Integer] input the number used seed the HMAC
@@ -44,8 +47,8 @@ module ROTP
              (hmac[offset + 1].ord & 0xff) << 16 |
              (hmac[offset + 2].ord & 0xff) << 8 |
              (hmac[offset + 3].ord & 0xff)
-      code_str = (10 ** digits + (code % 10 ** digits)).to_s
-      code_str[-digits..-1]
+      code_str = (10**digits + (code % 10**digits)).to_s
+      code_str[-digits..]
     end
 
     private
@@ -66,12 +69,10 @@ module ROTP
     # along with the secret
     #
     def int_to_bytestring(int, padding = 8)
-      unless int >= 0
-        raise ArgumentError, '#int_to_bytestring requires a positive number'
-      end
+      raise ArgumentError, '#int_to_bytestring requires a positive number' unless int >= 0
 
       result = []
-      until int == 0
+      until int.zero?
         result << (int & 0xFF).chr
         int >>= 8
       end
@@ -85,7 +86,7 @@ module ROTP
       l = a.unpack "C#{a.bytesize}"
       res = 0
       b.each_byte { |byte| res |= byte ^ l.shift }
-      res == 0
+      res.zero?
     end
   end
 end
