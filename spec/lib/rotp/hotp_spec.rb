@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'uri'
 
 RSpec.describe ROTP::HOTP do
   let(:counter) { 1234 }
