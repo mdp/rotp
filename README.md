@@ -8,7 +8,7 @@ Although this library will continue to be maintained, if you're implementing a 2
 - [Webauthn Ruby Gem](https://github.com/cedarcode/webauthn-ruby)
 - [Rails demo app with Webauthn](https://github.com/cedarcode/webauthn-rails-demo-app)
 
-----
+---
 
 # The Ruby One Time Password Library
 
@@ -16,7 +16,6 @@ Although this library will continue to be maintained, if you're implementing a 2
 [![Gem Version](https://badge.fury.io/rb/rotp.svg)](https://rubygems.org/gems/rotp)
 [![Documentation](http://img.shields.io/badge/docs-rdoc.info-blue.svg)](https://www.rubydoc.info/github/mdp/rotp/master)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/mdp/rotp/blob/master/LICENSE)
-
 
 A ruby library for generating and validating one time passwords (HOTP & TOTP) according to [RFC 4226](https://datatracker.ietf.org/doc/html/rfc4226) and [RFC 6238](https://datatracker.ietf.org/doc/html/rfc6238).
 
@@ -150,6 +149,10 @@ totp.provisioning_uri("alice@google.com") # => 'otpauth://totp/My%20Service:alic
 
 hotp = ROTP::HOTP.new("base32secret3232", issuer: "My Service")
 hotp.provisioning_uri("alice@google.com", 0) # => 'otpauth://hotp/My%20Service:alice%40google.com?secret=base32secret3232&issuer=My%20Service&counter=0'
+
+# By default optional values will be skipped from URI. But you can force to specify all values in the URI by passing `skip_default_uri_params: false`
+totp = ROTP::TOTP.new("base32secret3232", issuer: "My Service", skip_default_uri_params: false)
+totp.provisioning_uri("alice@google.com") # => otpauth://totp/My%20Service:alice%40google.com?secret=JBSWY3DPEHPK3PXP&issuer=ACME%20Co&algorithm=SHA1&digits=6&period=30
 ```
 
 This can then be rendered as a QR Code which the user can scan using their mobile phone and the appropriate application.
