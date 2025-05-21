@@ -1,7 +1,8 @@
 module ROTP
   class OTP
-    attr_reader :secret, :digits, :digest, :name, :issuer, :provisioning_params
+    attr_reader :secret, :digits, :digest, :name, :issuer, :provisioning_params, :skip_default_uri_params
     DEFAULT_DIGITS = 6
+    DEFAULT_DIGEST = 'sha1'
 
     # @param [String] secret in the form of base32
     # @option options digits [Integer] (6)
@@ -14,7 +15,7 @@ module ROTP
     #     The name of the account for the OTP.
     #     Used in the provisioning URL
     # @option options issuer [String]
-    #     The issuer of the OTP.
+    #     The issuer of the OTP.  
     #     Used in the provisioning URL
     # @option options provisioning_params [Hash] ({})
     #     Additional non-standard params you may want appended to the
@@ -22,10 +23,11 @@ module ROTP
     # @returns [OTP] OTP instantiation
     def initialize(s, options = {})
       @digits = options[:digits] || DEFAULT_DIGITS
-      @digest = options[:digest] || 'sha1'
+      @digest = options[:digest] || DEFAULT_DIGEST
       @name = options[:name]
       @issuer = options[:issuer]
       @provisioning_params = options[:provisioning_params] || {}
+      @skip_default_uri_params = options[:skip_default_uri_params].nil? ? true : options[:skip_default_uri_params]
       @secret = s
     end
 
