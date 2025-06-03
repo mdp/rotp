@@ -1,5 +1,12 @@
 # Changelog
 
+## [6.3.1](https://github.com/mdp/rotp/compare/v6.3.0...v6.3.1) (2025-06-03)
+
+
+### Bug Fixes
+
+* Fix tests breaking in latest Ruby, update devcontainer to 3.3 ([#143](https://github.com/mdp/rotp/issues/143)) ([642deba](https://github.com/mdp/rotp/commit/642deba39d09206e133deb93bc109b4c7ca420cf))
+
 ## [6.3.0](https://github.com/mdp/rotp/compare/v6.2.2...v6.3.0) (2023-08-30)
 
 
