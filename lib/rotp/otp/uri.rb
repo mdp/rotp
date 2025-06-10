@@ -15,7 +15,7 @@ module ROTP
       private
 
       def algorithm
-        return unless %w[sha256 sha512].include?(@otp.digest)
+        return if skip_default_uri_params && @otp.digest == DEFAULT_DIGEST
 
         @otp.digest.upcase
       end
@@ -28,7 +28,7 @@ module ROTP
       end
 
       def digits
-        return if @otp.digits == DEFAULT_DIGITS
+        return if skip_default_uri_params && @otp.digits == DEFAULT_DIGITS
 
         @otp.digits
       end
@@ -62,7 +62,7 @@ module ROTP
 
       def period
         return if @otp.is_a?(HOTP)
-        return if @otp.interval == DEFAULT_INTERVAL
+        return if skip_default_uri_params && @otp.interval == DEFAULT_INTERVAL
 
         @otp.interval
       end
@@ -72,6 +72,10 @@ module ROTP
         when TOTP then 'totp'
         when HOTP then 'hotp'
         end
+      end
+
+      def skip_default_uri_params
+        @otp.skip_default_uri_params
       end
     end
   end

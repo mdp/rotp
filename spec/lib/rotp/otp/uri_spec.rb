@@ -96,4 +96,37 @@ RSpec.describe ROTP::OTP::URI do
     uri = described_class.new(otp, account_name: 'alice+1234@google.com')
     expect(uri.to_s).to eq 'otpauth://totp/alice%2B1234%40google.com?secret=JBSWY3DPEHPK3PXP'
   end
+
+  context 'with skip_default_uri_params' do
+    it 'excludes default SHA1 algorithm' do
+      otp = ROTP::TOTP.new('JBSWY3DPEHPK3PXP', digest: 'sha1', skip_default_uri_params: true)
+      uri = described_class.new(otp, account_name: 'alice@google.com')
+      expect(uri.to_s).to eq 'otpauth://totp/alice%40google.com?secret=JBSWY3DPEHPK3PXP'
+    end
+
+    it 'excludes default 6 digits' do
+      otp = ROTP::TOTP.new('JBSWY3DPEHPK3PXP', digits: 6, skip_default_uri_params: true)
+      uri = described_class.new(otp, account_name: 'alice@google.com')
+      expect(uri.to_s).to eq 'otpauth://totp/alice%40google.com?secret=JBSWY3DPEHPK3PXP'
+    end
+
+    it 'excludes default 30 second period' do
+      otp = ROTP::TOTP.new('JBSWY3DPEHPK3PXP', interval: 30, skip_default_uri_params: true)
+      uri = described_class.new(otp, account_name: 'alice@google.com')
+      expect(uri.to_s).to eq 'otpauth://totp/alice%40google.com?secret=JBSWY3DPEHPK3PXP'
+    end
+
+    it 'includes all parameters when skip_default_uri_params is false' do
+      otp = ROTP::TOTP.new(
+        'JBSWY3DPEHPK3PXP',
+        digest: 'sha1',
+        digits: 6,
+        interval: 30,
+        issuer: 'ACME Co',
+        skip_default_uri_params: false
+      )
+      uri = described_class.new(otp, account_name: 'alice@google.com')
+      expect(uri.to_s).to eq 'otpauth://totp/ACME%20Co:alice%40google.com?secret=JBSWY3DPEHPK3PXP&issuer=ACME%20Co&algorithm=SHA1&digits=6&period=30'
+    end
+  end
 end
