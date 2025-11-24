@@ -16,7 +16,7 @@ jobs:
       matrix:
         ruby-version: ['3.5.0-preview1', '3.4', '3.3', '3.2', '3.0', '2.7', '2.3', 'truffleruby-head']
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Set up Ruby ${{ matrix.ruby-version }}
         uses: ruby/setup-ruby@v1
         with:
