@@ -2,11 +2,31 @@ name: Release
 
 on:
   push:
-    branches:    
+    branches:
       - 'main'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Existing tag to build and publish (e.g. v6.3.1). Used to backfill a release that never reached RubyGems.'
+        required: false
+        type: string
+      skip_tests:
+        description: 'Skip the test suite before publishing (only for backfilling an already-tagged release).'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
-  release:
+  release-please:
+    if: ${{ github.event_name == 'push' }}
     runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
     steps:
       - uses: google-github-actions/release-please-action@v4
         id: release
@@ -14,23 +34,45 @@ jobs:
           release-type: ruby
           package-name: rotp
           version-file: "lib/rotp/version.rb"
-      # Checkout code if release was created
-      - uses: actions/checkout@v4
-        if: ${{ steps.release.outputs.release_created }}
-      # Setup ruby if a release was created
-      - uses: ruby/setup-ruby@v1
+
+  publish:
+    needs: [release-please]
+    if: ${{ always() && (github.event_name == 'workflow_dispatch' || needs.release-please.outputs.release_created == 'true') }}
+    runs-on: ubuntu-latest
+    env:
+      TAG: ${{ inputs.tag || needs.release-please.outputs.tag_name }}
+    steps:
+      - uses: actions/checkout@v6
         with:
-          ruby-version: 3.2
-          bundler-cache: true
-        if: ${{ steps.release.outputs.release_created }}
+          ref: ${{ env.TAG }}
+          fetch-depth: 0
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: ${{ !inputs.skip_tests }}
+      - name: Verify gem version matches tag
+        run: |
+          tag_version="${TAG#v}"
+          gem_version="$(ruby -Ilib -e "require 'rotp/version'; print ROTP::VERSION")"
+          echo "tag=$tag_version gem=$gem_version"
+          test "$tag_version" = "$gem_version"
       - name: Run tests
+        if: ${{ !inputs.skip_tests }}
         run: bundle exec rspec
-        if: ${{ steps.release.outputs.release_created }}
-      # build gem and add to release
-      - name: Upload Release Artifact
-        if: ${{ steps.release.outputs.release_created }}
+      - name: Build and publish gem
+        env:
+          RUBYGEMS_AUTH_TOKEN: ${{ secrets.RUBYGEMS_AUTH_TOKEN }}
+        run: |
+          mkdir -p "$HOME/.gem"
+          touch "$HOME/.gem/credentials"
+          chmod 0600 "$HOME/.gem/credentials"
+          printf -- "---\n:rubygems_api_key: %s\n" "$RUBYGEMS_AUTH_TOKEN" > "$HOME/.gem/credentials"
+          gem build *.gemspec
+          gem push *.gem
+      - name: Attach gem to the GitHub release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run:
-          gem build *.gemspec
-          gh release upload ${{ steps.release.outputs.tag_name }} *.gem
+        run: |
+          gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" --title "$TAG" --generate-notes
+          gh release upload "$TAG" *.gem --clobber
