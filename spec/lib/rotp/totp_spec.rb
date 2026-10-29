@@ -223,7 +223,7 @@ RSpec.describe ROTP::TOTP do
 
 
   describe '#provisioning_uri' do
-    let(:params) { CGI.parse URI.parse(uri).query }
+    let(:params) { query_params_for(uri) }
 
     context "with a provided name on the TOTP instance" do
       let(:totp) { ROTP::TOTP.new(TEST_SECRET, name: "m@mdp.im") }

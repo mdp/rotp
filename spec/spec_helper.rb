@@ -3,6 +3,7 @@ SimpleCov.start do
   add_filter '/spec/'
 end
 
+require 'uri'
 require 'rotp'
 require 'timecop'
 
@@ -14,6 +15,12 @@ RSpec.configure do |config|
 
   config.before do
     Timecop.return
+  end
+end
+
+def query_params_for(uri)
+  URI.decode_www_form(URI.parse(uri).query).each_with_object(Hash.new { |hash, key| hash[key] = [] }) do |(key, value), params|
+    params[key] << value
   end
 end
 
