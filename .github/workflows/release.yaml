@@ -28,17 +28,20 @@ jobs:
       release_created: ${{ steps.release.outputs.release_created }}
       tag_name: ${{ steps.release.outputs.tag_name }}
     steps:
-      - uses: google-github-actions/release-please-action@v4
+      - uses: googleapis/release-please-action@v4
         id: release
         with:
-          release-type: ruby
-          package-name: rotp
-          version-file: "lib/rotp/version.rb"
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
 
   publish:
     needs: [release-please]
-    if: ${{ always() && (github.event_name == 'workflow_dispatch' || needs.release-please.outputs.release_created == 'true') }}
+    if: ${{ always() && ((github.event_name == 'workflow_dispatch' && inputs.tag != '') || needs.release-please.outputs.release_created == 'true') }}
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+      id-token: write
     env:
       TAG: ${{ inputs.tag || needs.release-please.outputs.tag_name }}
     steps:
@@ -46,10 +49,11 @@ jobs:
         with:
           ref: ${{ env.TAG }}
           fetch-depth: 0
+          persist-credentials: false
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.2'
+          ruby-version: '3.3'
           bundler-cache: ${{ !inputs.skip_tests }}
       - name: Verify gem version matches tag
         run: |
@@ -60,14 +64,10 @@ jobs:
       - name: Run tests
         if: ${{ !inputs.skip_tests }}
         run: bundle exec rspec
+      - name: Configure RubyGems credentials (trusted publishing)
+        uses: rubygems/configure-rubygems-credentials@v2.1.0
       - name: Build and publish gem
-        env:
-          RUBYGEMS_AUTH_TOKEN: ${{ secrets.RUBYGEMS_AUTH_TOKEN }}
         run: |
-          mkdir -p "$HOME/.gem"
-          touch "$HOME/.gem/credentials"
-          chmod 0600 "$HOME/.gem/credentials"
-          printf -- "---\n:rubygems_api_key: %s\n" "$RUBYGEMS_AUTH_TOKEN" > "$HOME/.gem/credentials"
           gem build *.gemspec
           gem push *.gem
       - name: Attach gem to the GitHub release

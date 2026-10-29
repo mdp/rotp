@@ -1,6 +1,9 @@
 {
+  "release-type": "ruby",
   "packages": {
     ".": {
+      "release-type": "ruby",
+      "version-file": "lib/rotp/version.rb",
       "changelog-path": "CHANGELOG.md",
       "bump-minor-pre-major": false,
       "bump-patch-for-minor-pre-major": false,
