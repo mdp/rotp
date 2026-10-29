@@ -1,5 +1,17 @@
 # Changelog
 
+## [6.4.0](https://github.com/mdp/rotp/compare/v6.3.0...v6.4.0) (2026-10-29)
+
+
+### Features
+
+* add skip_default_uri_params option to provisioning URIs ([16e873c](https://github.com/mdp/rotp/commit/16e873c68e0736f8ce019252985ad0e9fcce95f1))
+
+
+### Bug Fixes
+
+* Fix tests breaking in latest Ruby, update devcontainer to 3.3 ([#143](https://github.com/mdp/rotp/issues/143)) ([642deba](https://github.com/mdp/rotp/commit/642deba39d09206e133deb93bc109b4c7ca420cf))
+
 ## [6.3.1] (2025-06-03)
 
 * Fix: Drop usage of OpenStruct to support Ruby 3.5
