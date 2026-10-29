@@ -15,11 +15,15 @@ module ROTP
     #     The name of the account for the OTP.
     #     Used in the provisioning URL
     # @option options issuer [String]
-    #     The issuer of the OTP.  
+    #     The issuer of the OTP.
     #     Used in the provisioning URL
     # @option options provisioning_params [Hash] ({})
     #     Additional non-standard params you may want appended to the
     #     provisioning URI. Ex. `image: 'https://example.com/icon.png'`
+    # @option options skip_default_uri_params [Boolean] (true)
+    #     When true, parameters that match the RFC defaults (SHA1, 6 digits,
+    #     30 second period) are omitted from the provisioning URI. Set to
+    #     false to always include them.
     # @returns [OTP] OTP instantiation
     def initialize(s, options = {})
       @digits = options[:digits] || DEFAULT_DIGITS
@@ -27,7 +31,7 @@ module ROTP
       @name = options[:name]
       @issuer = options[:issuer]
       @provisioning_params = options[:provisioning_params] || {}
-      @skip_default_uri_params = options[:skip_default_uri_params].nil? ? true : options[:skip_default_uri_params]
+      @skip_default_uri_params = options.fetch(:skip_default_uri_params, true)
       @secret = s
     end
 

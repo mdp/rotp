@@ -152,7 +152,7 @@ hotp.provisioning_uri("alice@google.com", 0) # => 'otpauth://hotp/My%20Service:a
 
 # By default optional values will be skipped from URI. But you can force to specify all values in the URI by passing `skip_default_uri_params: false`
 totp = ROTP::TOTP.new("base32secret3232", issuer: "My Service", skip_default_uri_params: false)
-totp.provisioning_uri("alice@google.com") # => otpauth://totp/My%20Service:alice%40google.com?secret=JBSWY3DPEHPK3PXP&issuer=ACME%20Co&algorithm=SHA1&digits=6&period=30
+totp.provisioning_uri("alice@google.com") # => otpauth://totp/My%20Service:alice%40google.com?secret=base32secret3232&issuer=My%20Service&algorithm=SHA1&digits=6&period=30
 ```
 
 This can then be rendered as a QR Code which the user can scan using their mobile phone and the appropriate application.

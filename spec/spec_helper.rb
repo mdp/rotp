@@ -6,7 +6,6 @@ end
 require 'uri'
 require 'rotp'
 require 'timecop'
-require 'debug'
 
 RSpec.configure do |config|
   config.disable_monkey_patching!

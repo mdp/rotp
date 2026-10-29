@@ -37,6 +37,12 @@ RSpec.describe ROTP::OTP::URI do
     expect(uri.to_s).to eq 'otpauth://totp/alice%40google.com?secret=JBSWY3DPEHPK3PXP&algorithm=SHA512'
   end
 
+  it 'includes an uppercase non-default digest' do
+    otp = ROTP::TOTP.new('JBSWY3DPEHPK3PXP', digest: 'SHA256')
+    uri = described_class.new(otp, account_name: 'alice@google.com')
+    expect(uri.to_s).to eq 'otpauth://totp/alice%40google.com?secret=JBSWY3DPEHPK3PXP&algorithm=SHA256'
+  end
+
   it 'includes non-default 8 digits' do
     otp = ROTP::TOTP.new('JBSWY3DPEHPK3PXP', digits: 8)
     uri = described_class.new(otp, account_name: 'alice@google.com')
