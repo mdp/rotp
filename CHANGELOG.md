@@ -1,5 +1,12 @@
 # Changelog
 
+## [6.4.0](https://github.com/mdp/rotp/compare/v6.3.1...v6.4.0) (2026-10-29)
+
+
+### Features
+
+* add skip_default_uri_params option to provisioning URIs ([16e873c](https://github.com/mdp/rotp/commit/16e873c68e0736f8ce019252985ad0e9fcce95f1))
+
 ## [6.3.1] (2025-06-03)
 
 * Fix: Drop usage of OpenStruct to support Ruby 3.5
