@@ -1,8 +1,9 @@
 require 'optparse'
-require 'ostruct'
 
 module ROTP
   class Arguments
+    Options = Struct.new(:time, :counter, :mode, :digest, :secret, :warnings)
+
     def initialize(filename, arguments)
       @filename = filename
       @arguments = Array(arguments)
@@ -26,7 +27,15 @@ module ROTP
     end
 
     def default_options
-      OpenStruct.new time: true, counter: 0, mode: :time
+      o = Options.new
+      o.time = true
+      o.counter = 0
+      o.mode = :time
+      o
+    end
+
+    def to_h
+      options!.to_h
     end
 
     def parse

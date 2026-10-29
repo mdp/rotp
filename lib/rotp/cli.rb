@@ -31,9 +31,9 @@ module ROTP
       return arguments.to_s if options.mode == :help
 
       if options.mode == :time
-        ROTP::TOTP.new(options.secret, options).now
+        ROTP::TOTP.new(options.secret, options.to_h).now
       elsif options.mode == :hmac
-        ROTP::HOTP.new(options.secret, options).at options.counter
+        ROTP::HOTP.new(options.secret, options.to_h).at options.counter
       end
     end
 

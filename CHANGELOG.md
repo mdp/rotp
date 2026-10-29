@@ -1,5 +1,9 @@
 # Changelog
 
+## [6.3.1] (2025-06-03)
+
+* Fix: Drop usage of OpenStruct to support Ruby 3.5
+
 ## [6.3.0](https://github.com/mdp/rotp/compare/v6.2.2...v6.3.0) (2023-08-30)
 
 
