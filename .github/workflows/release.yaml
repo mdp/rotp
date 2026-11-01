@@ -7,28 +7,24 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: 'Existing tag to build and publish (e.g. v6.3.1). Used to backfill a release that never reached RubyGems.'
-        required: false
+        description: 'Existing tag to build and publish (e.g. v6.3.1). Used to backfill a release that never reached RubyGems. Tests always run.'
+        required: true
         type: string
-      skip_tests:
-        description: 'Skip the test suite before publishing (only for backfilling an already-tagged release).'
-        required: false
-        default: false
-        type: boolean
 
-permissions:
-  contents: write
-  pull-requests: write
+permissions: {}
 
 jobs:
   release-please:
     if: ${{ github.event_name == 'push' }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     outputs:
       release_created: ${{ steps.release.outputs.release_created }}
       tag_name: ${{ steps.release.outputs.tag_name }}
     steps:
-      - uses: googleapis/release-please-action@v4
+      - uses: googleapis/release-please-action@5c625bfb5d1ff62eadeeb3772007f7f66fdcf071 # v4.4.1
         id: release
         with:
           config-file: release-please-config.json
@@ -38,6 +34,7 @@ jobs:
     needs: [release-please]
     if: ${{ always() && ((github.event_name == 'workflow_dispatch' && inputs.tag != '') || needs.release-please.outputs.release_created == 'true') }}
     runs-on: ubuntu-latest
+    environment: release
     timeout-minutes: 20
     permissions:
       contents: write
@@ -45,16 +42,16 @@ jobs:
     env:
       TAG: ${{ inputs.tag || needs.release-please.outputs.tag_name }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
           ref: ${{ env.TAG }}
           fetch-depth: 0
           persist-credentials: false
       - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@de492cf36cbab201753d720ce4f4e336cd688c94 # v1.336.0
         with:
           ruby-version: '3.3'
-          bundler-cache: ${{ !inputs.skip_tests }}
+          bundler-cache: true
       - name: Verify gem version matches tag
         run: |
           tag_version="${TAG#v}"
@@ -62,17 +59,16 @@ jobs:
           echo "tag=$tag_version gem=$gem_version"
           test "$tag_version" = "$gem_version"
       - name: Run tests
-        if: ${{ !inputs.skip_tests }}
         run: bundle exec rspec
       - name: Configure RubyGems credentials (trusted publishing)
-        uses: rubygems/configure-rubygems-credentials@v2.1.0
+        uses: rubygems/configure-rubygems-credentials@dc5a8d8553e6ee01fc26761a49e99e733d17954a # v2.1.0
       - name: Build and publish gem
         run: |
-          gem build *.gemspec
-          gem push *.gem
+          gem build ./*.gemspec
+          gem push ./*.gem
       - name: Attach gem to the GitHub release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" --title "$TAG" --generate-notes
-          gh release upload "$TAG" *.gem --clobber
+          gh release upload "$TAG" ./*.gem --clobber
