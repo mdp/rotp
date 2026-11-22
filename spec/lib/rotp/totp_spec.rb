@@ -74,6 +74,7 @@ RSpec.describe ROTP::TOTP do
         end
       end
     end
+
     context 'invalidating reused tokens' do
       let(:verification) do
         totp.verify token,
@@ -221,7 +222,6 @@ RSpec.describe ROTP::TOTP do
     end
   end
 
-
   describe '#provisioning_uri' do
     let(:params) { query_params_for(uri) }
 
@@ -292,4 +292,16 @@ RSpec.describe ROTP::TOTP do
       end
     end
   end
+
+  describe 'Ignore whitespace when initializng' do
+    let(:default) { ROTP::TOTP.new('GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ') }
+
+    it 'should yield the same secret as if without whitespace' do
+      [ "GEZD GNBV GY3T QOJQ GEZD GNBV GY3T QOJQ",
+        "\tGEZDGNBVGY3TQOJQ\nGEZDGNBVGY3TQOJQ " ].each { |str|
+        expect(ROTP::TOTP.new(str).secret).to eq default.secret
+      }
+    end
+  end
+
 end

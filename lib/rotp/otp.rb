@@ -32,7 +32,7 @@ module ROTP
       @issuer = options[:issuer]
       @provisioning_params = options[:provisioning_params] || {}
       @skip_default_uri_params = options.fetch(:skip_default_uri_params, true)
-      @secret = s
+      @secret = s.gsub(/\s/, '')
     end
 
     # @param [Integer] input the number used seed the HMAC
